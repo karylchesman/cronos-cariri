@@ -6,19 +6,31 @@
   "author": "Karyl Chesman",
   "license": "MIT",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build": "tsc --target ES5 --experimentalDecorators --emitDecoratorMetadata",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js -d ./src/infra/typeORM/connection.ts",
+    "migration:create": "ts-node-dev ./node_modules/typeorm/cli.js migration:create"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "eslint": "^8.23.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-promise": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.2",
     "vitest": "^0.23.1"
   },
   "dependencies": {
-    "dayjs": "^1.11.5"
+    "bcrypt": "^5.0.1",
+    "dayjs": "^1.11.5",
+    "dotenv": "^16.0.2",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.9",
+    "uuid": "^9.0.0"
   }
 }
