@@ -22,6 +22,7 @@ class UpdateUserUsecase {
         const new_user = new User({ name, email, password, role });
 
         new_user.validate();
+        if (password !== undefined) new_user.validatePassword();
 
         const userExists = await this.userRepository.findById(id);
 
