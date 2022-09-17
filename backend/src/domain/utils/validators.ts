@@ -9,7 +9,7 @@ interface IisValidLengthParams {
 
 export const isNullOrUndefined = (value: string) => {
     if (["undefined", undefined, "null", null].includes(value)) return true;
-    return false
+    return false;
 }
 
 export const isEmpty = (value: string, error_message: string) => {

@@ -1,8 +1,6 @@
-class BaseEntity {
-    constructor(
-        protected created_at?: Date,
-        protected updated_at?: Date
-    ) { }
+interface BaseEntityProps {
+    created_at?: Date
+    updated_at?: Date
 }
 
-export { BaseEntity }
+export { BaseEntityProps }

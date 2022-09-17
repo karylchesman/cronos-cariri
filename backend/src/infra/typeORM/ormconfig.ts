@@ -3,7 +3,7 @@ import path from 'path';
 
 let entitiesDir = String(process.env.TYPEORM_ENTITIES_DIR).split("/");
 let migrationsDir = String(process.env.TYPEORM_MIGRATIONS_DIR).split("/");
-console.log(path.resolve(__dirname, ...entitiesDir))
+
 const dbconfig: DataSourceOptions = {
     type: "mysql",
     host: process.env.DB_HOST,

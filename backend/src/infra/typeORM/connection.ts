@@ -1,8 +1,9 @@
 import '../envconfig';
+import "reflect-metadata";
 import { DataSource } from "typeorm";
 import ormconfig from "./ormconfig";
 
-const AppDataSource = new DataSource(ormconfig);
+export const AppDataSource = new DataSource(ormconfig);
 
 AppDataSource.initialize()
     .then(() => {

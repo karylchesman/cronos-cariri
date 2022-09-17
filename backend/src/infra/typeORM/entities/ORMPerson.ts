@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } fro
 import { EPersonGender } from '../../../domain/entities/person';
 
 @Entity("persons")
-class Person {
+class ORMPerson {
 
     @PrimaryColumn()
     id!: string;
@@ -63,4 +63,4 @@ class Person {
 
 }
 
-export { Person }
+export { ORMPerson }

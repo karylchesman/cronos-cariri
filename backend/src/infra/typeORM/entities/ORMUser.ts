@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } fro
 import { EUserRoles } from '../../../domain/entities/user';
 
 @Entity("users")
-class User {
+class ORMUser {
     @PrimaryColumn()
     id!: string;
 
@@ -34,4 +34,4 @@ class User {
     updated_at!: Date
 }
 
-export { User }
+export { ORMUser }
