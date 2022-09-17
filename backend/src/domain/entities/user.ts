@@ -21,7 +21,7 @@ class User extends BaseEntity {
         super(user.created_at, user.updated_at);
 
         this.id = user.id ? user.id : UuidGender.genderV4();
-        this.name = isValidLength({ value: user.name, min: 3, max: 255, error_message: "O nome deve conter no mínimo 3 no máximo 255 caracteres." });
+        this.name = isValidLength({ value: user.name, min: 3, max: 255, error_message: "O nome deve conter no mínimo 3 e no máximo 255 caracteres." });
         this.email = isEmail(user.email, "O e-mail deve conter formato válido.");
         this.person_id = user.person_id ? isEmpty(user.person_id, "O e-mail deve conter formato válido.") : user.person_id;
 
@@ -32,7 +32,7 @@ class User extends BaseEntity {
     }
 
     private validatePassword() {
-        const passwordValid = isValidLength({ value: this.password, min: 6, max: 255, error_message: "A senha deve conter no mínimo 6 no máximo 255 caracteres." });
+        const passwordValid = isValidLength({ value: this.password, min: 6, max: 255, error_message: "A senha deve conter no mínimo 6 e no máximo 255 caracteres." });
 
         const passwordHash = hashSync(passwordValid, 8);
 
