@@ -37,12 +37,13 @@ class UserController {
             email,
             name,
             password,
-            role
+            role,
+            token_user
         } = request.body;
 
         const userRepository = new UserRepository();
         const personRepository = new PersonRepository();
-        const createUserUsecase = new UpdateUserUsecase(userRepository, personRepository);
+        const createUserUsecase = new UpdateUserUsecase(token_user, userRepository, personRepository);
 
         const updated_user = await createUserUsecase.execute({
             id,

@@ -14,23 +14,23 @@ export type IUpdateUserUsecaseResponse = UserProps;
 
 class UpdateUserUsecase {
     constructor(
+        private userRequestedUpdate: UserProps,
         private userRepository: UserRepositoryProtocol,
         private personRepository: PersonRepositoryProtocol
     ) { }
 
     async execute({ id, name, email, password, role }: IUpdateUserUsecaseResquest): Promise<IUpdateUserUsecaseResponse> {
-        const new_user = new User({ name, email, password, role });
-
-        new_user.validate();
-        if (password !== undefined) new_user.validatePassword();
-
         const userExists = await this.userRepository.findById(id);
 
         if (!userExists) {
             throw new Error("Usuário não encontrado.");
         }
 
-        if (email !== userExists.email) {
+        if (this.userRequestedUpdate.id !== userExists.id && this.userRequestedUpdate.role !== EUserRoles["Administrador"]) {
+            throw new Error("Você não tem permissão para realizar esta ação.");
+        }
+
+        if (email !== undefined && email !== userExists.email) {
             const emailAlreadyExists = await this.userRepository.find({
                 email
             })
@@ -40,6 +40,11 @@ class UpdateUserUsecase {
             }
         }
 
+        const updated_user = new User(Object.assign(userExists, { name, email, password, role }));
+        updated_user.validate();
+
+        if (password !== undefined) updated_user.validatePassword();
+
         if (userExists.person_id) {
             const person_data = await this.personRepository.findById(userExists.person_id);
 
@@ -47,10 +52,6 @@ class UpdateUserUsecase {
                 await this.personRepository.update(Object.assign(person_data, { name, email }));
             }
         }
-
-        const updated_user = new User(Object.assign(userExists, { name, email, password, role }));
-
-        updated_user.validate();
 
         const updated_data = await this.userRepository.update(updated_user.getProps());
 
