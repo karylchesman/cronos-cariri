@@ -1,4 +1,4 @@
-import { EUserRoles, User, UserProps } from "../../entities/user";
+import { UserProps } from "../../entities/user";
 import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
 
 export type IGetUserUsecaseResponse = UserProps;

@@ -2,7 +2,7 @@ import { UuidGender } from "../utils/uuid-gender";
 import { isEmail, isEmpty, isValidLength } from "../utils/validators";
 import { BaseEntityProps } from "./base-entity";
 import { hashSync } from 'bcrypt';
-import { Person } from "./person";
+import { Person, PersonProps } from "./person";
 
 export enum EUserRoles {
     "Administrador" = "Administrador",
@@ -17,7 +17,7 @@ export interface UserProps extends BaseEntityProps {
     password: string;
     role: EUserRoles;
     person_id?: string;
-    person?: Person | undefined;
+    person?: PersonProps | undefined;
 }
 
 class User {

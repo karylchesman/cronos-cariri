@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { PersonRepository } from "../../domain/repositories/person-repository";
 import { UserRepository } from "../../domain/repositories/user-repository";
+import { GetPersonUsecase } from "../../domain/usecases/persons/get-person-usecase";
+import { AuthenticateUserUsecase } from "../../domain/usecases/users/authenticate-user-usecase";
 import { CreateUserUsecase } from "../../domain/usecases/users/create-user-usecase";
 import { DeleteUserUsecase } from "../../domain/usecases/users/delete-user-usecase";
 import { GetUserUsecase } from "../../domain/usecases/users/get-user-usecase";
@@ -100,6 +102,29 @@ class UserController {
         await deleteUserUsecase.execute(id)
 
         return response.json({ message: "Success" });
+    }
+
+    async getSession(request: Request, response: Response) {
+        const {
+            email,
+            password
+        } = request.body;
+
+        const userRepository = new UserRepository();
+        const authenticateUserUsecase = new AuthenticateUserUsecase(userRepository);
+
+        const authResult = await authenticateUserUsecase.execute({ email, password });
+
+        if (authResult.user.person_id) {
+            const personRepository = new PersonRepository();
+            const getPersonUsecase = new GetPersonUsecase(personRepository);
+
+            const person_data = await getPersonUsecase.execute(authResult.user.person_id);
+
+            authResult.user.person = person_data;
+        }
+
+        return response.json(authResult);
     }
 }
 
