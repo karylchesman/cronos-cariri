@@ -3,7 +3,7 @@ import { PersonRepository } from "../../domain/repositories/person-repository";
 import { UserRepository } from "../../domain/repositories/user-repository";
 import { CreateUserUsecase } from "../../domain/usecases/users/create-user-usecase";
 import { DeleteUserUsecase } from "../../domain/usecases/users/delete-user-usecase";
-import { GetByIdUserUsecase } from "../../domain/usecases/users/get-by-id-user-usecase";
+import { GetUserUsecase } from "../../domain/usecases/users/get-user-usecase";
 import { SearchUserUsecase } from "../../domain/usecases/users/search-user-usecase";
 import { UpdateUserUsecase } from "../../domain/usecases/users/update-user-usecase";
 
@@ -59,7 +59,7 @@ class UserController {
         } = request.params;
 
         const userRepository = new UserRepository();
-        const createUserUsecase = new GetByIdUserUsecase(userRepository);
+        const createUserUsecase = new GetUserUsecase(userRepository);
 
         const user = await createUserUsecase.execute(id)
 

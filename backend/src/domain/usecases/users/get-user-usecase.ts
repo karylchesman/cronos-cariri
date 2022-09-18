@@ -3,7 +3,7 @@ import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repos
 
 export type IGetUserUsecaseResponse = UserProps;
 
-class GetByIdUserUsecase {
+class GetUserUsecase {
     constructor(private userRepository: UserRepositoryProtocol) { }
 
     async execute(id: string): Promise<IGetUserUsecaseResponse> {
@@ -20,4 +20,4 @@ class GetByIdUserUsecase {
     }
 }
 
-export { GetByIdUserUsecase }
+export { GetUserUsecase }
