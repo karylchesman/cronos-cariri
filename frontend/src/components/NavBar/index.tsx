@@ -66,7 +66,7 @@ const NavBar = () => {
                         {
                             menus.map((item, idx) => {
                                 return (
-                                    <MenusItem active={window.location.pathname === item.url} key={idx}>
+                                    <MenusItem active={window.location.pathname === item.url} key={idx} onClick={()=> pageNavigator(item.url)}>
                                         {item.name}
                                     </MenusItem>
                                 )
