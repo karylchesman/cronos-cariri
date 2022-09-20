@@ -1,6 +1,6 @@
 import { MainContainer } from '../../components/MainContainer';
 import { Carousel, Container, EventBar, Events, EventSearch } from './styles';
-import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputRightElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -13,6 +13,8 @@ import "swiper/css/navigation";
 import slide1 from '../../assets/slide1.png';
 import slide2 from '../../assets/slide2.png';
 import slide3 from '../../assets/slide3.jpg';
+import running from '../../assets/running.png';
+
 import { MdDoubleArrow } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
 import { VscSettings } from 'react-icons/vsc';
@@ -52,7 +54,10 @@ const Home = () => {
                 <EventBar>
                     {/* <span className="icon"><MdDoubleArrow size="auto" /></span> */}
                     <h1>Eventos</h1>
-                    <span className="icon"><MdDoubleArrow size="auto" /></span>
+                    {/* <span className="icon"><MdDoubleArrow size="auto" /></span> */}
+                    <div className="icon-im">
+                        <img src={running} alt="running" />
+                    </div>
                 </EventBar>
 
                 <EventSearch>
@@ -67,15 +72,32 @@ const Home = () => {
                         </InputGroup>
                     </div>
 
-                    <div className="advanced-button">
-                        <Button colorScheme="twitter" variant='solid'>
-                            Filtros avançados&nbsp;<VscSettings />
-                        </Button>
+                    <div className="advanced-filters">
+                        <div className="filters">
+                            {
+                                Array.from({ length: 13 }).map((item, idx) => {
+                                    return (
+                                        <Tag
+                                            size="sm"
+                                            key={idx}
+                                            borderRadius='full'
+                                            variant='outline'
+                                            colorScheme='gray'
+                                        >
+                                            <TagLabel>Filtro {idx}</TagLabel>
+                                            <TagCloseButton />
+                                        </Tag>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div className="button-filter">
+                            <Button colorScheme="messenger" variant='outline' size="sm">
+                                Filtros avançados&nbsp;<VscSettings />
+                            </Button>
+                        </div>
                     </div>
 
-                    {/* <div className="advanced-filters">
-
-                    </div> */}
                 </EventSearch>
 
                 <Events>

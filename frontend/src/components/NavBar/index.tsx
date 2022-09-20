@@ -69,11 +69,11 @@ const NavBar = () => {
                         {
                             user !== null ?
                                 <>
-                                    <Menu>
+                                    <Menu placement='bottom-end'>
                                         <MenuButton>
                                             <FaUserCircle size={32} color="#FFF" />
                                         </MenuButton>
-                                        <MenuList>
+                                        <MenuList rootProps={{ zIndex: 11 }}>
                                             <MenuItem><FaUserAlt />&nbsp;Perfil</MenuItem>
                                             <MenuItem><MdEventAvailable />&nbsp;Meus Eventos</MenuItem>
                                             <MenuItem><FaClipboardCheck />&nbsp;Minhas Inscrições</MenuItem>

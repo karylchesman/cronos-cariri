@@ -50,23 +50,26 @@ export const EventBar = styled.div`
     gap: 20px;
 
     border-top: 2px dashed #ECEFF1;
+    padding-top: 20px;
    
 
     h1{
         font-size: calc(1.5rem + 1.5vw);
         font-weight: 700;
         font-style: italic;
-        color: #0288D1;
-        margin-top: 20px;
+
+        background-color: #f3ec78;
+        background-image: linear-gradient(-45deg, #0D47A1, #2196F3);;
+        background-size: 100%;
+        background-clip: content-box;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent; 
+        -moz-text-fill-color: transparent;
     }
 
-    .icon{
-        margin-top: 20px;
-    }
-
-    .icon svg{
-        width: calc(1rem + 1.5vw) !important;
-        color: #0288D1;
+    .icon-im img{
+        width: 5rem;
     }
 `;
 
@@ -84,16 +87,29 @@ export const EventSearch = styled.div`
     flex-flow: column nowrap;
     gap: 15px;
 
-    .search-by-name, .advanced-button,.advanced-filters{
+    .search-by-name{
         width: 100%;
     }
 
-    .search-by-name{
-       
-    }
-
     .advanced-filters{
+        width: 100%;
         
+        display: flex;
+        flex-direction: row;
+
+
+        .button-filter{
+            display: flex;
+            align-items: center;
+        }
+
+        .filters{
+            flex-grow: 1;
+
+            display: flex;
+            flex-flow: row wrap;
+            gap: 10px;
+        }
     }
 `;
 

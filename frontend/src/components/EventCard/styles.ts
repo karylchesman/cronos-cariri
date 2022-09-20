@@ -71,6 +71,7 @@ export const Container = styled.div<IContainerProps>`
     :hover ,
     :focus {
         border: none;
+        
         #background-image{
             transform: scale(1.2);
         }
