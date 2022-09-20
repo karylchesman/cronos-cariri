@@ -27,6 +27,10 @@ export const Container = styled.div`
             align-items: center;
 
             padding: 10px;
+
+            :hover{
+                cursor: pointer;
+            }
         }
 
         #menu-bar{

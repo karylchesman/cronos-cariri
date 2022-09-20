@@ -11,7 +11,7 @@ import "../infra/typeORM/connection";
 let whiteList: any[];
 
 if (process.env.ENVIROMENT === "development") {
-    whiteList = ["http://localhost:3000", undefined]
+    whiteList = ["http://localhost:3000", undefined, "http://127.0.0.1:5173"]
 } else {
     whiteList = ["https://cronoscariri.com.br"]
 }

@@ -29,6 +29,6 @@ export const light = {
         secondary: '#2196F3'
     },
     login: {
-        backgroundColor: 'linear-gradient(-45deg, #3c8dbc, #039BE5)'
+        background: 'linear-gradient(-45deg, #0D47A1, #2196F3)'
     }
 }

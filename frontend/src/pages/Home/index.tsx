@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { MainContainer } from '../../components/MainContainer';
 import { Carousel, Container, EventBar, Events, EventSearch } from './styles';
-import { Button, Input, InputGroup, InputRightElement, Tag, TagCloseButton, TagLabel } from '@chakra-ui/react';
+import { Button, Input, InputGroup, InputRightElement, Tag, TagCloseButton, TagLabel, useToast } from '@chakra-ui/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -15,12 +16,26 @@ import slide2 from '../../assets/slide2.png';
 import slide3 from '../../assets/slide3.jpg';
 import running from '../../assets/running.png';
 
-import { MdDoubleArrow } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
 import { VscSettings } from 'react-icons/vsc';
 import { EventCard } from '../../components/EventCard';
 
 const Home = () => {
+
+    const toast = useToast();
+
+    useEffect(() => {
+        if (window.location.pathname === "/session-expired") {
+            toast({
+                title: "Sessão expirada.",
+                status: "warning",
+                duration: 9000,
+                isClosable: true,
+                variant: "left-accent",
+                position: "top"
+            })
+        }
+    }, [])
 
     return (
         <MainContainer>

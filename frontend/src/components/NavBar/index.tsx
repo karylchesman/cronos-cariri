@@ -3,7 +3,8 @@ import { ButtonUserNotLogged, Container, MenusItem, MenusWrapper } from './style
 import { Button } from '@chakra-ui/react';
 import cronosLogo from '../../assets/cronos-logo.png';
 
-import { FaClipboardCheck, FaUserAlt, FaUserCircle, FaUserPlus } from 'react-icons/fa';
+import { FaClipboardCheck, FaUserAlt, FaUserCircle } from 'react-icons/fa';
+import { CgLogOut } from 'react-icons/cg';
 import { MdEventAvailable, MdLogin } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -11,14 +12,17 @@ import {
     Menu,
     MenuButton,
     MenuList,
-    MenuItem
+    MenuItem,
+    MenuDivider
 } from '@chakra-ui/react'
 import { SideBar } from '../SideBar';
 import { useAppContext } from '../../hooks/useAppContext';
+import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
-    const { user } = useAppContext();
+    const pageNavigator = useNavigate();
+    const { user, handleLogOut } = useAppContext();
 
     const menus = [
         {
@@ -51,7 +55,11 @@ const NavBar = () => {
         <Container>
             <div id="box">
                 <div id="logo">
-                    <img src={cronosLogo} alt="Cronos Logo" />
+                    <img src={cronosLogo} alt="Cronos Logo" onClick={() => {
+                        if (window.location.pathname !== "/") {
+                            pageNavigator("/")
+                        }
+                    }} />
                 </div>
                 <div id="menu-bar">
                     <MenusWrapper>
@@ -77,11 +85,13 @@ const NavBar = () => {
                                             <MenuItem><FaUserAlt />&nbsp;Perfil</MenuItem>
                                             <MenuItem><MdEventAvailable />&nbsp;Meus Eventos</MenuItem>
                                             <MenuItem><FaClipboardCheck />&nbsp;Minhas Inscrições</MenuItem>
+                                            <MenuDivider />
+                                            <MenuItem onClick={handleLogOut}><CgLogOut />&nbsp;Sair</MenuItem>
                                         </MenuList>
                                     </Menu>
                                 </>
                                 :
-                                <ButtonUserNotLogged>
+                                <ButtonUserNotLogged onClick={() => pageNavigator("/login")}>
                                     <MdLogin size={22} />&nbsp;Entrar
                                 </ButtonUserNotLogged>
                         }

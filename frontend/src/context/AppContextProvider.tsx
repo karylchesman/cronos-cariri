@@ -1,52 +1,12 @@
+import { AxiosError } from 'axios';
 import { createContext, ReactNode, useState } from 'react';
-
-export enum EPersonGender {
-    "Masculino" = "Masculino",
-    "Feminino" = "Feminino"
-}
-
-export interface IPerson {
-    id?: string;
-    name: string;
-    email: string;
-    phonenumber1: string;
-    phonenumber2?: string;
-    gender: EPersonGender;
-    cpf: string;
-    rg?: string;
-    bith_date: Date;
-    blood_type?: string;
-    address_street: string;
-    address_number: string;
-    address_district: string;
-    address_city: string;
-    address_uf: string;
-    address_cep: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
-export enum EUserRoles {
-    "Administrador" = "Administrador",
-    "Funcionário" = "Funcionário",
-    "Esportista" = "Esportista"
-}
-
-interface IUser {
-    id?: string;
-    name: string;
-    email: string;
-    password: string;
-    role: EUserRoles;
-    person_id?: string | null;
-    person?: IPerson | undefined;
-    created_at: Date;
-    updated_at: Date;
-}
+import { useNavigate } from 'react-router-dom';
+import { IUser, IUserSessionResponse } from '../@types/users';
+import { api } from '../services/ApiService';
 
 interface IAppContext {
     user: IUser | null;
-    handleLogin: (email: string, password: string) => Promise<void>;
+    handleLogin: (email: string, password: string) => Promise<void | string>;
     handleLogOut: () => void;
 }
 
@@ -59,10 +19,23 @@ interface IAppContextProviderProps {
 const AppContextProvider = (props: IAppContextProviderProps) => {
 
     const [user, setUser] = useState<IUser | null>(null);
+    const pageNavigator = useNavigate();
 
-    async function handleLogin(email: string, password: string) { }
+    async function handleLogin(email: string, password: string) {
+        const result = await api.post<IUserSessionResponse>("/users/session", { email, password });
 
-    function handleLogOut() { }
+        setUser(result.data.user);
+
+        sessionStorage.setItem(String(import.meta.env.VITE_SESSION_KEY), result.data.token.access_token);
+
+        pageNavigator("/");
+    }
+
+    function handleLogOut() { 
+        sessionStorage.removeItem(String(import.meta.env.VITE_SESSION_KEY));
+        setUser(null)
+        pageNavigator("/");
+    }
 
     return (
         <AppContext.Provider value={
