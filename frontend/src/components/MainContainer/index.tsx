@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Footer } from '../Footer';
 import { NavBar } from '../NavBar';
 import './styles';
 import { Container, Content } from './styles';
@@ -15,6 +16,7 @@ const MainContainer = ({ children }: IMainContainerProps) => {
             <Content>
                 {children}
             </Content>
+            <Footer />
         </Container>
     );
 }

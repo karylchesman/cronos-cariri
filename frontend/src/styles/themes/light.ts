@@ -17,6 +17,10 @@ export const light = {
         // background: 'linear-gradient(-45deg, #3c8dbc, #0288D1)'
         background: 'linear-gradient(-45deg, #0D47A1, #2196F3)'
     },
+    footer: {
+        top_line: 'linear-gradient(-45deg, #2196F3, #0D47A1)',
+        background: 'linear-gradient(-45deg, #0D47A1, #2196F3)'
+    },
     button_colors: {
         success: '#00796B',
         warning: '#FBC02D',
