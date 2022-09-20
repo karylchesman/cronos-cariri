@@ -8,17 +8,17 @@ export default createGlobalStyle`
   }
 
   html, body{
-    height: 100%;
+    height: 100% !important;
   }
 
   #root{
-    height: 100%;
+    min-height: 100% !important;
     --default-page-content-height:calc(100vh - var(--nav-bar-height));
   }
   
   body{
     color: ${props => props.theme.colors.text_primary};
-    font: 400 16px Inter, sans-serif;
+    /* font: 400 16px Inter, sans-serif; */
     --nav-bar-height:${props => props.theme.mensures.nav_bar_height};
   }
 `;

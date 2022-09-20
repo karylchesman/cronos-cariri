@@ -15,8 +15,29 @@ export const Container = styled.div<IContainerProps>`
     overflow: hidden;
     position: relative;
 
-    :hover{
-        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    .event-date{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: absolute;
+        top: 10px;
+        left: 0;
+
+        .date{
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: row nowrap;
+            gap: 10px;
+
+            background-color: #FFF;
+            font-size: 12px;
+            border-radius: 8px;
+            padding: 10px;
+        } 
     }
 
     #background-image{
@@ -71,7 +92,8 @@ export const Container = styled.div<IContainerProps>`
     :hover ,
     :focus {
         border: none;
-        
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
         #background-image{
             transform: scale(1.2);
         }

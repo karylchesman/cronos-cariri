@@ -1,5 +1,7 @@
 import { Container } from './styles';
 import { Button } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { BsCalendar2EventFill } from 'react-icons/bs';
 
 interface IEventCardProps {
     eventData: {
@@ -9,13 +11,15 @@ interface IEventCardProps {
 
 const EventCard = ({ eventData }: IEventCardProps) => {
 
-
     return (
         <Container backgroundImage={eventData.banner_url}>
-            <div id="background-image">
-
+            <div id="background-image" />
+            <div className="event-date">
+                <div className="date">
+                    <span><BsCalendar2EventFill /></span>
+                    <span>{dayjs().format("DD/MM")}</span>
+                </div>
             </div>
-
             <div id="event-info">
                 <div className="name">
                     Nome do evento

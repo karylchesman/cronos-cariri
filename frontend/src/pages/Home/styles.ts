@@ -79,6 +79,7 @@ export const EventSearch = styled.div`
     min-height: 100px;
     height: auto;
 
+    background: #FFF;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     padding: 15px 20px;
     border-radius: 20px;
