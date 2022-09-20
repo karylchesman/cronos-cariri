@@ -23,7 +23,7 @@ const NavBar = () => {
     const menus = [
         {
             name: "Quem somos",
-            url: "/",
+            url: "/quemsomos",
         },
         {
             name: "Serviços",

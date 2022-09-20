@@ -76,7 +76,6 @@ export const EventBar = styled.div`
 export const EventSearch = styled.div`
     width: calc(100% - 10px);
     max-width: 900px;
-    min-height: 100px;
     height: auto;
 
     background: #FFF;
@@ -111,6 +110,20 @@ export const EventSearch = styled.div`
             flex-flow: row wrap;
             gap: 10px;
         }
+
+        @media screen and (max-width: 640px){
+            flex-direction: column;
+
+            .button-filter{
+                order: 1;
+                margin-bottom: 20px;
+                align-self: flex-end;
+            }
+
+            .filters{
+                order: 2;
+            }
+        }
     }
 `;
 
@@ -126,4 +139,12 @@ export const Events = styled.div`
     justify-items: center;
 
     padding: 20px;
+
+    @media screen and (max-width: 975px){
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 694px){
+        grid-template-columns: repeat(1, 1fr);
+    }
 `;
