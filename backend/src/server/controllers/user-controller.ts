@@ -15,7 +15,8 @@ class UserController {
             email,
             name,
             password,
-            role
+            role,
+            token_user_id
         } = request.body;
 
         const userRepository = new UserRepository();
@@ -25,7 +26,8 @@ class UserController {
             email,
             name,
             password,
-            role
+            role,
+            userIdRequested: token_user_id
         })
 
         return response.json(new_user);
@@ -38,13 +40,16 @@ class UserController {
             name,
             password,
             role,
-            token_user
+            token_user_id
         } = request.body;
 
         const userRepository = new UserRepository();
         const personRepository = new PersonRepository();
-        const createUserUsecase = new UpdateUserUsecase(token_user, userRepository, personRepository);
 
+        const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
+        const userLogged = await getUserUsecase.execute(token_user_id);
+
+        const createUserUsecase = new UpdateUserUsecase(userLogged, userRepository, personRepository);
         const updated_user = await createUserUsecase.execute({
             id,
             email,
@@ -60,11 +65,26 @@ class UserController {
         const {
             id
         } = request.params;
-
+        
         const userRepository = new UserRepository();
-        const createUserUsecase = new GetUserUsecase(userRepository);
+        const personRepository = new PersonRepository();
+        const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
 
-        const user = await createUserUsecase.execute(id)
+        const user = await getUserUsecase.execute(id)
+
+        return response.json(user);
+    }
+
+    async getLoggedUser(request: Request, response: Response) {
+        const {
+            token_user_id
+        } = request.body;
+        
+        const userRepository = new UserRepository();
+        const personRepository = new PersonRepository();
+        const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
+
+        const user = await getUserUsecase.execute(token_user_id)
 
         return response.json(user);
     }

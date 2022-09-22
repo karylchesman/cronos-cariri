@@ -19,17 +19,8 @@ export async function ensureAuthenticated(request: Request, response: Response, 
 
         request.body["token_user_id"] = decode["user_id"];
 
-        const userRepository = new UserRepository();
-        const userExists = await userRepository.findById(request.body.token_user_id)
-
-        if (!userExists) {
-            throw new Error("Usuário não autorizado.");
-        }
-
-        request.body["token_user"] = userExists;
-
         const newToken = TokenGender.getSessionToken({
-            user_id: userExists.id
+            user_id: request.body.token_user_id
         })
 
         response.setHeader('x-new-token', JSON.stringify(newToken));

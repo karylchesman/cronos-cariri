@@ -1,5 +1,6 @@
+import { ToastId, useToast, UseToastOptions } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IUser, IUserSessionResponse } from '../@types/users';
 import { api } from '../services/ApiService';
@@ -20,6 +21,18 @@ const AppContextProvider = (props: IAppContextProviderProps) => {
 
     const [user, setUser] = useState<IUser | null>(null);
     const pageNavigator = useNavigate();
+    const toast = useToast();
+    const toastIdRef = useRef<ToastId | null>();
+
+    function toastClose() {
+        if (toastIdRef.current) {
+            toast.close(toastIdRef.current)
+        }
+    }
+
+    function toastShow(toastOpts: UseToastOptions) {
+        toastIdRef.current = toast(toastOpts)
+    }
 
     async function handleLogin(email: string, password: string) {
         const result = await api.post<IUserSessionResponse>("/users/session", { email, password });
@@ -31,11 +44,44 @@ const AppContextProvider = (props: IAppContextProviderProps) => {
         pageNavigator("/");
     }
 
-    function handleLogOut() { 
+    function handleLogOut() {
         sessionStorage.removeItem(String(import.meta.env.VITE_SESSION_KEY));
         setUser(null)
         pageNavigator("/");
     }
+
+    async function getUserLoggedData(signal: AbortSignal) {
+        const token = sessionStorage.getItem(String(import.meta.env.VITE_SESSION_KEY));
+
+        if (token !== null && user === null) {
+            try {
+                const result = await api.get<IUserSessionResponse>("/users/logged", {
+                    signal
+                });
+
+                setUser(result.data.user);
+            } catch (error: AxiosError | any) {
+                
+                toastShow({
+                    title: "Sessão expirada.",
+                    status: "warning",
+                    duration: 2000,
+                    variant: "left-accent",
+                    position: "top"
+                })
+            }
+        }
+    }
+
+    useEffect(() => {
+        const controller = new AbortController();
+        getUserLoggedData(controller.signal);
+
+        return () => {
+            toastClose();
+            controller.abort();
+        }
+    })
 
     return (
         <AppContext.Provider value={

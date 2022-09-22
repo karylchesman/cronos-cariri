@@ -12,6 +12,7 @@ userRoutes.use(ensureAuthenticated);
 
 userRoutes.post("/create", userController.createUser);
 userRoutes.put("/update", userController.updateUser);
+userRoutes.get("/logged", userController.getLoggedUser);
 userRoutes.get("/:id", userController.getUserById);
 userRoutes.delete("/:id", userController.deleteUser);
 userRoutes.post("/search",userController.search)

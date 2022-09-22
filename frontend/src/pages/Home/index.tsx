@@ -29,7 +29,7 @@ const Home = () => {
             toast({
                 title: "Sessão expirada.",
                 status: "warning",
-                duration: 9000,
+                duration: 3000,
                 isClosable: true,
                 variant: "left-accent",
                 position: "top"

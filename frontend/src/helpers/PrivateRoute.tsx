@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useLocation, Navigate } from "react-router-dom";
-import { EUserRoles } from '../context/AppContextProvider';
+import { EUserRoles } from '../@types/users';
 import { useAppContext } from '../hooks/useAppContext';
 
 interface IPrivateRouteProps {

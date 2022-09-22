@@ -7,7 +7,7 @@ const api = axios.create({
 api.interceptors.request.use(function (config) {
     if (config.url !== '/users/session' && config.headers !== undefined) {
 
-        const token = localStorage.getItem(String(import.meta.env.VITE_SESSION_KEY))
+        const token = sessionStorage.getItem(String(import.meta.env.VITE_SESSION_KEY))
 
         config.headers['authorization'] = `Bearer ${token}`;
 
@@ -23,13 +23,13 @@ api.interceptors.response.use(function (response) {
 
         const newToken = JSON.parse(response.headers['x-new-token']);
 
-        localStorage.setItem(String(import.meta.env.VITE_SESSION_KEY), newToken.access_token)
+        sessionStorage.setItem(String(import.meta.env.VITE_SESSION_KEY), newToken.access_token)
     }
 
     return response;
 }, function (error) {
     if (error.response.status === 401) {
-        localStorage.removeItem(String(import.meta.env.VITE_SESSION_KEY))
+        sessionStorage.removeItem(String(import.meta.env.VITE_SESSION_KEY))
         window.location.replace('/session-expired');
     }
 

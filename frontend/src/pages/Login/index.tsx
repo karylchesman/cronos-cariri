@@ -54,9 +54,14 @@ const Login = () => {
                 position: "top"
             })
 
-            setInterval(() => pageNavigator("/"), 3000);
+            const interval = setInterval(() => pageNavigator("/"), 3000);
+
+            return () => {
+                clearInterval(interval);
+                toast.closeAll();
+            }
         }
-    }, [])
+    }, [user])
 
     return (
         <MainContainer>

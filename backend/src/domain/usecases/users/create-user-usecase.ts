@@ -2,6 +2,7 @@ import { EUserRoles, User, UserProps } from "../../entities/user";
 import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
 
 export interface ICreateUserUsecaseResquest {
+    userIdRequested: string;
     name: string;
     email: string;
     password: string;
@@ -12,10 +13,18 @@ export type ICreateUserUsecaseResponse = UserProps;
 
 
 class CreateUserUsecase {
-    constructor(private userRepository: UserRepositoryProtocol) { }
+    constructor(
+        private userRepository: UserRepositoryProtocol,
+    ) { }
 
-    async execute({ name, email, password, role }: ICreateUserUsecaseResquest): Promise<ICreateUserUsecaseResponse> {
+    async execute({ userIdRequested, name, email, password, role }: ICreateUserUsecaseResquest): Promise<ICreateUserUsecaseResponse> {
         const new_user = new User({ name, email, password, role });
+
+        if (role !== EUserRoles["Esportista"]) {
+            const userRequestedExists = await this.userRepository.findById(userIdRequested);
+
+            if(userIdRequested === undefined || !userRequestedExists || userRequestedExists.role !== EUserRoles["Administrador"]) throw new Error("Você não tem permissão para criar esse tipo de usuário.");
+        }
 
         new_user.validate();
         new_user.validatePassword();
