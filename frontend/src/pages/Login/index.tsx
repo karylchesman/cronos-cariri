@@ -76,7 +76,14 @@ const Login = () => {
                     </p>
 
                     <div className="register-button">
-                        <Button size="lg" colorScheme='gray' variant='outline' color="#FFF" _hover={{ color: "#000", background: "#FFF" }}>
+                        <Button
+                            size="lg"
+                            colorScheme='gray'
+                            variant='outline'
+                            color="#FFF"
+                            _hover={{ color: "#000", background: "#FFF" }}
+                            onClick={() => pageNavigator("/register")}
+                        >
                             Criar conta
                         </Button>
                     </div>

@@ -35,7 +35,7 @@ const SideBar = ({ setShow, show, menus }: ISideBarProps) => {
                             menus !== undefined &&
                             menus.map((item, idx) => {
                                 return (
-                                    <PageMenu active={window.location.pathname === item.url} key={idx}>
+                                    <PageMenu active={window.location.pathname === item.url} key={idx} onClick={()=> pageNavigator(item.url)}>
                                         <span>{item.name}</span>
                                     </PageMenu>
                                 )

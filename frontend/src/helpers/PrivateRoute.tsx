@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useLocation, Navigate } from "react-router-dom";
 import { EUserRoles } from '../@types/users';
 import { useAppContext } from '../hooks/useAppContext';
