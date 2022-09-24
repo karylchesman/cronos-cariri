@@ -66,8 +66,8 @@ export const Container = styled.div`
                 "name name name name"
                 "email email email email"
                 "password password confirm_password confirm_password"
-                "phonenumber1 phonenumber1 gender gender"
-                "cpf cpf bith_date bith_date"
+                "cpf cpf gender gender"
+                "phonenumber1 phonenumber1 bith_date bith_date"
                 "address address address address"
                 "button-box button-box button-box button-box"
                 ;

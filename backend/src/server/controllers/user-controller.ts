@@ -20,14 +20,63 @@ class UserController {
         } = request.body;
 
         const userRepository = new UserRepository();
-        const createUserUsecase = new CreateUserUsecase(userRepository);
+        const personRepository = new PersonRepository();
+        const createUserUsecase = new CreateUserUsecase(userRepository, personRepository);
 
         const new_user = await createUserUsecase.execute({
+            userIdRequested: token_user_id,
+            user: {
+                email,
+                name,
+                password,
+                role,
+            }
+        })
+
+        return response.json(new_user);
+    }
+
+    async registerUser(request: Request, response: Response) {
+        const {
             email,
             name,
             password,
             role,
-            userIdRequested: token_user_id
+            phonenumber1,
+            gender,
+            cpf,
+            bith_date,
+            address_street,
+            address_number,
+            address_district,
+            address_city,
+            address_uf,
+            address_cep
+        } = request.body;
+
+        const userRepository = new UserRepository();
+        const personRepository = new PersonRepository();
+        const createUserUsecase = new CreateUserUsecase(userRepository, personRepository);
+
+        const new_user = await createUserUsecase.execute({
+            user: {
+                email,
+                name,
+                password,
+                role,
+                person: {
+                    phonenumber1,
+                    gender,
+                    cpf,
+                    bith_date,
+                    address_street,
+                    address_number,
+                    address_district,
+                    address_city,
+                    address_uf,
+                    address_cep
+                }
+            }
         })
 
         return response.json(new_user);
@@ -65,7 +114,7 @@ class UserController {
         const {
             id
         } = request.params;
-        
+
         const userRepository = new UserRepository();
         const personRepository = new PersonRepository();
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
@@ -79,7 +128,7 @@ class UserController {
         const {
             token_user_id
         } = request.body;
-        
+
         const userRepository = new UserRepository();
         const personRepository = new PersonRepository();
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);

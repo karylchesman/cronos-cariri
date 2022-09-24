@@ -1,9 +1,8 @@
 import { Container } from './styles';
 import { FieldErrorsImpl, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement, Select, useToast } from '@chakra-ui/react';
-import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { viaCepApi } from '../../services/ViaCepAPI';
+import { viaCepApi } from '../../services/ViaCepApi';
 import { ibgeApi } from '../../services/ibgeApi';
 
 interface IAddressInputs {
@@ -92,9 +91,10 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
     const [states, setStates] = useState<IIbgeEstadosResultItem[]>([]);
     const watchState = watch("address_uf");
     const [cities, setCities] = useState<IIbgeCitiesResultItem[]>([]);
+    const watchCity = watch("address_city")
 
     async function findByCep() {
-        
+
         const toastError = () => toast({
             title: "CEP não encontrado ou inválido.",
             status: "warning",
@@ -139,11 +139,12 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
         }
     }
 
-    async function getCities(signal: AbortSignal) {
+    async function getCities(signal?: AbortSignal) {
         let state = states.find(item => item.sigla === getValues("address_uf"))
         if (state === undefined) return;
         try {
             const result = await ibgeApi.get<IIbgeCitiesResultItem[]>(`/v1/localidades/estados/${state.id}/municipios`, { signal });
+
             setCities(result.data);
         } catch (error: any) {
             if (error.name === "CanceledError") return;
@@ -267,13 +268,20 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
                         {...register("address_city", {
                             required: "A cidade é obrigatório.",
                         })}
+                        value={watchCity}
                     >
                         {
                             cities.length > 0 &&
                             cities.map(item => {
-                                return (
-                                    <option key={item.id} value={item.nome}>{item.nome}</option>
-                                )
+                                if (getValues("address_city") === item.nome) {
+                                    return (
+                                        <option  key={item.id} value={item.nome}>{item.nome}</option>
+                                    )
+                                } else {
+                                    return (
+                                        <option key={item.id} value={item.nome}>{item.nome}</option>
+                                    )
+                                }
                             })
                         }
                     </Select>

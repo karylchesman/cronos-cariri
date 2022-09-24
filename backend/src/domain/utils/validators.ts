@@ -44,10 +44,10 @@ export const isEmail = (value: string, error_message: string) => {
 
 export const isPhoneNumber = (value: string, error_message: string) => {
     if (isNullOrUndefined(value) || value.trim() === "") throw new Error(error_message);
+    
+    const phoneRegexp = new RegExp(/^\(?[1-9]{2}\)?\s?([9]{1})?[0-9]{4}-?[0-9]{4}$/);
 
-    const emailRegexp = new RegExp(/^\(?[1-9]{2}\)?\s?([9]{1})?[0-9]{4}-?[0-9]{4}$/);
-
-    if (emailRegexp.test(value)) {
+    if (!phoneRegexp.exec(value)) {
         throw new Error(error_message);
     }
 

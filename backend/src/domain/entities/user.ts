@@ -1,8 +1,8 @@
 import { UuidGender } from "../utils/uuid-gender";
-import { isEmail, isEmpty, isValidLength } from "../utils/validators";
+import { isEmail, isValidLength } from "../utils/validators";
 import { BaseEntityProps } from "./base-entity";
 import { hashSync } from 'bcrypt';
-import { Person, PersonProps } from "./person";
+import { PersonProps } from "./person";
 
 export enum EUserRoles {
     "Administrador" = "Administrador",
@@ -50,6 +50,11 @@ class User {
     getProps() {
         this.props.password && this.hashPassword();
         return this.props;
+    }
+
+    setPerson(person: PersonProps) {
+        this.props.person = person;
+        this.props.person_id = person.id;
     }
 }
 
