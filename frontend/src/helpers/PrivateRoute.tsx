@@ -15,7 +15,7 @@ function PrivateRoute({ component: Component, permissions }: IPrivateRouteProps)
 
   const { user } = useAppContext();
 
-  const token = localStorage.getItem(String(import.meta.env.SESSION_KEY))
+  const token = sessionStorage.getItem(String(import.meta.env.VITE_SESSION_KEY))
 
   if (!user || !token) {
     return <Navigate to="/" state={{ from: location }} replace />;
@@ -23,10 +23,10 @@ function PrivateRoute({ component: Component, permissions }: IPrivateRouteProps)
 
   if (permissions !== undefined) {
     permissionsAllowed.push(...permissions);
+  }
 
-    if (user !== null && permissions.includes(user.role)) {
-      return <Navigate to="/" state={{ from: location }} replace />;
-    }
+  if (user !== null && !permissionsAllowed.includes(user.role)) {
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return <Component />;

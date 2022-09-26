@@ -5,7 +5,7 @@ import cronosLogo from '../../assets/cronos-logo.png';
 
 import { FaClipboardCheck, FaUserAlt, FaUserCircle } from 'react-icons/fa';
 import { CgLogOut } from 'react-icons/cg';
-import { MdEventAvailable, MdLogin } from 'react-icons/md';
+import { MdAdminPanelSettings, MdEventAvailable, MdLogin } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 import {
@@ -18,6 +18,8 @@ import {
 import { SideBar } from '../SideBar';
 import { useAppContext } from '../../hooks/useAppContext';
 import { useNavigate } from 'react-router-dom';
+import PermissionsGate from '../../helpers/PermissionsGate';
+import { EUserRoles } from '../../@types/users';
 
 const NavBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
@@ -66,7 +68,7 @@ const NavBar = () => {
                         {
                             menus.map((item, idx) => {
                                 return (
-                                    <MenusItem active={window.location.pathname === item.url} key={idx} onClick={()=> pageNavigator(item.url)}>
+                                    <MenusItem active={window.location.pathname === item.url} key={idx} onClick={() => pageNavigator(item.url)}>
                                         {item.name}
                                     </MenusItem>
                                 )
@@ -85,8 +87,12 @@ const NavBar = () => {
                                             <MenuItem><FaUserAlt />&nbsp;Perfil</MenuItem>
                                             <MenuItem><MdEventAvailable />&nbsp;Meus Eventos</MenuItem>
                                             <MenuItem><FaClipboardCheck />&nbsp;Minhas Inscrições</MenuItem>
+                                            <PermissionsGate permissions={[EUserRoles["Funcionário"]]}>
+                                                <MenuDivider />
+                                                <MenuItem onClick={() => pageNavigator("/admin/home")}><MdAdminPanelSettings />&nbsp;Admin</MenuItem>
+                                            </PermissionsGate>
                                             <MenuDivider />
-                                            <MenuItem onClick={handleLogOut}><CgLogOut />&nbsp;Sair</MenuItem>
+                                            <MenuItem color="red.600" onClick={handleLogOut}><CgLogOut />&nbsp;Sair</MenuItem>
                                         </MenuList>
                                     </Menu>
                                 </>

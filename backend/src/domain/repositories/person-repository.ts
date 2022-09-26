@@ -51,7 +51,7 @@ class PersonRepository implements PersonRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<PersonProps>[], page?: number, limit?: number) {
+    async search(search_params?: SearchObject<PersonProps>[] | string, page?: number, limit?: number) {
         return {
             persons: [],
             registers: 0

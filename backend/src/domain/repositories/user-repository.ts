@@ -51,22 +51,29 @@ class UserRepository implements UserRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<UserProps>[], page?: number, limit?: number) {
+    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number) {
 
         const query = this.userRepository.createQueryBuilder("users").select("users");
 
         if (search_params !== undefined) {
-            search_params.forEach((item, idx) => {
-                let search_object = getWhereString(item.operator, item.key, item.value, "users");
+            if (typeof search_params === "string") {
+                query.where(`name LIKE :users_name`, { users_name: `%${search_params}%` });
+                query.orWhere(`email LIKE :users_email`, { users_email: `%${search_params}%` });
+            }
 
-                if (idx === 0) {
-                    query.where(search_object.where_string, search_object.value_param);
-                } else {
-                    query.andWhere(search_object.where_string, search_object.value_param);
-                }
-            })
+            if (Array.isArray(search_params)) {
+                search_params.forEach((item, idx) => {
+                    let search_object = getWhereString(item.operator, item.key, item.value, "users");
+
+                    if (idx === 0) {
+                        query.where(search_object.where_string, search_object.value_param);
+                    } else {
+                        query.andWhere(search_object.where_string, search_object.value_param);
+                    }
+                })
+            }
         }
-        
+
         if (limit !== undefined && page !== undefined) {
             let skip = (page - 1) * limit
 

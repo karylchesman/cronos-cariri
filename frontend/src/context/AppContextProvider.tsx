@@ -55,11 +55,11 @@ const AppContextProvider = (props: IAppContextProviderProps) => {
 
         if (token !== null && user === null) {
             try {
-                const result = await api.get<IUserSessionResponse>("/users/logged", {
+                const result = await api.get("/users/logged", {
                     signal
                 });
 
-                setUser(result.data.user);
+                setUser(result.data);
             } catch (error: AxiosError | any) {
                 
                 toastShow({

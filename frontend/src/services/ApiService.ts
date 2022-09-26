@@ -28,7 +28,15 @@ api.interceptors.response.use(function (response) {
 
     return response;
 }, function (error) {
-    if (error.response.status === 401) {
+    if (error.name === "CanceledError") {
+        return Promise.reject(error);
+    }
+
+    if (
+        error.name !== "CanceledError"
+        && error.response
+        && error.response.status === 401
+    ) {
         sessionStorage.removeItem(String(import.meta.env.VITE_SESSION_KEY))
         window.location.replace('/session-expired');
     }

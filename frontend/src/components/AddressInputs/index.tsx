@@ -1,5 +1,5 @@
 import { Container } from './styles';
-import { FieldErrorsImpl, UseFormGetValues, UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { FieldErrorsImpl, RegisterOptions, UseFormGetValues, UseFormRegister, UseFormRegisterReturn, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputRightElement, Select, useToast } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import { viaCepApi } from '../../services/ViaCepApi';
@@ -16,11 +16,11 @@ interface IAddressInputs {
 
 interface IAddressInputsProps {
     formHandlers: {
-        setValue: UseFormSetValue<any>,
-        getValues: UseFormGetValues<any>
-        register: UseFormRegister<any>;
+        setValue: (field: keyof IAddressInputs, value: string) => void;
+        getValues: (field: keyof IAddressInputs) => string;
+        register: (field: keyof IAddressInputs, options?: RegisterOptions<IAddressInputs>) => UseFormRegisterReturn<keyof IAddressInputs>;
         errors: FieldErrorsImpl<IAddressInputs>;
-        watch: UseFormWatch<any>
+        watch: (field: keyof IAddressInputs) => string;
     }
 }
 
@@ -273,15 +273,7 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
                         {
                             cities.length > 0 &&
                             cities.map(item => {
-                                if (getValues("address_city") === item.nome) {
-                                    return (
-                                        <option  key={item.id} value={item.nome}>{item.nome}</option>
-                                    )
-                                } else {
-                                    return (
-                                        <option key={item.id} value={item.nome}>{item.nome}</option>
-                                    )
-                                }
+                                return <option key={item.id} value={item.nome}>{item.nome}</option>
                             })
                         }
                     </Select>
@@ -305,6 +297,7 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
                                 }
                             })}
                             type='text'
+                            onChange={(event) => setValue("address_cep", event.target.value.replace(/[^0-9]/g, "").substring(0, 8))}
                         />
                         <InputRightElement width='5.7rem'>
                             <Button colorScheme="messenger" h='1.75rem' size='sm' onClick={() => findByCep()}>

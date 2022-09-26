@@ -3,7 +3,7 @@ import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repos
 import { SearchObject } from "../../utils/search-object";
 
 export type ISearchUserUsecaseRequest = {
-    search_params?: SearchObject<UserProps>[];
+    search_params?: SearchObject<UserProps>[] | string;
     page?: number;
     limit?: number;
 };

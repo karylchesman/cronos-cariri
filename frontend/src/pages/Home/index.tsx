@@ -67,9 +67,7 @@ const Home = () => {
                 </Carousel>
 
                 <EventBar>
-                    {/* <span className="icon"><MdDoubleArrow size="auto" /></span> */}
                     <h1>Eventos</h1>
-                    {/* <span className="icon"><MdDoubleArrow size="auto" /></span> */}
                     <div className="icon-im">
                         <img src={running} alt="running" />
                     </div>
