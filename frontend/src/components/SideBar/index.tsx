@@ -7,6 +7,7 @@ import {
     DrawerContent,
     DrawerCloseButton,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 interface ISideBarProps {
     show: boolean;
@@ -18,6 +19,7 @@ interface ISideBarProps {
 }
 
 const SideBar = ({ setShow, show, menus }: ISideBarProps) => {
+    const pageNavigator = useNavigate();
 
     function close() {
         setShow(false);

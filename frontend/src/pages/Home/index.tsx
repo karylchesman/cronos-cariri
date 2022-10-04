@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { MainContainer } from '../../components/MainContainer';
-import { Carousel, Container, EventBar, Events, EventSearch } from './styles';
+import { Carousel, Container, Events, EventSearch } from './styles';
 import { Button, Input, InputGroup, InputRightElement, Tag, TagCloseButton, TagLabel, useToast } from '@chakra-ui/react';
 import { Swiper, SwiperSlide } from "swiper/react";
 // import required modules
@@ -66,17 +66,10 @@ const Home = () => {
                     </Swiper>
                 </Carousel>
 
-                <EventBar>
-                    <h1>Eventos</h1>
-                    <div className="icon-im">
-                        <img src={running} alt="running" />
-                    </div>
-                </EventBar>
-
                 <EventSearch>
                     <div className="search-by-name">
                         <InputGroup>
-                            <Input variant='outline' placeholder='Procure por nome...' />
+                            <Input variant='outline' placeholder='Encontre seu evento aqui...' />
                             <InputRightElement width='4.5rem'>
                                 <Button variant="solid" colorScheme="twitter" h='1.75rem' size='sm' onClick={() => { }}>
                                     <BsSearch />

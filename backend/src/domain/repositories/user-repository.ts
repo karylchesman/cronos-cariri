@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number) {
+    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof ORMUser, order?: "ASC" | "DESC") {
 
         const query = this.userRepository.createQueryBuilder("users").select("users");
 
@@ -78,7 +78,11 @@ class UserRepository implements UserRepositoryProtocol {
             let skip = (page - 1) * limit
 
             query.skip(skip);
-            query.limit(limit);
+            query.take(limit);
+        }
+
+        if (order_by !== undefined && order !== undefined) {
+            query.addOrderBy(order_by, order);
         }
 
         const users_found = await query.getManyAndCount();

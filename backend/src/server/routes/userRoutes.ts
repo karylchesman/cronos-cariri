@@ -11,6 +11,7 @@ userRoutes.post("/register", userController.registerUser);
 
 userRoutes.use(ensureAuthenticated);
 
+userRoutes.post("/create", userController.createUser);
 userRoutes.put("/update", userController.updateUser);
 userRoutes.get("/logged", userController.getLoggedUser);
 userRoutes.get("/:id", userController.getUserById);

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { UserRepository } from "../../domain/repositories/user-repository";
 import { TokenGender } from "../../domain/utils/token-gender";
 import { SessionJwtPayload } from "../types/session-jwt-payload";
 

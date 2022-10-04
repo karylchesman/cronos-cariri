@@ -38,50 +38,15 @@ export const Carousel = styled.div`
 
 `;
 
-export const EventBar = styled.div`
-    width: 100%;
-    height: 100%;
-    max-height: 200px;
-
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-
-    border-top: 2px dashed #ECEFF1;
-    padding-top: 20px;
-   
-
-    h1{
-        font-size: calc(1.5rem + 1.5vw);
-        font-weight: 700;
-        font-style: italic;
-
-        background-color: #f3ec78;
-        background-image: linear-gradient(-45deg, #0D47A1, #2196F3);;
-        background-size: 100%;
-        background-clip: content-box;
-        -webkit-background-clip: text;
-        -moz-background-clip: text;
-        -webkit-text-fill-color: transparent; 
-        -moz-text-fill-color: transparent;
-    }
-
-    .icon-im img{
-        width: 5rem;
-    }
-`;
-
 export const EventSearch = styled.div`
     width: calc(100% - 10px);
-    max-width: 900px;
+    max-width: 1024px;
     height: auto;
 
     background: #FFF;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    padding: 15px 20px;
-    border-radius: 20px;
+    padding: 25px;
+    border-radius: 50px;
 
     display: flex;
     flex-flow: column nowrap;

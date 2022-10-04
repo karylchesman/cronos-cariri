@@ -139,7 +139,11 @@ class UserController {
     }
 
     async search(request: Request, response: Response) {
-        const { search_params } = request.body;
+        const { 
+            search_params,
+            order_by,
+            order
+        } = request.body;
         const {
             page,
             limit
@@ -154,7 +158,9 @@ class UserController {
         const users = await searchUserUsecase.execute({
             search_params,
             page: Number.isNaN(has_page) ? undefined : has_page,
-            limit: Number.isNaN(has_limit) ? undefined : has_limit
+            limit: Number.isNaN(has_limit) ? undefined : has_limit,
+            order_by,
+            order
         })
 
         return response.json(users);
