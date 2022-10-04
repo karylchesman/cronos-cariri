@@ -114,8 +114,8 @@ const Register = () => {
                                         {...register("name", {
                                             required: "Nome é obrigatório.",
                                             minLength: {
-                                                value: 2,
-                                                message: "O nome deve conter no mínimo 2 caracteres."
+                                                value: 3,
+                                                message: "O nome deve conter no mínimo 3 caracteres."
                                             },
                                             maxLength: {
                                                 value: 255,

@@ -7,13 +7,12 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 
 interface IPaginationProps {
     registers: number;
-    reloadFunction: () => Promise<void>;
     setPage: (page: number) => void;
     actualPage: number;
     registersPerPage: number;
 }
 
-const Pagination = ({ registers, reloadFunction, actualPage, setPage, registersPerPage }: IPaginationProps) => {
+const Pagination = ({ registers, actualPage, setPage, registersPerPage }: IPaginationProps) => {
 
     const theme = useTheme();
     const [pages, setPages] = useState(1);
@@ -21,7 +20,7 @@ const Pagination = ({ registers, reloadFunction, actualPage, setPage, registersP
     const calcPages = (qtd_registers: number, perPage: number) => {
         let value = qtd_registers / perPage;
 
-        if (Number.isInteger(value)) {
+        if (Number.isInteger(value) && value > 0) {
             return value;
         } else {
             value = Math.floor(value) + 1;
@@ -57,7 +56,7 @@ const Pagination = ({ registers, reloadFunction, actualPage, setPage, registersP
 
     useEffect(() => {
         setPages(calcPages(registers, registersPerPage));
-    }, [registers])
+    }, [registers, registersPerPage])
 
     return (
         <Container>

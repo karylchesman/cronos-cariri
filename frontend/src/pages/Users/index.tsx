@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon, Badge, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Alert, AlertIcon, Badge, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
 import { Container } from './styles';
-import { BsSearch } from 'react-icons/bs';
+import { BsPlusCircleDotted, BsSearch } from 'react-icons/bs';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { AiFillSetting } from 'react-icons/ai';
 import { RiUserSettingsFill } from 'react-icons/ri';
@@ -15,6 +15,9 @@ import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import { Pagination } from '../../components/Pagination';
 import { SpanOrderIcon } from '../../components/SpanOrderIcon';
+import { useModalControl } from '../../hooks/useModalControl';
+import { FaTrash, FaUserEdit } from 'react-icons/fa';
+import { CreateUserModal } from '../../components/CreateUserModal.ts';
 
 interface ISearchState {
     limit: number;
@@ -29,6 +32,7 @@ const Users = () => {
 
     const pageNavigator = useNavigate();
     const theme = useTheme();
+    const toast = useToast();
     const [users, setUsers] = useState<IUser[]>([]);
     const [isLoading, setIsloading] = useState(true);
     const [searchTerm, setSearchTerm] = useState<string | undefined>("");
@@ -41,9 +45,10 @@ const Users = () => {
         order: "ASC"
     })
 
+    const [showCreateUserModal, userToEdit, turnCreateUserModal] = useModalControl<IUser>();
+
     async function loadUsers(signal?: AbortSignal) {
         setIsloading(true)
-        console.log("looping...")
         try {
             const result = await api.post(`/users/search?limit=${searchPagination.limit}&page=${searchPagination.page}`, {
                 search_params: searchPagination.search_params,
@@ -52,7 +57,11 @@ const Users = () => {
             }, { signal });
 
             setUsers(result.data.users);
-            setSearchPagination((state) => ({ ...state, registers: result.data.registers }))
+            setSearchPagination((state) => ({
+                ...state,
+                registers: result.data.registers,
+                page: result.data.registers !== searchPagination.registers ? 1 : searchPagination.page
+            }))
         } catch (err: AxiosError | any) {
             if (err.name === "CanceledError") return;
 
@@ -70,6 +79,52 @@ const Users = () => {
             })
         }
         setIsloading(false)
+    }
+
+    async function deleteUser(user_id: string) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Excluir usuário',
+            text: "Tem certeza que deseja excluir este usuário?",
+            toast: true,
+            confirmButtonColor: theme.button_colors.primary,
+            confirmButtonText: "Confirmar",
+            showDenyButton: true,
+            denyButtonText: "Cancelar",
+            denyButtonColor: theme.button_colors.danger,
+            preConfirm: () => execute(),
+            showLoaderOnConfirm: true
+        })
+
+        const execute = async () => {
+            try {
+                await api.delete(`/users/${user_id}`);
+
+                toast({
+                    title: "Feito!",
+                    description: "Usuário excluído com sucesso!",
+                    status: "success",
+                    duration: 3000,
+                    variant: "left-accent",
+                    position: "top"
+                });
+                loadUsers();
+            } catch (err: AxiosError | any) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: err.response ? err.response.data.error : "Falha ao tentar comunicar-se com o servidor.",
+                    toast: true,
+                    confirmButtonColor: theme.button_colors.primary,
+                    confirmButtonText: "Tentar novamente",
+                    showDenyButton: true,
+                    denyButtonText: "Cancelar",
+                    denyButtonColor: theme.button_colors.danger,
+                    preConfirm: () => deleteUser(user_id)
+                })
+            }
+        }
     }
 
     function searchByTerm() {
@@ -99,7 +154,13 @@ const Users = () => {
         <MainContainer>
             <Container>
                 <div id="header">
-                    <BiLeftArrowAlt onClick={() => pageNavigator("/admin/home")} className="button-return" size="2.3rem" /><h1>Usuários</h1>
+                    <div className="title">
+                        <BiLeftArrowAlt onClick={() => pageNavigator("/admin/home")} className="button-return" size="2.3rem" />
+                        <h1>Usuários</h1>
+                    </div>
+                    <div className="button-create-user">
+                        <Button onClick={() => turnCreateUserModal()} rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                    </div>
                 </div>
                 <div id="body">
                     <div className="search-box">
@@ -168,6 +229,8 @@ const Users = () => {
                                                                 </MenuButton>
                                                                 <MenuList>
                                                                     <MenuItem icon={<RiUserSettingsFill />}> Dados pessoais</MenuItem>
+                                                                    <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}> Editar</MenuItem>
+                                                                    <MenuItem onClick={() => deleteUser(item.id || "")} color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
                                                                 </MenuList>
                                                             </Menu>
                                                         </Td>
@@ -206,7 +269,8 @@ const Users = () => {
 
                                                     return {
                                                         ...state,
-                                                        limit: value
+                                                        limit: value,
+                                                        page: 1
                                                     }
                                                 })
                                             }}>
@@ -224,7 +288,6 @@ const Users = () => {
                         <Pagination
                             actualPage={searchPagination.page}
                             registers={searchPagination.registers}
-                            reloadFunction={loadUsers}
                             registersPerPage={searchPagination.limit}
                             setPage={(page: number) => {
                                 setSearchPagination((state) => {
@@ -237,6 +300,15 @@ const Users = () => {
                         />
                     </div>
                 </div>
+
+                <CreateUserModal
+                    isOpen={showCreateUserModal}
+                    turnModal={({ data, reload }) => {
+                        turnCreateUserModal(data);
+                        if (reload === true) loadUsers();
+                    }}
+                    user={userToEdit}
+                />
             </Container>
         </MainContainer>
     );

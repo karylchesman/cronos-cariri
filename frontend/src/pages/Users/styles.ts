@@ -21,18 +21,24 @@ export const Container = styled.div`
 
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-between;
 
-        .button-return{
-            margin-right: 10px;
+        .title{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
 
-            &:hover{
-                cursor: pointer;
+            .button-return{
+                margin-right: 10px;
+
+                &:hover{
+                    cursor: pointer;
+                }
             }
-        }
 
-        h1{
-            font-size: calc(1rem + 1.2vw);
+            h1{
+                font-size: calc(1rem + 1.2vw);
+            }
         }
     }
 
