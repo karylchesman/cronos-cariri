@@ -217,27 +217,24 @@ const Users = () => {
                                         </Th>
                                         <Th textAlign="end">{searchPagination.registers} Usuário(s)</Th>
                                     </Tr>
-                                    <Tr>
-                                        <Th textAlign="center" colSpan={5}>
-                                            <Pagination
-                                                actualPage={searchPagination.page}
-                                                registers={searchPagination.registers}
-                                                reloadFunction={loadUsers}
-                                                registersPerPage={searchPagination.limit}
-                                                setPage={(page: number) => {
-                                                    setSearchPagination((state) => {
-                                                        return {
-                                                            ...state,
-                                                            page
-                                                        }
-                                                    })
-                                                }}
-                                            />
-                                        </Th>
-                                    </Tr>
                                 </Tfoot>
                             </Table>
+
                         </TableContainer>
+                        <Pagination
+                            actualPage={searchPagination.page}
+                            registers={searchPagination.registers}
+                            reloadFunction={loadUsers}
+                            registersPerPage={searchPagination.limit}
+                            setPage={(page: number) => {
+                                setSearchPagination((state) => {
+                                    return {
+                                        ...state,
+                                        page
+                                    }
+                                })
+                            }}
+                        />
                     </div>
                 </div>
             </Container>
