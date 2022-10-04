@@ -98,8 +98,8 @@ class UserController {
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
         const userLogged = await getUserUsecase.execute(token_user_id);
 
-        const createUserUsecase = new UpdateUserUsecase(userLogged, userRepository, personRepository);
-        const updated_user = await createUserUsecase.execute({
+        const updateUserUsecase = new UpdateUserUsecase(userLogged, userRepository, personRepository);
+        const updated_user = await updateUserUsecase.execute({
             id,
             email,
             name,
