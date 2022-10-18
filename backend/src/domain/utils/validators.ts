@@ -44,7 +44,7 @@ export const isEmail = (value: string, error_message: string) => {
 
 export const isPhoneNumber = (value: string, error_message: string) => {
     if (isNullOrUndefined(value) || value.trim() === "") throw new Error(error_message);
-    
+
     const phoneRegexp = new RegExp(/^\(?[1-9]{2}\)?\s?([9]{1})?[0-9]{4}-?[0-9]{4}$/);
 
     if (!phoneRegexp.exec(value)) {
@@ -72,4 +72,21 @@ export const isValidBithDate = (value: Date | string, error_message: string) => 
     if (date.isValid() === false && (dayjs().diff(date, "year")) < 18) throw new Error(error_message);
 
     return date.toDate();
+}
+
+export const isDateAfterToday = (value: Date | string, error_message: string) => {
+    let date = dayjs(value);
+
+    if (!date.isAfter(dayjs())) throw new Error(error_message);
+
+    return date.toDate();
+}
+
+export const isDateAfter = (value: Date | string, toCompare: Date | string, error_message: string) => {
+    let date1 = dayjs(value);
+    let date2 = dayjs(toCompare);
+
+    if (!date1.isAfter(date2)) throw new Error(error_message);
+
+    return date1.toDate();
 }
