@@ -9,20 +9,20 @@ export interface SearchObject<T> {
 export function getWhereString(app_operator: TSearchObjectOperator, key: string, value: string, alias: string) {
     switch (app_operator) {
         case "=":
-            return { where_string: `${key} = :${alias}_${key}`, value_param: { [`users_${key}`]: value } };
+            return { where_string: `${key} = :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case "<":
-            return { where_string: `${key} < :${alias}_${key}`, value_param: { [`users_${key}`]: value } };
+            return { where_string: `${key} < :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case ">":
-            return { where_string: `${key} > :${alias}_${key}`, value_param: { [`users_${key}`]: value } };
+            return { where_string: `${key} > :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case "<=":
-            return { where_string: `${key} <= :${alias}_${key}`, value_param: { [`users_${key}`]: value } };
+            return { where_string: `${key} <= :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case "=>":
-            return { where_string: `${key} => :${alias}_${key}`, value_param: { [`users_${key}`]: value } };
+            return { where_string: `${key} => :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case "A*":
-            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`users_${key}`]: `${value}%` } };
+            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`${alias}_${key}`]: `${value}%` } };
         case "*A":
-            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`users_${key}`]: `%${value}` } };
+            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`${alias}_${key}`]: `%${value}` } };
         case "*A*":
-            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`users_${key}`]: `%${value}%` } };
+            return { where_string: `${key} LIKE :${alias}_${key}`, value_param: { [`${alias}_${key}`]: `%${value}%` } };
     }
 }

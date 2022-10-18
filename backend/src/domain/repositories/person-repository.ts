@@ -51,13 +51,6 @@ class PersonRepository implements PersonRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<PersonProps>[] | string, page?: number, limit?: number) {
-        return {
-            persons: [],
-            registers: 0
-        };
-    }
-
     async deleteById(id: string) {
         await this.personRepository.delete(id);
 
