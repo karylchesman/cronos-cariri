@@ -15,9 +15,9 @@ interface ISearchState<DataType> {
     order: "ASC" | "DESC";
 }
 
-interface IUseDataPaginationProps<DataType, InitialOrderByType> {
-    initalState: DataType | null,
-    initalOrderBy: keyof InitialOrderByType;
+interface IUseDataPaginationProps<RequestReturnType, DataType> {
+    initalState: RequestReturnType | null,
+    initalOrderBy: keyof DataType;
     endPointPath: string;
 }
 
