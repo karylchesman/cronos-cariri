@@ -1,9 +1,8 @@
 import { MainContainer } from '../../components/MainContainer';
 import { Container } from './styles';
-import { Button } from '@chakra-ui/react';
 import notFoundImage from '../../assets/not-found2.png';
 
-const NotFount = () => {
+const NotFound = () => {
 
     return (
         <MainContainer>
@@ -16,4 +15,4 @@ const NotFount = () => {
     );
 }
 
-export { NotFount };
+export { NotFound };

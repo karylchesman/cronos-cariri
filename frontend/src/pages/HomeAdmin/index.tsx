@@ -29,6 +29,9 @@ const HomeAdmin = () => {
                             <MenuItem>
                                 <IoPeopleSharp size="5rem" />&nbsp;<span>Pessoas</span>
                             </MenuItem>
+                            <MenuItem onClick={() => pageNavigator("/admin/events")}>
+                                <IoPeopleSharp size="5rem" />&nbsp;<span>Eventos</span>
+                            </MenuItem>
                         </MenuWrapper>
                     </div>
                     <div className="system">

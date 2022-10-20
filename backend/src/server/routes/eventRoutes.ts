@@ -9,5 +9,6 @@ const eventController = new EventController();
 eventRoutes.use(ensureAuthenticated);
 
 eventRoutes.post("/create", eventController.createEvent);
+eventRoutes.post("/search", eventController.search)
 
 export { eventRoutes };

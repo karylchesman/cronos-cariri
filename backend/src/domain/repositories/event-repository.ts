@@ -71,7 +71,7 @@ class EventRepository implements EventRepositoryProtocol {
 
         if (search_params !== undefined) {
             if (typeof search_params === "string") {
-                query.where(`name LIKE :event_name`, { users_name: `%${search_params}%` });
+                query.where(`name LIKE :event_name`, { event_name: `%${search_params}%` });
             }
 
             if (Array.isArray(search_params)) {
