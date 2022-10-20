@@ -21,7 +21,7 @@ export const isEmpty = (value: string, error_message: string) => {
 export const isValidLength = ({ value, min = 0, max, error_message }: IisValidLengthParams) => {
 
     if (isNullOrUndefined(value)) {
-        if (value === null || value === undefined) throw new Error(error_message);
+        throw new Error(error_message);
     }
 
     if (value === null || value === undefined) throw new Error(error_message);
