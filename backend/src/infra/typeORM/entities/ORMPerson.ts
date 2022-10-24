@@ -8,12 +8,6 @@ class ORMPerson {
     id!: string;
 
     @Column()
-    name!: string;
-
-    @Column()
-    email!: string;
-
-    @Column()
     phonenumber1!: string;
 
     @Column()

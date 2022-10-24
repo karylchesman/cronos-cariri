@@ -12,15 +12,6 @@ export class Persons1663369491181 implements MigrationInterface {
                     isPrimary: true
                 },
                 {
-                    name: "name",
-                    type: "varchar"
-                },
-                {
-                    name: "email",
-                    type: "varchar",
-                    isUnique: true
-                },
-                {
                     name: "phonenumber1",
                     type: "varchar"
                 },

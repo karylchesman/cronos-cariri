@@ -98,7 +98,7 @@ class UserController {
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
         const userLogged = await getUserUsecase.execute(token_user_id);
 
-        const updateUserUsecase = new UpdateUserUsecase(userLogged, userRepository, personRepository);
+        const updateUserUsecase = new UpdateUserUsecase(userLogged, userRepository);
         const updated_user = await updateUserUsecase.execute({
             id,
             email,
@@ -139,7 +139,7 @@ class UserController {
     }
 
     async search(request: Request, response: Response) {
-        const { 
+        const {
             search_params,
             order_by,
             order

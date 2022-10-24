@@ -9,8 +9,6 @@ export enum EPersonGender {
 
 export interface PersonProps extends BaseEntityProps {
     id?: string;
-    name: string;
-    email: string;
     phonenumber1: string;
     phonenumber2?: string;
     gender: EPersonGender;
@@ -38,8 +36,6 @@ class Person {
     }
 
     public validate() {
-        isValidLength({ value: this.props.name, min: 3, max: 255, error_message: "O nome deve conter no mínimo 3 no máximo 255 caracteres." });
-        isEmail(this.props.email, "O e-mail deve conter formato válido.");
         isPhoneNumber(this.props.phonenumber1, "O número de contato 1 deve conter formato válido.");
         this.props.phonenumber2 && isPhoneNumber(this.props.phonenumber2, "O número de contato 2 deve conter formato válido.");
         isCPF(this.props.cpf, "O e-mail deve conter formato válido.");

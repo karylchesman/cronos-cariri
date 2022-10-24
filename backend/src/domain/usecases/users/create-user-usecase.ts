@@ -42,7 +42,7 @@ class CreateUserUsecase {
         });
 
         if (user.role !== EUserRoles["Esportista"]) {
-            if(userIdRequested === undefined) throw new Error("Usuário não autenticado.");
+            if (userIdRequested === undefined) throw new Error("Usuário não autenticado.");
 
             const userRequestedExists = await this.userRepository.findById(userIdRequested);
 
@@ -61,7 +61,7 @@ class CreateUserUsecase {
         }
 
         if (user.person !== undefined) {
-            const new_person = new Person({ name: user.name, email: user.email, ...user.person });
+            const new_person = new Person({ ...user.person });
 
             new_person.validate();
 
@@ -71,7 +71,8 @@ class CreateUserUsecase {
         }
 
         const saved_user = await this.userRepository.save(new_user.getProps());
-
+        saved_user.person = new_user.getProps().person;
+        
         Reflect.deleteProperty(saved_user, "password");
 
         return saved_user;

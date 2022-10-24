@@ -15,8 +15,7 @@ export type IUpdateUserUsecaseResponse = UserProps;
 class UpdateUserUsecase {
     constructor(
         private userRequestedUpdate: UserProps,
-        private userRepository: UserRepositoryProtocol,
-        private personRepository: PersonRepositoryProtocol
+        private userRepository: UserRepositoryProtocol
     ) { }
 
     async execute({ id, name, email, password, role }: IUpdateUserUsecaseResquest): Promise<IUpdateUserUsecaseResponse> {
@@ -44,14 +43,6 @@ class UpdateUserUsecase {
         updated_user.validate();
 
         if (password !== undefined) updated_user.validatePassword();
-
-        if (userExists.person_id) {
-            const person_data = await this.personRepository.findById(userExists.person_id);
-
-            if (person_data) {
-                await this.personRepository.update(Object.assign(person_data, { name, email }));
-            }
-        }
 
         const updated_data = await this.userRepository.update(updated_user.getProps());
 

@@ -71,7 +71,7 @@ const Events = () => {
     const {
         data,
         changeOrder,
-        handleRequestData: loadEvents,
+        // handleRequestData: loadEvents,
         isLoading,
         searchByTerm,
         searchPagination,
