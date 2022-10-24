@@ -1,5 +1,4 @@
-import { EUserRoles, User, UserProps } from "../../entities/user";
-import { PersonRepositoryProtocol } from "../../repositories/interfaces/person-repository-protocol";
+import { User, UserProps } from "../../entities/user";
 import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
 
 export interface IUpdateUserUsecaseResquest {
@@ -7,7 +6,6 @@ export interface IUpdateUserUsecaseResquest {
     name: string;
     email: string;
     password: string;
-    role: EUserRoles;
 }
 
 export type IUpdateUserUsecaseResponse = UserProps;
@@ -18,14 +16,14 @@ class UpdateUserUsecase {
         private userRepository: UserRepositoryProtocol
     ) { }
 
-    async execute({ id, name, email, password, role }: IUpdateUserUsecaseResquest): Promise<IUpdateUserUsecaseResponse> {
+    async execute({ id, name, email, password }: IUpdateUserUsecaseResquest): Promise<IUpdateUserUsecaseResponse> {
         const userExists = await this.userRepository.findById(id);
 
         if (!userExists) {
             throw new Error("Usuário não encontrado.");
         }
 
-        if (this.userRequestedUpdate.id !== userExists.id && this.userRequestedUpdate.role !== EUserRoles["Administrador"]) {
+        if (this.userRequestedUpdate.id !== userExists.id) {
             throw new Error("Você não tem permissão para realizar esta ação.");
         }
 
@@ -39,7 +37,7 @@ class UpdateUserUsecase {
             }
         }
 
-        const updated_user = new User(Object.assign(userExists, { name, email, password, role }));
+        const updated_user = new User(Object.assign(userExists, { name, email, password }));
         updated_user.validate();
 
         if (password !== undefined) updated_user.validatePassword();

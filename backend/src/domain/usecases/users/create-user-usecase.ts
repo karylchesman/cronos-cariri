@@ -1,5 +1,5 @@
 import { EPersonGender, Person } from "../../entities/person";
-import { EUserRoles, User, UserProps } from "../../entities/user";
+import { User, UserProps } from "../../entities/user";
 import { PersonRepositoryProtocol } from "../../repositories/interfaces/person-repository-protocol";
 import { UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
 
@@ -9,7 +9,6 @@ export interface ICreateUserUsecaseResquest {
         name: string;
         email: string;
         password: string;
-        role: EUserRoles;
         person?: {
             phonenumber1: string;
             gender: EPersonGender;
@@ -37,17 +36,8 @@ class CreateUserUsecase {
         const new_user = new User({
             name: user.name,
             email: user.email,
-            password: user.password,
-            role: user.role
+            password: user.password
         });
-
-        if (user.role !== EUserRoles["Esportista"]) {
-            if (userIdRequested === undefined) throw new Error("Usuário não autenticado.");
-
-            const userRequestedExists = await this.userRepository.findById(userIdRequested);
-
-            if (!userRequestedExists || userRequestedExists.role !== EUserRoles["Administrador"]) throw new Error("Você não tem permissão para criar esse tipo de usuário.");
-        }
 
         new_user.validate();
         new_user.validatePassword();
@@ -72,7 +62,7 @@ class CreateUserUsecase {
 
         const saved_user = await this.userRepository.save(new_user.getProps());
         saved_user.person = new_user.getProps().person;
-        
+
         Reflect.deleteProperty(saved_user, "password");
 
         return saved_user;

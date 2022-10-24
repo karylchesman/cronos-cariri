@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class Users1663369495060 implements MigrationInterface {
+export class RolePermissions1666639956989 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: "users",
+            name: "role_permissions",
             columns: [
                 {
                     name: "id",
@@ -12,24 +12,12 @@ export class Users1663369495060 implements MigrationInterface {
                     isPrimary: true
                 },
                 {
-                    name: "name",
+                    name: "role_id",
                     type: "varchar"
                 },
                 {
-                    name: "email",
-                    type: "varchar",
-                    isUnique: true
-                },
-                {
-                    name: "password",
+                    name: "permission_id",
                     type: "varchar"
-                },
-                {
-                    name: "person_id",
-                    type: "varchar",
-                    isUnique: true,
-                    isNullable: true,
-                    default: null
                 },
                 {
                     name: "created_at",
@@ -41,12 +29,26 @@ export class Users1663369495060 implements MigrationInterface {
                     type: "timestamp",
                     default: "now()"
                 }
+            ],
+            foreignKeys: [
+                {
+                    name: "FK_ROLE_ID_ROLEPERMISSIONS",
+                    referencedColumnNames: ["id"],
+                    referencedTableName: "roles",
+                    columnNames: ["role_id"]
+                },
+                {
+                    name: "FK_PERMISSION_ID_ROLEPERMISSIONS",
+                    referencedColumnNames: ["id"],
+                    referencedTableName: "permissions",
+                    columnNames: ["permission_id"]
+                }
             ]
         }))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("users")
+        await queryRunner.dropTable("role_permissions")
     }
 
 }

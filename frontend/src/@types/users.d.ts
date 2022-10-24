@@ -1,20 +1,14 @@
 import { IPerson } from "./persons";
 
-export enum EUserRoles {
-    "Administrador" = "Administrador",
-    "Funcionário" = "Funcionário",
-    "Esportista" = "Esportista"
-}
-
 export interface IUser {
     id?: string;
     name: string;
     email: string;
-    role: EUserRoles;
     person_id?: string | null;
     person?: IPerson | undefined;
     created_at: Date;
     updated_at: Date;
+    permissions: string[];
 }
 
 export type IUserSessionResponse = {
@@ -22,9 +16,9 @@ export type IUserSessionResponse = {
         "id": string;
         "name": string;
         "email": string;
-        "role": EUserRoles;
         "person_id": string | null;
         "person": IPerson | undefined;
+        "permissions": string[];
         "created_at": Date;
         "updated_at": Date;
     },

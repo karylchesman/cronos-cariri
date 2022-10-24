@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof ORMUser, order?: "ASC" | "DESC") {
+    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof UserProps, order?: "ASC" | "DESC") {
 
         const query = this.userRepository.createQueryBuilder("users").select("users");
 

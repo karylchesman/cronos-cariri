@@ -1,17 +1,16 @@
 import React from 'react';
 import { useLocation, Navigate } from "react-router-dom";
-import { EUserRoles } from '../@types/users';
 import { useAppContext } from '../hooks/useAppContext';
 
 interface IPrivateRouteProps {
   component: React.FunctionComponent;
-  permissions?: EUserRoles[];
+  permissions?: string[];
 }
 
 function PrivateRoute({ component: Component, permissions }: IPrivateRouteProps) {
 
   const location = useLocation();
-  const permissionsAllowed = [EUserRoles["Administrador"]];
+  const permissionsDefaultAllowed = [""];
 
   const { user } = useAppContext();
 
@@ -22,10 +21,14 @@ function PrivateRoute({ component: Component, permissions }: IPrivateRouteProps)
   }
 
   if (permissions !== undefined) {
-    permissionsAllowed.push(...permissions);
+    permissionsDefaultAllowed.push(...permissions);
   }
 
-  if (user !== null && !permissionsAllowed.includes(user.role)) {
+  const permissions_match = user.permissions.filter(perm => {
+    if (permissionsDefaultAllowed.includes(perm)) return true
+  }).map(item => item);
+
+  if (!(permissions_match.length > 0)) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

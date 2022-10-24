@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { EUserRoles } from "./@types/users";
 import PrivateRoute from "./helpers/PrivateRoute";
 import { Events } from "./pages/Events";
 import { Home } from "./pages/Home";
@@ -17,9 +16,9 @@ function AppRoutes() {
             <Route path="/session-expired" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/admin/home" element={<PrivateRoute component={HomeAdmin} permissions={[EUserRoles["Funcionário"]]} />} />
-            <Route path="/admin/users" element={<PrivateRoute component={Users} permissions={[EUserRoles["Funcionário"]]} />} />
-            <Route path="/admin/events" element={<PrivateRoute component={Events} permissions={[EUserRoles["Funcionário"]]} />} />
+            <Route path="/admin/home" element={<PrivateRoute component={HomeAdmin} permissions={[""]} />} />
+            <Route path="/admin/users" element={<PrivateRoute component={Users} permissions={[""]} />} />
+            <Route path="/admin/events" element={<PrivateRoute component={Events} permissions={[""]} />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );

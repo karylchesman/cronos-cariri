@@ -10,7 +10,6 @@ import { EPersonGender } from '../../@types/persons';
 import { cpfMask } from '../../utils/masker';
 import { AddressInputs } from '../../components/AddressInputs';
 import { BsCheck2Circle } from 'react-icons/bs';
-import { EUserRoles } from '../../@types/users';
 import { api } from '../../services/ApiService';
 import { AxiosError } from 'axios';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
@@ -20,7 +19,6 @@ interface IInputs {
     name: string;
     password: string;
     confirm_password: string;
-    role: EUserRoles;
     phonenumber1: string;
     gender: EPersonGender;
     cpf: string;
@@ -77,10 +75,6 @@ const Register = () => {
         }
         setIsloading(false);
     }
-
-    useEffect(() => {
-        setValue("role", EUserRoles["Esportista"]);
-    }, [])
 
     return (
         <MainContainer>

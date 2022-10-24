@@ -19,7 +19,6 @@ import { SideBar } from '../SideBar';
 import { useAppContext } from '../../hooks/useAppContext';
 import { useNavigate } from 'react-router-dom';
 import PermissionsGate from '../../helpers/PermissionsGate';
-import { EUserRoles } from '../../@types/users';
 
 const NavBar = () => {
     const [showSideBar, setShowSideBar] = useState(false);
@@ -87,7 +86,7 @@ const NavBar = () => {
                                             <MenuItem><FaUserAlt />&nbsp;Perfil</MenuItem>
                                             <MenuItem><MdEventAvailable />&nbsp;Meus Eventos</MenuItem>
                                             <MenuItem><FaClipboardCheck />&nbsp;Minhas Inscrições</MenuItem>
-                                            <PermissionsGate permissions={[EUserRoles["Funcionário"]]}>
+                                            <PermissionsGate permissions={[""]}>
                                                 <MenuDivider />
                                                 <MenuItem onClick={() => pageNavigator("/admin/home")}><MdAdminPanelSettings />&nbsp;Admin</MenuItem>
                                             </PermissionsGate>

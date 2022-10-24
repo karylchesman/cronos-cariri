@@ -18,7 +18,7 @@ import {
     Select,
     useToast
 } from '@chakra-ui/react';
-import { EUserRoles, IUser } from '../../@types/users';
+import { IUser } from '../../@types/users';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/ApiService';
 import { AxiosError } from 'axios';
@@ -35,7 +35,6 @@ interface ICreateOrUpdateUserInputs {
     id?: string;
     name: string;
     email: string;
-    role: EUserRoles;
     password?: string;
     confirm_password?: string;
 }
@@ -101,7 +100,6 @@ const CreateUserModal = ({ isOpen, turnModal, user }: ISideBarProps) => {
             setValue("id", user.id || "");
             setValue("name", user.name);
             setValue("email", user.email);
-            setValue("role", user.role);
         }
     }, [isOpen])
 
@@ -212,22 +210,6 @@ const CreateUserModal = ({ isOpen, turnModal, user }: ISideBarProps) => {
                                         </InputRightElement>
                                     </InputGroup>
                                     <FormErrorMessage>{errors.confirm_password?.message}</FormErrorMessage>
-                                </FormControl>
-                            </div>
-                            <div className="input-box">
-                                <FormControl isInvalid={!!errors.role}>
-                                    <FormLabel>Permissão</FormLabel>
-                                    <Select
-                                        placeholder='Selecione'
-                                        {...register("role", {
-                                            required: "Permissão é obrigatório.",
-                                        })}
-                                    >
-                                        <option value={EUserRoles["Administrador"]}>Administrador</option>
-                                        <option value={EUserRoles["Funcionário"]}>Funcionário</option>
-                                        <option value={EUserRoles["Esportista"]}>Funcionário</option>
-                                    </Select>
-                                    <FormErrorMessage>{errors.role?.message}</FormErrorMessage>
                                 </FormControl>
                             </div>
                         </ModalBody>

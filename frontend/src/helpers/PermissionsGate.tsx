@@ -1,16 +1,15 @@
 import { ReactNode } from 'react';
-import { EUserRoles } from '../@types/users';
 import { useAppContext } from '../hooks/useAppContext';
 
 interface IPermissionsGateProps {
   children: ReactNode;
-  permissions?: EUserRoles[];
+  permissions?: string[];
 }
 
 function PermissionsGate({ children, permissions }: IPermissionsGateProps) {
 
-  const permissionsAllowed = [EUserRoles["Administrador"]];
-  
+  const permissionsDefaultAllowed = [""];
+
   const { user } = useAppContext();
 
   if (!user) {
@@ -18,10 +17,14 @@ function PermissionsGate({ children, permissions }: IPermissionsGateProps) {
   }
 
   if (permissions !== undefined) {
-    permissionsAllowed.push(...permissions);
+    permissionsDefaultAllowed.push(...permissions);
   }
 
-  if (user !== null && !permissionsAllowed.includes(user.role)) {
+  const permissions_match = user.permissions.filter(perm => {
+    if (permissionsDefaultAllowed.includes(perm)) return true
+  }).map(item => item);
+
+  if (!(permissions_match.length > 0)) {
     return null;
   }
 

@@ -1,7 +1,7 @@
 import { UserProps } from "../../entities/user";
 import { SearchObject } from "../../utils/search-object";
 
-export type TUserOrderByFields = keyof Omit<UserProps, "person_id" | "person">;
+export type TUserOrderByFields = keyof Omit<UserProps, "person_id" | "person" | "permissions" | "roles">;
 
 interface UserRepositoryProtocol {
     save: (user: UserProps) => Promise<UserProps>;

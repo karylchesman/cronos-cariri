@@ -4,20 +4,15 @@ import { BaseEntityProps } from "./base-entity";
 import { hashSync } from 'bcrypt';
 import { PersonProps } from "./person";
 
-export enum EUserRoles {
-    "Administrador" = "Administrador",
-    "Funcionário" = "Funcionário",
-    "Esportista" = "Esportista"
-}
-
 export interface UserProps extends BaseEntityProps {
     id?: string;
     name: string;
     email: string;
     password: string;
-    role: EUserRoles;
     person_id?: string;
     person?: PersonProps | undefined;
+    permissions?: string[];
+    roles?: string[];
 }
 
 class User {
@@ -44,7 +39,6 @@ class User {
     public validate() {
         isValidLength({ value: this.props.name, min: 3, max: 255, error_message: "O nome deve conter no mínimo 3 e no máximo 255 caracteres." });
         isEmail(this.props.email, "O e-mail deve conter formato válido.");
-        if (!EUserRoles[this.props.role]) throw new Error("Tipo de permissão inválida.");
     }
 
     getProps() {
@@ -55,6 +49,14 @@ class User {
     setPerson(person: PersonProps) {
         this.props.person = person;
         this.props.person_id = person.id;
+    }
+
+    setRoles(roles: string[]) {
+        this.props.roles = roles;
+    }
+
+    setPermissions(permissions: string[]) {
+        this.props.permissions = permissions;
     }
 }
 

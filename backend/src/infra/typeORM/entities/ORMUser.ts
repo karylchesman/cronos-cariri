@@ -1,5 +1,4 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { EUserRoles } from '../../../domain/entities/user';
 
 @Entity("users")
 class ORMUser {
@@ -14,12 +13,6 @@ class ORMUser {
 
     @Column()
     password!: string;
-
-    @Column({
-        type: "enum",
-        enum: EUserRoles
-    })
-    role!: EUserRoles;
 
     @Column({
         nullable: true,

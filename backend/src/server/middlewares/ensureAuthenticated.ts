@@ -6,13 +6,12 @@ import { SessionJwtPayload } from "../types/session-jwt-payload";
 export async function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
 
     const authtoken = request.headers.authorization;
-    
     if (!authtoken) {
         return response.status(401).json({ message: "Token missing." });
     }
-
+    
     const [, token] = authtoken.split(" ");
-
+    
     try {
         const decode = <SessionJwtPayload>verify(token, String(process.env.APP_SECRET));
 

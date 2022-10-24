@@ -15,7 +15,6 @@ class UserController {
             email,
             name,
             password,
-            role,
             token_user_id
         } = request.body;
 
@@ -28,8 +27,7 @@ class UserController {
             user: {
                 email,
                 name,
-                password,
-                role,
+                password
             }
         })
 
@@ -41,7 +39,6 @@ class UserController {
             email,
             name,
             password,
-            role,
             phonenumber1,
             gender,
             cpf,
@@ -63,7 +60,6 @@ class UserController {
                 email,
                 name,
                 password,
-                role,
                 person: {
                     phonenumber1,
                     gender,
@@ -103,8 +99,7 @@ class UserController {
             id,
             email,
             name,
-            password,
-            role
+            password
         })
 
         return response.json(updated_user);
@@ -133,7 +128,10 @@ class UserController {
         const personRepository = new PersonRepository();
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
 
-        const user = await getUserUsecase.execute(token_user_id)
+        const user = await getUserUsecase.execute(token_user_id);
+
+        user.roles = [""]
+        user.permissions = [""]
 
         return response.json(user);
     }
