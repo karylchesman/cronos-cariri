@@ -18,6 +18,12 @@ export const isEmpty = (value: string, error_message: string) => {
     return value;
 }
 
+export const isArray = (value: any, error_message: string) => {
+    if (!Array.isArray(value)) throw new Error(error_message);
+
+    return value;
+}
+
 export const isValidLength = ({ value, min = 0, max, error_message }: IisValidLengthParams) => {
 
     if (isNullOrUndefined(value)) {

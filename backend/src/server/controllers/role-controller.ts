@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { RoleRepository } from "../../domain/repositories/role-repository";
+import { UserRepository } from "../../domain/repositories/user-repository";
+import { UserRoleRepository } from "../../domain/repositories/user-role-repository";
+import { AttachRoleToUserUsecase } from "../../domain/usecases/roles/attach-role-to-user-usecase";
 import { CreateRoleUsecase } from "../../domain/usecases/roles/create-role-usecase";
 import { SearchRoleUsecase } from "../../domain/usecases/roles/search-role-usecase";
+import { isArray, isEmpty } from "../../domain/utils/validators";
 
 class RoleController {
     async createRole(request: Request, response: Response) {
@@ -22,7 +26,7 @@ class RoleController {
     }
 
     async search(request: Request, response: Response) {
-        const { 
+        const {
             search_params,
             order_by,
             order
@@ -47,6 +51,29 @@ class RoleController {
         })
 
         return response.json(roles);
+    }
+
+    async attachRoleToUser(request: Request, response: Response) {
+        const {
+            user_id,
+            roles_ids
+        } = request.body;
+
+        isEmpty(user_id, "Usuário não definido.");
+        isArray(roles_ids, "Lista de perfis de acesso inválida.");
+
+        const roleRepository = new RoleRepository();
+        const userRepository = new UserRepository();
+        const userRoleRepository = new UserRoleRepository();
+
+        const attachRoleToUserUseCase = new AttachRoleToUserUsecase(roleRepository, userRepository, userRoleRepository);
+
+        const user_roles = await attachRoleToUserUseCase.execute({
+            user_id,
+            roles_ids
+        })
+
+        return response.json(user_roles);
     }
 }
 
