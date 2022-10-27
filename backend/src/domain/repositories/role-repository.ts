@@ -44,7 +44,6 @@ class RoleRepository implements RoleRepositoryProtocol {
         if (search_params !== undefined) {
             if (typeof search_params === "string") {
                 query.where(`name LIKE :roles_name`, { roles_name: `%${search_params}%` });
-                query.orWhere(`email LIKE :roles_email`, { roles_email: `%${search_params}%` });
             }
 
             if (Array.isArray(search_params)) {
