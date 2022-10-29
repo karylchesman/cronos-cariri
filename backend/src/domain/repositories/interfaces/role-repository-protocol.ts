@@ -15,6 +15,7 @@ interface RoleRepositoryProtocol {
         order?: "ASC" | "DESC"
     ) => Promise<{ roles: RoleProps[], registers: number }>;
     findById: (id: string) => Promise<RoleProps | null>;
+    findByIdList: (ids: string[]) => Promise<RoleProps[]>;
     deleteById: (id: string) => Promise<void>;
 }
 

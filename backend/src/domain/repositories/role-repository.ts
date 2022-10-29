@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMRole } from "../../infra/typeORM/entities/ORMRole";
 import { RoleProps } from "../entities/role.ts";
@@ -37,7 +37,7 @@ class RoleRepository implements RoleRepositoryProtocol {
         return found_roles;
     }
 
-    async search(search_params?: SearchObject<RoleProps>[] | string, page?: number, limit?: number, order_by?: keyof RoleProps, order?: "ASC" | "DESC") {
+    async search(search_params?: SearchObject<RoleProps>[] | string, page?: number, limit?: number, order_by?: TRoleOrderByFields, order?: "ASC" | "DESC") {
 
         const query = this.roleRepository.createQueryBuilder("roles").select("roles");
 
@@ -90,6 +90,16 @@ class RoleRepository implements RoleRepositoryProtocol {
         }
 
         return null;
+    }
+
+    async findByIdList(ids: string[]) {
+        const roles = await this.roleRepository.find({
+            where: {
+                id: In(ids)
+            }
+        })
+
+        return roles;
     }
 
     async deleteById(id: string) {

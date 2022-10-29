@@ -11,5 +11,6 @@ roleRoutes.use(ensureAuthenticated);
 roleRoutes.post("/create", roleController.createRole);
 roleRoutes.post("/search", roleController.search);
 roleRoutes.post("/attach-to-user", roleController.attachRoleToUser);
+roleRoutes.get("/user/:user_id", roleController.getByUser);
 
 export { roleRoutes };
