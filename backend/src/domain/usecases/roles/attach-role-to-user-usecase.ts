@@ -29,7 +29,7 @@ class AttachRoleToUserUsecase {
         });
 
         let rolesIdsOfUser = userRolesOfUser.map(item => item.role_id);
-        
+
         let rolesIdsToAttach = roles_ids.filter(item => {
             if (!rolesIdsOfUser.includes(item)) {
                 return item;
@@ -37,12 +37,12 @@ class AttachRoleToUserUsecase {
         })
 
         let userRolesIdsToDetach = userRolesOfUser.filter(item => {
-            if (roles_ids.includes(item.role_id)) {
-                return item;
+            if ((!roles_ids.includes(item.role_id)) && item.id !== undefined) {
+                return true;
             }
-        }).map(item => item.id);
+        }).map(item => item.id || "");
 
-        const userRolesCreated: UserRoleProps[] = [];
+        const userRolesToCreate: UserRoleProps[] = [];
 
         for await (let role_id of rolesIdsToAttach) {
             const roleExists = await this.roleRepository.findById(role_id);
@@ -52,18 +52,15 @@ class AttachRoleToUserUsecase {
             const new_user_role = new UserRole({ role_id, user_id });
             new_user_role.validate();
 
-            const userRoleCreated = await this.userRoleRepository.save(new_user_role.getProps());
-
-            userRolesCreated.push(userRoleCreated);
+            userRolesToCreate.push(new_user_role.getProps());
         }
 
-        for await (let user_role_id of userRolesIdsToDetach) {
-            if (user_role_id) {
-                await this.userRoleRepository.deleteById(user_role_id);
-            }
-        }
+        const userRolesToCreated = await this.userRoleRepository.store({
+            user_roles_to_attach: userRolesToCreate,
+            user_roles_ids_to_detach: userRolesIdsToDetach
+        })
 
-        return userRolesCreated;
+        return userRolesToCreated;
     }
 }
 

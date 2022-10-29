@@ -1,8 +1,8 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMUserRole } from "../../infra/typeORM/entities/ORMUserRole";
 import { UserRoleProps } from "../entities/user-role";
-import { UserRoleRepositoryProtocol } from "./interfaces/user-role-repository-protocol";
+import { TUserRolesStoreParams, UserRoleRepositoryProtocol } from "./interfaces/user-role-repository-protocol";
 
 class UserRoleRepository implements UserRoleRepositoryProtocol {
     private userRoleRepository: Repository<ORMUserRole>;
@@ -11,20 +11,18 @@ class UserRoleRepository implements UserRoleRepositoryProtocol {
         this.userRoleRepository = AppDataSource.getRepository(ORMUserRole);
     }
 
-    async save(user_role: UserRoleProps) {
-        const new_user_role = this.userRoleRepository.create(user_role)
+    async store({ user_roles_to_attach, user_roles_ids_to_detach }: TUserRolesStoreParams): Promise<UserRoleProps[]> {
+        const result = this.userRoleRepository.manager.transaction(async (transactionManager) => {
+            const user_roles_to_save = transactionManager.create(ORMUserRole, user_roles_to_attach);
 
-        await this.userRoleRepository.save(new_user_role);
+            const created = await transactionManager.save(ORMUserRole, user_roles_to_save);
 
-        return new_user_role;
-    }
+            await transactionManager.delete(ORMUserRole, { id: In(user_roles_ids_to_detach) });
 
-    async update(user_role: UserRoleProps) {
-        user_role.updated_at = new Date();
+            return created;
+        })
 
-        await this.userRoleRepository.update(String(user_role.id), user_role);
-
-        return user_role;
+        return result;
     }
 
     async find(user_role?: Partial<UserRoleProps>) {
@@ -49,13 +47,6 @@ class UserRoleRepository implements UserRoleRepositoryProtocol {
 
         return null;
     }
-
-    async deleteById(id: string) {
-        await this.userRoleRepository.delete(id);
-
-        return;
-    }
-
 }
 
 export { UserRoleRepository }
