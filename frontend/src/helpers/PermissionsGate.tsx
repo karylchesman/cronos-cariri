@@ -16,11 +16,13 @@ function PermissionsGate({ children, permissions }: IPermissionsGateProps) {
     return null;
   }
 
+  const user_permissions = user.permissions.map(item => item.identifier);
+
   if (permissions !== undefined) {
     permissionsDefaultAllowed.push(...permissions);
   }
 
-  const permissions_match = user.permissions.filter(perm => {
+  const permissions_match = user_permissions.filter(perm => {
     if (permissionsDefaultAllowed.includes(perm)) return true
   }).map(item => item);
 

@@ -1,4 +1,4 @@
-import { PermssionProps } from "../../entities/permission";
+import { PermissionProps } from "../../entities/permission";
 import { RoleProps } from "../../entities/role.ts";
 import { RoleRepositoryProtocol } from "../../repositories/interfaces/role-repository-protocol";
 import { UserRoleRepositoryProtocol } from "../../repositories/interfaces/user-role-repository-protocol";
@@ -9,7 +9,7 @@ export type IGetUserRolesAndPermissionsUsecaseRequest = {
 
 export type IGetUserRolesAndPermissionsUsecaseResponse = {
     roles: RoleProps[],
-    permissions: PermssionProps[]
+    permissions: PermissionProps[]
 }
 class GetUserRolesAndPermissionsUsecase {
     constructor(
@@ -26,7 +26,13 @@ class GetUserRolesAndPermissionsUsecase {
 
         return {
             roles,
-            permissions: []
+            permissions: [{
+                id:"1",
+                identifier: "",
+                name: "full",
+                created_at: new Date(),
+                updated_at: new Date()
+            }]
         };
     }
 }

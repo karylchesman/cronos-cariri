@@ -2,16 +2,16 @@ import { UuidGender } from "../utils/uuid-gender";
 import { isEmpty, isValidLength } from "../utils/validators";
 import { BaseEntityProps } from "./base-entity";
 
-export interface PermssionProps extends BaseEntityProps{
+export interface PermissionProps extends BaseEntityProps{
     id?: string;
     name: string;
     identifier: string;
 }
 
 class Permssion {
-    private props: PermssionProps;
+    private props: PermissionProps;
 
-    constructor(props: PermssionProps) {
+    constructor(props: PermissionProps) {
         if (!props.id) {
             props.id = UuidGender.genderV4();
         }

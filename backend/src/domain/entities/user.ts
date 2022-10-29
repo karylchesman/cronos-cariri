@@ -3,6 +3,8 @@ import { isEmail, isValidLength } from "../utils/validators";
 import { BaseEntityProps } from "./base-entity";
 import { hashSync } from 'bcrypt';
 import { PersonProps } from "./person";
+import { PermissionProps } from "./permission";
+import { RoleProps } from "./role.ts";
 
 export interface UserProps extends BaseEntityProps {
     id?: string;
@@ -11,8 +13,8 @@ export interface UserProps extends BaseEntityProps {
     password: string;
     person_id?: string;
     person?: PersonProps | undefined;
-    permissions?: string[];
-    roles?: string[];
+    permissions?: PermissionProps[];
+    roles?: RoleProps[];
 }
 
 class User {
@@ -51,11 +53,11 @@ class User {
         this.props.person_id = person.id;
     }
 
-    setRoles(roles: string[]) {
+    setRoles(roles: RoleProps[]) {
         this.props.roles = roles;
     }
 
-    setPermissions(permissions: string[]) {
+    setPermissions(permissions: PermissionProps[]) {
         this.props.permissions = permissions;
     }
 }

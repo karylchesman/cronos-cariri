@@ -58,7 +58,7 @@ const AppContextProvider = (props: IAppContextProviderProps) => {
                 const result = await api.get("/users/logged", {
                     signal
                 });
-                console.log(result.data)
+                
                 setUser(result.data);
             } catch (error: AxiosError | any) {
                 

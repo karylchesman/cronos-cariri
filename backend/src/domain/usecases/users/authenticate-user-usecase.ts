@@ -43,9 +43,6 @@ class AuthenticateUserUsecase {
             user_id: userExists.id ? userExists.id : ""
         })
 
-        userExists.roles = [""]
-        userExists.permissions = [""]
-
         return {
             user: userExists,
             token

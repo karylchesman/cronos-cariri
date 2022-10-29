@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { PersonRepository } from "../../domain/repositories/person-repository";
+import { RoleRepository } from "../../domain/repositories/role-repository";
 import { UserRepository } from "../../domain/repositories/user-repository";
+import { UserRoleRepository } from "../../domain/repositories/user-role-repository";
 import { GetPersonUsecase } from "../../domain/usecases/persons/get-person-usecase";
+import { GetUserRolesAndPermissionsUsecase } from "../../domain/usecases/roles/get-user-roles-and-permissions-usecase";
 import { AuthenticateUserUsecase } from "../../domain/usecases/users/authenticate-user-usecase";
 import { CreateUserUsecase } from "../../domain/usecases/users/create-user-usecase";
 import { DeleteUserUsecase } from "../../domain/usecases/users/delete-user-usecase";
@@ -130,8 +133,15 @@ class UserController {
 
         const user = await getUserUsecase.execute(token_user_id);
 
-        user.roles = [""]
-        user.permissions = [""]
+        const roleRepository = new RoleRepository();
+        const userRoleRepository = new UserRoleRepository();
+
+        const getUserRolesAndPermissionsUsecase = new GetUserRolesAndPermissionsUsecase(userRoleRepository, roleRepository);
+
+        const roles_and_permissions = await getUserRolesAndPermissionsUsecase.execute({ user_id: String(user.id) })
+
+        user.roles = roles_and_permissions.roles
+        user.permissions = roles_and_permissions.permissions
 
         return response.json(user);
     }
@@ -197,6 +207,16 @@ class UserController {
 
             authResult.user.person = person_data;
         }
+
+        const roleRepository = new RoleRepository();
+        const userRoleRepository = new UserRoleRepository();
+
+        const getUserRolesAndPermissionsUsecase = new GetUserRolesAndPermissionsUsecase(userRoleRepository, roleRepository);
+
+        const roles_and_permissions = await getUserRolesAndPermissionsUsecase.execute({ user_id: String(authResult.user.id) })
+
+        authResult.user.roles = roles_and_permissions.roles
+        authResult.user.permissions = roles_and_permissions.permissions
 
         return response.json(authResult);
     }
