@@ -1,11 +1,11 @@
 import React from 'react';
-import { Divider, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
-import { Container, MenuItem, MenuTitle, MenuWrapper } from './styles';
-import { IoPeopleSharp } from 'react-icons/io5';
-import { FaUserShield } from 'react-icons/fa';
+import { FaUserFriends, FaUserShield } from 'react-icons/fa';
 import { GiCarousel } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
+import { BsCalendar2WeekFill } from 'react-icons/bs';
+import { Container, MenuItem, MenuTitle, MenuWrapper } from './styles';
 
 const HomeAdmin = () => {
 
@@ -24,13 +24,13 @@ const HomeAdmin = () => {
                         </MenuTitle>
                         <MenuWrapper>
                             <MenuItem onClick={() => pageNavigator("/admin/users")}>
-                                <FaUserShield size="5rem" />&nbsp;<span>Usuários</span>
+                                <FaUserFriends size="2rem" />&nbsp;<span>Usuários</span>
                             </MenuItem>
                             <MenuItem>
-                                <IoPeopleSharp size="5rem" />&nbsp;<span>Pessoas</span>
+                                <FaUserShield size="2rem" />&nbsp;<span>Perfis de Acesso</span>
                             </MenuItem>
                             <MenuItem onClick={() => pageNavigator("/admin/events")}>
-                                <IoPeopleSharp size="5rem" />&nbsp;<span>Eventos</span>
+                                <BsCalendar2WeekFill size="2rem" />&nbsp;<span>Eventos</span>
                             </MenuItem>
                         </MenuWrapper>
                     </div>
@@ -40,7 +40,7 @@ const HomeAdmin = () => {
                         </MenuTitle>
                         <MenuWrapper>
                             <MenuItem>
-                                <GiCarousel size="5rem" />&nbsp;<span>Carrousel</span>
+                                <GiCarousel size="2rem" />&nbsp;<span>Carrousel</span>
                             </MenuItem>
                         </MenuWrapper>
                     </div>
