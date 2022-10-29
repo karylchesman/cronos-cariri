@@ -26,7 +26,7 @@ const HomeAdmin = () => {
                             <MenuItem onClick={() => pageNavigator("/admin/users")}>
                                 <FaUserFriends size="2rem" />&nbsp;<span>Usuários</span>
                             </MenuItem>
-                            <MenuItem>
+                            <MenuItem onClick={() => pageNavigator("/admin/roles")}>
                                 <FaUserShield size="2rem" />&nbsp;<span>Perfis de Acesso</span>
                             </MenuItem>
                             <MenuItem onClick={() => pageNavigator("/admin/events")}>

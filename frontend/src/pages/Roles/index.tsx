@@ -1,69 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
 import { Container } from './styles';
-import { BsPlusCircleDotted, BsSearch, BsUnlockFill } from 'react-icons/bs';
+import { BsPlusCircleDotted, BsSearch } from 'react-icons/bs';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { AiFillSetting } from 'react-icons/ai';
 import { useTheme } from 'styled-components';
 import { Pagination } from '../../components/Pagination';
 import { SpanOrderIcon } from '../../components/SpanOrderIcon';
-import { FaTrash, FaUserEdit } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
 import { useDataPagination } from '../../hooks/useDataPagination';
 import dayjs from 'dayjs';
-import { EventStatusBadge } from '../../components/EventStatusBadge';
-import { MdDashboard } from 'react-icons/md';
-import { GiCancel } from 'react-icons/gi';
+import { MdOutlineChecklist } from 'react-icons/md';
 
-export enum EEventTypes {
-    "MTB" = "MTB",
-    "Trail" = "Trail",
-    "Corrida de Rua" = "Corrida de Rua"
-}
-
-export enum EEventStatus {
-    "Publicado" = "Publicado",
-    "Não Publicado" = "Não Publicado",
-    "Cancelado" = "Cancelado",
-}
-
-export enum EEventResultTypes {
-    "Importação" = "Importação",
-    "Integração" = "Integração",
-    "PDF" = "PDF",
-}
-
-export interface Event {
+export interface Role {
     id: string;
     name: string;
-    event_date: Date;
-    event_time: string;
-    address_street: string;
-    address_number: string;
-    address_district: string;
-    address_city: string;
-    address_uf: string;
-    address_cep: string;
-    email: string;
-    phonenumber?: string;
-    event_type: EEventTypes;
-    inscription_limit_date: Date;
-    url_path: string;
-    status: EEventStatus;
-    banner_archive?: string;
-    banner_description?: string;
-    result_type?: EEventResultTypes;
     created_at: Date;
     updated_at: Date;
 }
 
-interface IGetEventsReturnType {
-    events: Event[];
+interface IGetRolesReturnType {
+    roles: Role[];
     registers: number;
 }
 
-const Events = () => {
+const Roles = () => {
 
     const pageNavigator = useNavigate();
     const theme = useTheme();
@@ -77,10 +41,10 @@ const Events = () => {
         searchPagination,
         setSearchPagination,
         setSearchTerm
-    } = useDataPagination<IGetEventsReturnType, Event>({
+    } = useDataPagination<IGetRolesReturnType, Role>({
         initalState: null,
         initalOrderBy: "name",
-        endPointPath: "/events/search"
+        endPointPath: "/roles/search"
     });
 
     return (
@@ -89,7 +53,7 @@ const Events = () => {
                 <div id="header">
                     <div className="title">
                         <BiLeftArrowAlt onClick={() => pageNavigator("/admin/home")} className="button-return" size="2.3rem" />
-                        <h1>Eventos</h1>
+                        <h1>Perfis de Acesso</h1>
                     </div>
                     <div className="button-create-user">
                         <Button /* onClick={() => turnCreateUserModal()} */ rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
@@ -135,39 +99,28 @@ const Events = () => {
                                             <SpanOrderIcon fieldDisplayName="Nome" fieldName="name" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
                                         <Th>
-                                            <SpanOrderIcon fieldDisplayName="Data" fieldName="event_date" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
-                                        </Th>
-                                        <Th>
-                                            <SpanOrderIcon fieldDisplayName="Status" fieldName="status" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
+                                            <SpanOrderIcon fieldDisplayName="Criado em" fieldName="created_at" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
                                         <Th>Ações</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
                                     {
-                                        (data !== null && data.events.length > 0 && isLoading === false) ?
-                                            data.events.map((item, idx) => {
+                                        (data !== null && data.roles.length > 0 && isLoading === false) ?
+                                            data.roles.map((item, idx) => {
                                                 return (
                                                     <Tr key={idx} _hover={{ background: theme.colors.main + "20" }}>
                                                         <Td>{idx + 1}</Td>
                                                         <Td>{item.name}</Td>
-                                                        <Td>{dayjs(item.event_date).format("DD/MM/YYYY")}</Td>
-                                                        <Td>
-                                                            <EventStatusBadge status={item.status} />
-                                                        </Td>
+                                                        <Td>{dayjs(item.created_at).format("DD/MM/YYYY")}</Td>
                                                         <Td>
                                                             <Menu>
                                                                 <MenuButton as={Button}>
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <MenuItem icon={<MdDashboard />}> Dashboard</MenuItem>
-                                                                    <MenuItem icon={<AiFillSetting />}> Configurações</MenuItem>
-                                                                    {
-                                                                        item.status !== EEventStatus["Publicado"] &&
-                                                                        <MenuItem color="green.500" icon={<BsUnlockFill />}> Publicar</MenuItem>
-                                                                    }
-                                                                    <MenuItem color="red.500" icon={<GiCancel />}> Cancelar</MenuItem>
+                                                                    <MenuItem icon={<MdOutlineChecklist />}> Permissões</MenuItem>
+                                                                    <MenuItem icon={<FiEdit />}> Editar</MenuItem>
                                                                     <MenuItem color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
                                                                 </MenuList>
                                                             </Menu>
@@ -190,7 +143,7 @@ const Events = () => {
                                                             :
                                                             <Alert status='info'>
                                                                 <AlertIcon />
-                                                                Nenhum evento encontrado.
+                                                                Nenhum perfil encontrado.
                                                             </Alert>
                                                     }
                                                 </Th>
@@ -199,7 +152,7 @@ const Events = () => {
                                 </Tbody>
                                 <Tfoot>
                                     <Tr>
-                                        <Th colSpan={4}>
+                                        <Th colSpan={3}>
                                             <Select maxWidth={200} variant='unstyled' onChange={(e) => {
                                                 setSearchPagination((state) => {
                                                     let value = Number(e.target.value);
@@ -217,7 +170,7 @@ const Events = () => {
                                                 <option value='50'>50 por página</option>
                                             </Select>
                                         </Th>
-                                        <Th textAlign="end">{searchPagination.registers} Evento(s)</Th>
+                                        <Th textAlign="end">{searchPagination.registers} Perfil(s)</Th>
                                     </Tr>
                                 </Tfoot>
                             </Table>
@@ -252,4 +205,4 @@ const Events = () => {
     );
 }
 
-export { Events };
+export { Roles };
