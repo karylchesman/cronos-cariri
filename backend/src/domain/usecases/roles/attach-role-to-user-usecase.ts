@@ -28,23 +28,39 @@ class AttachRoleToUserUsecase {
             user_id,
         });
 
-        let rolesIds = userRolesOfUser.map(item => item.role_id);
+        let rolesIdsOfUser = userRolesOfUser.map(item => item.role_id);
+        
+        let rolesIdsToAttach = roles_ids.filter(item => {
+            if (!rolesIdsOfUser.includes(item)) {
+                return item;
+            }
+        })
+
+        let userRolesIdsToDetach = userRolesOfUser.filter(item => {
+            if (roles_ids.includes(item.role_id)) {
+                return item;
+            }
+        }).map(item => item.id);
 
         const userRolesCreated: UserRoleProps[] = [];
 
-        for await (let role_id of roles_ids) {
-            if (rolesIds.includes(role_id)) continue;
-
+        for await (let role_id of rolesIdsToAttach) {
             const roleExists = await this.roleRepository.findById(role_id);
 
             if (!roleExists) throw new Error("Um dos perfis de acesso não foi encontrado ou é inválido.");
 
             const new_user_role = new UserRole({ role_id, user_id });
             new_user_role.validate();
-            
+
             const userRoleCreated = await this.userRoleRepository.save(new_user_role.getProps());
 
             userRolesCreated.push(userRoleCreated);
+        }
+
+        for await (let user_role_id of userRolesIdsToDetach) {
+            if (user_role_id) {
+                await this.userRoleRepository.deleteById(user_role_id);
+            }
         }
 
         return userRolesCreated;
