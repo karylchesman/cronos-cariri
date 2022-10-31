@@ -8,7 +8,7 @@ export interface PermissionProps extends BaseEntityProps{
     identifier: string;
 }
 
-class Permssion {
+class Permission {
     private props: PermissionProps;
 
     constructor(props: PermissionProps) {
@@ -29,4 +29,4 @@ class Permssion {
     }
 }
 
-export { Permssion }
+export { Permission }
