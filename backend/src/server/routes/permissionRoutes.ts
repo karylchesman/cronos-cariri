@@ -11,5 +11,6 @@ permissionRoutes.use(ensureAuthenticated);
 permissionRoutes.post("/create", roleController.createPermission);
 permissionRoutes.post("/search", roleController.search);
 permissionRoutes.put("/update", roleController.updatePermission);
+permissionRoutes.post("/attach-to-role", roleController.attachPermissionToRole);
 
 export { permissionRoutes };

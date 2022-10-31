@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { PermissionRepository } from "../../domain/repositories/permission-repository";
+import { RolePermissionRepository } from "../../domain/repositories/role-permission-repository";
+import { RoleRepository } from "../../domain/repositories/role-repository";
 import { CreatePermissionUsecase } from "../../domain/usecases/permissions/create-permission-usecase";
 import { SearchPermissionUsecase } from "../../domain/usecases/permissions/search-permission-usecase";
 import { UpdatePermissionUsecase } from "../../domain/usecases/permissions/update-permission-usecase";
+import { AttachPermissionToRoleUsecase } from "../../domain/usecases/roles/attach-permission-to-role-usecase";
 
 class PermissionController {
     async createPermission(request: Request, response: Response) {
@@ -58,7 +61,7 @@ class PermissionController {
             name,
             identifier
         } = request.body;
-        
+
         const permissionRepository = new PermissionRepository();
         const updatePermissionUsecase = new UpdatePermissionUsecase(permissionRepository);
 
@@ -71,6 +74,26 @@ class PermissionController {
         })
 
         return response.json(permission_updated);
+    }
+
+    async attachPermissionToRole(request: Request, response: Response) {
+        const {
+            role_id,
+            permissions_ids
+        } = request.body;
+
+        const roleRepository = new RoleRepository();
+        const permissionRepository = new PermissionRepository();
+        const rolePermissionRoleRepository = new RolePermissionRepository();
+
+        const attachRoleToUserUseCase = new AttachPermissionToRoleUsecase(roleRepository, permissionRepository, rolePermissionRoleRepository);
+
+        const role_permissions = await attachRoleToUserUseCase.execute({
+            role_id,
+            permissions_ids
+        })
+
+        return response.json(role_permissions);
     }
 }
 
