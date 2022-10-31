@@ -1,5 +1,5 @@
 import { PermissionProps } from "../../entities/permission";
-import { RoleProps } from "../../entities/role.ts";
+import { RoleProps } from "../../entities/role";
 import { RoleRepositoryProtocol } from "../../repositories/interfaces/role-repository-protocol";
 import { UserRoleRepositoryProtocol } from "../../repositories/interfaces/user-role-repository-protocol";
 

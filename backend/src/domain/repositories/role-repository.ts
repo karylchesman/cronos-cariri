@@ -1,7 +1,7 @@
 import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMRole } from "../../infra/typeORM/entities/ORMRole";
-import { RoleProps } from "../entities/role.ts";
+import { RoleProps } from "../entities/role";
 import { getWhereString, SearchObject } from "../utils/search-object";
 import { RoleRepositoryProtocol, TRoleOrderByFields } from "./interfaces/role-repository-protocol";
 

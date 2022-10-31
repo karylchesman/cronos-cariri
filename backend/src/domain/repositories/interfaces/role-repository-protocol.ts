@@ -1,4 +1,4 @@
-import { RoleProps } from "../../entities/role.ts";
+import { RoleProps } from "../../entities/role";
 import { SearchObject } from "../../utils/search-object";
 
 export type TRoleOrderByFields = keyof RoleProps;

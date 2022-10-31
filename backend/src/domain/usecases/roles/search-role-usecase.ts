@@ -1,4 +1,4 @@
-import { RoleProps } from "../../entities/role.ts";
+import { RoleProps } from "../../entities/role";
 import { RoleRepositoryProtocol, TRoleOrderByFields } from "../../repositories/interfaces/role-repository-protocol";
 import { SearchObject } from "../../utils/search-object";
 

@@ -7,6 +7,7 @@ import { AttachRoleToUserUsecase } from "../../domain/usecases/roles/attach-role
 import { CreateRoleUsecase } from "../../domain/usecases/roles/create-role-usecase";
 import { GetUserRolesAndPermissionsUsecase } from "../../domain/usecases/roles/get-user-roles-and-permissions-usecase";
 import { SearchRoleUsecase } from "../../domain/usecases/roles/search-role-usecase";
+import { UpdateRoleUsecase } from "../../domain/usecases/roles/update-role-usecase";
 import { GetUserUsecase } from "../../domain/usecases/users/get-user-usecase";
 import { isArray, isEmpty } from "../../domain/utils/validators";
 
@@ -101,6 +102,25 @@ class RoleController {
         const roles_and_permissions = await getUserRolesAndPermissionsUsecase.execute({ user_id: String(userExists.id) })
 
         return response.json(roles_and_permissions);
+    }
+
+    async updateRole(request: Request, response: Response) {
+        const {
+            name
+        } = request.body;
+
+        const {
+            id
+        } = request.params;
+
+        isEmpty(id, "Perfil não definido.");
+
+        const roleRepository = new RoleRepository();
+        const updateRoleUsecase = new UpdateRoleUsecase(roleRepository);
+
+        const result = await updateRoleUsecase.execute({ id, name });
+
+        return response.json(result);
     }
 }
 

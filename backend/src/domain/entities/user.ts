@@ -4,7 +4,7 @@ import { BaseEntityProps } from "./base-entity";
 import { hashSync } from 'bcrypt';
 import { PersonProps } from "./person";
 import { PermissionProps } from "./permission";
-import { RoleProps } from "./role.ts";
+import { RoleProps } from "./role";
 
 export interface UserProps extends BaseEntityProps {
     id?: string;

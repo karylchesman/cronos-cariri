@@ -1,4 +1,4 @@
-import { Role, RoleProps } from "../../entities/role.ts";
+import { Role, RoleProps } from "../../entities/role";
 import { RoleRepositoryProtocol } from "../../repositories/interfaces/role-repository-protocol";
 
 export interface ICreateRoleUsecaseResquest {
