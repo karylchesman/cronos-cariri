@@ -10,5 +10,6 @@ permissionRoutes.use(ensureAuthenticated);
 
 permissionRoutes.post("/create", roleController.createPermission);
 permissionRoutes.post("/search", roleController.search);
+permissionRoutes.put("/update", roleController.updatePermission);
 
 export { permissionRoutes };

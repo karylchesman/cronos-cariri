@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PermissionRepository } from "../../domain/repositories/permission-repository";
 import { CreatePermissionUsecase } from "../../domain/usecases/permissions/create-permission-usecase";
 import { SearchPermissionUsecase } from "../../domain/usecases/permissions/search-permission-usecase";
+import { UpdatePermissionUsecase } from "../../domain/usecases/permissions/update-permission-usecase";
 
 class PermissionController {
     async createPermission(request: Request, response: Response) {
@@ -49,6 +50,27 @@ class PermissionController {
         })
 
         return response.json(permissions);
+    }
+
+    async updatePermission(request: Request, response: Response) {
+        const {
+            id,
+            name,
+            identifier
+        } = request.body;
+        
+        const permissionRepository = new PermissionRepository();
+        const updatePermissionUsecase = new UpdatePermissionUsecase(permissionRepository);
+
+        const permission_updated = await updatePermissionUsecase.execute({
+            permission: {
+                id,
+                name,
+                identifier
+            }
+        })
+
+        return response.json(permission_updated);
     }
 }
 

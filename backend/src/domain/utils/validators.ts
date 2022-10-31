@@ -13,6 +13,7 @@ export const isNullOrUndefined = (value: string) => {
 }
 
 export const isEmpty = (value: string, error_message: string) => {
+    if (typeof value !== "string") throw new Error(error_message);
     if (isNullOrUndefined(value) || value.trim() === "") throw new Error(error_message);
 
     return value;
