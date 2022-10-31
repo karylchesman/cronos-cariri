@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import { PermissionRepository } from "../../domain/repositories/permission-repository";
 import { PersonRepository } from "../../domain/repositories/person-repository";
+import { RolePermissionRepository } from "../../domain/repositories/role-permission-repository";
 import { RoleRepository } from "../../domain/repositories/role-repository";
 import { UserRepository } from "../../domain/repositories/user-repository";
 import { UserRoleRepository } from "../../domain/repositories/user-role-repository";
@@ -96,8 +98,15 @@ class RoleController {
 
         const roleRepository = new RoleRepository();
         const userRoleRepository = new UserRoleRepository();
+        const permissionsRepository = new PermissionRepository();
+        const rolePermissionRepository = new RolePermissionRepository();
 
-        const getUserRolesAndPermissionsUsecase = new GetUserRolesAndPermissionsUsecase(userRoleRepository, roleRepository);
+        const getUserRolesAndPermissionsUsecase = new GetUserRolesAndPermissionsUsecase(
+            userRoleRepository,
+            roleRepository,
+            rolePermissionRepository,
+            permissionsRepository
+        );
 
         const roles_and_permissions = await getUserRolesAndPermissionsUsecase.execute({ user_id: String(userExists.id) })
 

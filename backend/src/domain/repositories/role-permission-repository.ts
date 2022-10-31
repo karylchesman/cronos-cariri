@@ -47,6 +47,16 @@ class RolePermissionRepository implements RolePermissionRepositoryProtocol {
 
         return null;
     }
+
+    async findByRoleIdList(ids: string[]): Promise<RolePermissionProps[]>{
+        const roles = await this.rolePermissionRepository.find({
+            where: {
+                role_id: In(ids)
+            }
+        })
+
+        return roles;
+    }
 }
 
 export { RolePermissionRepository }
