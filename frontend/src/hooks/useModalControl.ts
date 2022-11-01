@@ -10,7 +10,7 @@ export function useModalControl<D>() {
     const [modalData, setModalData] = useState<D | null>(null);
     const [show, setShow] = useState(false);
 
-    const turnModal = (data?: D) => {
+    const turnModal = (data?: D | null) => {
         if (data !== undefined) {
             setModalData(data);
         }else{
@@ -24,5 +24,5 @@ export function useModalControl<D>() {
         show,
         modalData,
         turnModal
-    ] as IUseModalControlReturn<D>
+    ] as IUseModalControlReturn<D | null>
 }

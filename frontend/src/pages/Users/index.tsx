@@ -17,8 +17,9 @@ import { Pagination } from '../../components/Pagination';
 import { SpanOrderIcon } from '../../components/SpanOrderIcon';
 import { useModalControl } from '../../hooks/useModalControl';
 import { FaShieldAlt, FaTrash, FaUserEdit } from 'react-icons/fa';
-import { CreateUserModal } from '../../components/CreateUserModal.ts';
+import { CreateUserModal } from '../../components/CreateUserModal';
 import PermissionsGate from '../../helpers/PermissionsGate';
+import { AttachRoleToUserModal } from '../../components/AttachRoleToUserModal';
 
 interface ISearchState {
     limit: number;
@@ -47,6 +48,7 @@ const Users = () => {
     })
 
     const [showCreateUserModal, userToEdit, turnCreateUserModal] = useModalControl<IUser>();
+    const [showAttachRoleToUserModal, userIdToAttach, turnAttachRoleToUserModal] = useModalControl<string>();
 
     async function loadUsers(signal?: AbortSignal) {
         setIsloading(true)
@@ -230,7 +232,7 @@ const Users = () => {
                                                                             Dados pessoais
                                                                         </PermissionsGate>
                                                                     </MenuItem>
-                                                                    <MenuItem icon={<FaShieldAlt />}>
+                                                                    <MenuItem onClick={() => turnAttachRoleToUserModal(item.id)} icon={<FaShieldAlt />}>
                                                                         <PermissionsGate permissions={["ROLE_ATTACH"]}>
                                                                             Perfis de acesso
                                                                         </PermissionsGate>
@@ -322,6 +324,14 @@ const Users = () => {
                         if (reload === true) loadUsers();
                     }}
                     user={userToEdit}
+                />
+
+                <AttachRoleToUserModal
+                    isOpen={showAttachRoleToUserModal}
+                    turnModal={({ data }) => {
+                        turnAttachRoleToUserModal(data);
+                    }}
+                    userId={userIdToAttach}
                 />
             </Container>
         </MainContainer>

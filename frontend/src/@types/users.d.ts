@@ -1,7 +1,7 @@
 import { IPerson } from "./persons";
 
 export interface Permission {
-    id?: string;
+    id: string;
     name: string;
     identifier: string;
     created_at: Date;
@@ -9,7 +9,7 @@ export interface Permission {
 }
 
 export interface Role {
-    id?: string;
+    id: string;
     name: string;
     created_at: Date;
     updated_at: Date;
