@@ -8,7 +8,7 @@ interface IPermissionsGateProps {
 
 function PermissionsGate({ children, permissions }: IPermissionsGateProps) {
 
-  const permissionsDefaultAllowed = [""];
+  const permissionsDefaultAllowed: string[] = [];
 
   const { user } = useAppContext();
 
@@ -26,7 +26,7 @@ function PermissionsGate({ children, permissions }: IPermissionsGateProps) {
     if (permissionsDefaultAllowed.includes(perm)) return true
   }).map(item => item);
 
-  if (!(permissions_match.length > 0)) {
+  if (!(permissions_match.length > 0) && permissionsDefaultAllowed.length > 0) {
     return null;
   }
 

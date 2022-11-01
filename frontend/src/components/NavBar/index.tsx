@@ -86,7 +86,7 @@ const NavBar = () => {
                                             <MenuItem><FaUserAlt />&nbsp;Perfil</MenuItem>
                                             <MenuItem><MdEventAvailable />&nbsp;Meus Eventos</MenuItem>
                                             <MenuItem><FaClipboardCheck />&nbsp;Minhas Inscrições</MenuItem>
-                                            <PermissionsGate permissions={[""]}>
+                                            <PermissionsGate permissions={["SYSTEM_ADMIN"]}>
                                                 <MenuDivider />
                                                 <MenuItem onClick={() => pageNavigator("/admin/home")}><MdAdminPanelSettings />&nbsp;Admin</MenuItem>
                                             </PermissionsGate>

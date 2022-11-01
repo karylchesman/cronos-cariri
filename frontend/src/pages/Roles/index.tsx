@@ -14,6 +14,7 @@ import { FiEdit } from 'react-icons/fi';
 import { useDataPagination } from '../../hooks/useDataPagination';
 import dayjs from 'dayjs';
 import { MdOutlineChecklist } from 'react-icons/md';
+import PermissionsGate from '../../helpers/PermissionsGate';
 
 export interface Role {
     id: string;
@@ -56,7 +57,9 @@ const Roles = () => {
                         <h1>Perfis de Acesso</h1>
                     </div>
                     <div className="button-create-user">
-                        <Button /* onClick={() => turnCreateUserModal()} */ rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        <PermissionsGate permissions={["ROLE_CREATE"]}>
+                            <Button /* onClick={() => turnCreateUserModal()} */ rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        </PermissionsGate>
                     </div>
                 </div>
                 <div id="body">
@@ -119,9 +122,15 @@ const Roles = () => {
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <MenuItem icon={<MdOutlineChecklist />}> Permissões</MenuItem>
-                                                                    <MenuItem icon={<FiEdit />}> Editar</MenuItem>
-                                                                    <MenuItem color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
+                                                                    <PermissionsGate permissions={["PERMISSION_ATTACH"]}>
+                                                                        <MenuItem icon={<MdOutlineChecklist />}> Permissões</MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["ROLE_UPDATE"]}>
+                                                                        <MenuItem icon={<FiEdit />}> Editar</MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["ROLE_DELETE"]}>
+                                                                        <MenuItem color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
+                                                                    </PermissionsGate>
                                                                 </MenuList>
                                                             </Menu>
                                                         </Td>

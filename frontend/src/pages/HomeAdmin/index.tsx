@@ -6,6 +6,7 @@ import { GiCarousel } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import { BsCalendar2WeekFill } from 'react-icons/bs';
 import { Container, MenuItem, MenuTitle, MenuWrapper } from './styles';
+import PermissionsGate from '../../helpers/PermissionsGate';
 
 const HomeAdmin = () => {
 
@@ -23,15 +24,23 @@ const HomeAdmin = () => {
                             <Text fontSize='2xl'>Cadastros</Text>
                         </MenuTitle>
                         <MenuWrapper>
-                            <MenuItem onClick={() => pageNavigator("/admin/users")}>
-                                <FaUserFriends size="2rem" />&nbsp;<span>Usuários</span>
-                            </MenuItem>
-                            <MenuItem onClick={() => pageNavigator("/admin/roles")}>
-                                <FaUserShield size="2rem" />&nbsp;<span>Perfis de Acesso</span>
-                            </MenuItem>
-                            <MenuItem onClick={() => pageNavigator("/admin/events")}>
-                                <BsCalendar2WeekFill size="2rem" />&nbsp;<span>Eventos</span>
-                            </MenuItem>
+                            <PermissionsGate permissions={["USER_LIST"]}>
+                                <MenuItem onClick={() => pageNavigator("/admin/users")}>
+                                    <FaUserFriends size="2rem" />&nbsp;<span>Usuários</span>
+                                </MenuItem>
+                            </PermissionsGate>
+
+                            <PermissionsGate permissions={["ROLE_LIST"]}>
+                                <MenuItem onClick={() => pageNavigator("/admin/roles")}>
+                                    <FaUserShield size="2rem" />&nbsp;<span>Perfis de Acesso</span>
+                                </MenuItem>
+                            </PermissionsGate>
+
+                            <PermissionsGate>
+                                <MenuItem onClick={() => pageNavigator("/admin/events")}>
+                                    <BsCalendar2WeekFill size="2rem" />&nbsp;<span>Eventos</span>
+                                </MenuItem>
+                            </PermissionsGate>
                         </MenuWrapper>
                     </div>
                     <div className="system">
@@ -39,9 +48,11 @@ const HomeAdmin = () => {
                             <Text fontSize='2xl'>Sistema</Text>
                         </MenuTitle>
                         <MenuWrapper>
-                            <MenuItem>
-                                <GiCarousel size="2rem" />&nbsp;<span>Carrousel</span>
-                            </MenuItem>
+                            <PermissionsGate permissions={["CARROUSEL_LIST"]}>
+                                <MenuItem>
+                                    <GiCarousel size="2rem" />&nbsp;<span>Carrousel</span>
+                                </MenuItem>
+                            </PermissionsGate>
                         </MenuWrapper>
                     </div>
                 </div>

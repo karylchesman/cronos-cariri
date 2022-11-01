@@ -17,10 +17,10 @@ function AppRoutes() {
             <Route path="/session-expired" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/admin/home" element={<PrivateRoute component={HomeAdmin} permissions={[""]} />} />
-            <Route path="/admin/users" element={<PrivateRoute component={Users} permissions={[""]} />} />
-            <Route path="/admin/events" element={<PrivateRoute component={Events} permissions={[""]} />} />
-            <Route path="/admin/roles" element={<PrivateRoute component={Roles} permissions={[""]} />} />
+            <Route path="/admin/home" element={<PrivateRoute component={HomeAdmin} permissions={["SYSTEM_ADMIN"]} />} />
+            <Route path="/admin/users" element={<PrivateRoute component={Users} permissions={["USER_LIST"]} />} />
+            <Route path="/admin/events" element={<PrivateRoute component={Events} /* permissions={[""]} */ />} />
+            <Route path="/admin/roles" element={<PrivateRoute component={Roles} permissions={["ROLE_LIST"]} />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );

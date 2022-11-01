@@ -16,8 +16,9 @@ import Swal from 'sweetalert2';
 import { Pagination } from '../../components/Pagination';
 import { SpanOrderIcon } from '../../components/SpanOrderIcon';
 import { useModalControl } from '../../hooks/useModalControl';
-import { FaTrash, FaUserEdit } from 'react-icons/fa';
+import { FaShieldAlt, FaTrash, FaUserEdit } from 'react-icons/fa';
 import { CreateUserModal } from '../../components/CreateUserModal.ts';
+import PermissionsGate from '../../helpers/PermissionsGate';
 
 interface ISearchState {
     limit: number;
@@ -159,7 +160,9 @@ const Users = () => {
                         <h1>Usuários</h1>
                     </div>
                     <div className="button-create-user">
-                        <Button onClick={() => turnCreateUserModal()} rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        <PermissionsGate permissions={["USER_CREATE"]}>
+                            <Button onClick={() => turnCreateUserModal()} rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        </PermissionsGate>
                     </div>
                 </div>
                 <div id="body">
@@ -222,9 +225,26 @@ const Users = () => {
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <MenuItem icon={<RiUserSettingsFill />}> Dados pessoais</MenuItem>
-                                                                    <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}> Editar</MenuItem>
-                                                                    <MenuItem onClick={() => deleteUser(item.id || "")} color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
+                                                                    <MenuItem icon={<RiUserSettingsFill />}>
+                                                                        <PermissionsGate>
+                                                                            Dados pessoais
+                                                                        </PermissionsGate>
+                                                                    </MenuItem>
+                                                                    <MenuItem icon={<FaShieldAlt />}>
+                                                                        <PermissionsGate permissions={["ROLE_ATTACH"]}>
+                                                                            Perfis de acesso
+                                                                        </PermissionsGate>
+                                                                    </MenuItem>
+                                                                    <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}>
+                                                                        <PermissionsGate permissions={["USER_UPDATE"]}>
+                                                                            Editar
+                                                                        </PermissionsGate>
+                                                                    </MenuItem>
+                                                                    <MenuItem onClick={() => deleteUser(item.id || "")} color="red.500" icon={<FaTrash />}>
+                                                                        <PermissionsGate permissions={["USER_DELETE"]}>
+                                                                            Excluir
+                                                                        </PermissionsGate>
+                                                                    </MenuItem>
                                                                 </MenuList>
                                                             </Menu>
                                                         </Td>
