@@ -3,6 +3,7 @@ import { PermissionRepository } from "../../domain/repositories/permission-repos
 import { RolePermissionRepository } from "../../domain/repositories/role-permission-repository";
 import { RoleRepository } from "../../domain/repositories/role-repository";
 import { CreatePermissionUsecase } from "../../domain/usecases/permissions/create-permission-usecase";
+import { GetPermissionsByRoleUsecase } from "../../domain/usecases/permissions/get-permissions-by-role-usecase";
 import { SearchPermissionUsecase } from "../../domain/usecases/permissions/search-permission-usecase";
 import { UpdatePermissionUsecase } from "../../domain/usecases/permissions/update-permission-usecase";
 import { AttachPermissionToRoleUsecase } from "../../domain/usecases/roles/attach-permission-to-role-usecase";
@@ -94,6 +95,24 @@ class PermissionController {
         })
 
         return response.json(role_permissions);
+    }
+
+    async getByRoleId(request: Request, response: Response) {
+        const {
+            id
+        } = request.params;
+
+        const roleRepository = new RoleRepository();
+        const permissionRepository = new PermissionRepository();
+        const rolePermissionRoleRepository = new RolePermissionRepository();
+
+        const getPermissionsByRoleUsecase = new GetPermissionsByRoleUsecase(roleRepository, rolePermissionRoleRepository, permissionRepository);
+
+        const permissions = await getPermissionsByRoleUsecase.execute({
+            role_id: id
+        })
+
+        return response.json(permissions);
     }
 }
 

@@ -18,6 +18,7 @@ import PermissionsGate from '../../helpers/PermissionsGate';
 import { CreateRoleModal } from '../../components/CreateRoleModal';
 import { useModalControl } from '../../hooks/useModalControl';
 import { IRole } from '../../@types/users';
+import { AttachPermissionToRoleModal } from '../../components/AttachPermissionToRoleModal';
 
 export interface Role {
     id: string;
@@ -51,6 +52,7 @@ const Roles = () => {
     });
 
     const [showCreateRoleModal, roleToEdit, turnCreateRoleModal] = useModalControl<IRole>();
+    const [showAttachPermissionToRoleModal, roleIdToAttach, turnAttachPermissionToRoleModal] = useModalControl<string>();
 
     return (
         <MainContainer>
@@ -127,7 +129,7 @@ const Roles = () => {
                                                                 </MenuButton>
                                                                 <MenuList>
                                                                     <PermissionsGate permissions={["PERMISSION_ATTACH"]}>
-                                                                        <MenuItem icon={<MdOutlineChecklist />}> Permissões</MenuItem>
+                                                                        <MenuItem onClick={() => turnAttachPermissionToRoleModal(item.id)} icon={<MdOutlineChecklist />}> Permissões</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["ROLE_UPDATE"]}>
                                                                         <MenuItem onClick={() => turnCreateRoleModal(item)} icon={<FiEdit />}> Editar</MenuItem>
@@ -212,6 +214,14 @@ const Roles = () => {
                         if (reload === true) loadRoles();
                     }}
                     role={roleToEdit}
+                />
+
+                <AttachPermissionToRoleModal
+                    isOpen={showAttachPermissionToRoleModal}
+                    turnModal={({ data }) => {
+                        turnAttachPermissionToRoleModal(data);
+                    }}
+                    roleId={roleIdToAttach}
                 />
             </Container>
         </MainContainer>
