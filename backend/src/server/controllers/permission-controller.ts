@@ -6,7 +6,7 @@ import { CreatePermissionUsecase } from "../../domain/usecases/permissions/creat
 import { GetPermissionsByRoleUsecase } from "../../domain/usecases/permissions/get-permissions-by-role-usecase";
 import { SearchPermissionUsecase } from "../../domain/usecases/permissions/search-permission-usecase";
 import { UpdatePermissionUsecase } from "../../domain/usecases/permissions/update-permission-usecase";
-import { AttachPermissionToRoleUsecase } from "../../domain/usecases/roles/attach-permission-to-role-usecase";
+import { AttachPermissionToRoleUsecase } from "../../domain/usecases/permissions/attach-permission-to-role-usecase";
 
 class PermissionController {
     async createPermission(request: Request, response: Response) {
