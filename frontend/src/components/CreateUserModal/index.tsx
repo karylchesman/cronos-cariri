@@ -25,7 +25,7 @@ import { AxiosError } from 'axios';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-interface ISideBarProps {
+interface ICreateUserModalProps {
     isOpen: boolean;
     turnModal: ({ reload, data }: { reload: boolean, data: any | null }) => void;
     user: IUser | null;
@@ -39,7 +39,7 @@ interface ICreateOrUpdateUserInputs {
     confirm_password?: string;
 }
 
-const CreateUserModal = ({ isOpen, turnModal, user }: ISideBarProps) => {
+const CreateUserModal = ({ isOpen, turnModal, user }: ICreateUserModalProps) => {
 
     const {
         register,

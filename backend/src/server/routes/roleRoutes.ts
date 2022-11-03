@@ -13,6 +13,6 @@ roleRoutes.post("/create", havePermission(["ROLE_CREATE"]), roleController.creat
 roleRoutes.post("/search", havePermission(["ROLE_LIST"]), roleController.search);
 roleRoutes.post("/attach-to-user", havePermission(["ROLE_ATTACH"]), roleController.attachRoleToUser);
 roleRoutes.get("/user/:user_id", havePermission(["ROLE_LIST_BY_USER"]), roleController.getByUser);
-roleRoutes.put("/:id", havePermission(["ROLE_UPDATE"]), roleController.updateRole);
+roleRoutes.put("/update", havePermission(["ROLE_UPDATE"]), roleController.updateRole);
 
 export { roleRoutes };

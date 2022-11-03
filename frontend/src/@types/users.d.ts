@@ -1,6 +1,6 @@
 import { IPerson } from "./persons";
 
-export interface Permission {
+export interface IPermission {
     id: string;
     name: string;
     identifier: string;
@@ -8,7 +8,7 @@ export interface Permission {
     updated_at: Date;
 }
 
-export interface Role {
+export interface IRole {
     id: string;
     name: string;
     created_at: Date;

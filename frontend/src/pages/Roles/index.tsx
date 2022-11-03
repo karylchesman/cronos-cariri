@@ -15,6 +15,9 @@ import { useDataPagination } from '../../hooks/useDataPagination';
 import dayjs from 'dayjs';
 import { MdOutlineChecklist } from 'react-icons/md';
 import PermissionsGate from '../../helpers/PermissionsGate';
+import { CreateRoleModal } from '../../components/CreateRoleModal';
+import { useModalControl } from '../../hooks/useModalControl';
+import { IRole } from '../../@types/users';
 
 export interface Role {
     id: string;
@@ -32,11 +35,10 @@ const Roles = () => {
 
     const pageNavigator = useNavigate();
     const theme = useTheme();
-    const toast = useToast();
     const {
         data,
         changeOrder,
-        // handleRequestData: loadEvents,
+        handleRequestData: loadRoles,
         isLoading,
         searchByTerm,
         searchPagination,
@@ -48,6 +50,8 @@ const Roles = () => {
         endPointPath: "/roles/search"
     });
 
+    const [showCreateRoleModal, roleToEdit, turnCreateRoleModal] = useModalControl<IRole>();
+
     return (
         <MainContainer>
             <Container>
@@ -58,7 +62,7 @@ const Roles = () => {
                     </div>
                     <div className="button-create-user">
                         <PermissionsGate permissions={["ROLE_CREATE"]}>
-                            <Button /* onClick={() => turnCreateUserModal()} */ rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                            <Button onClick={() => turnCreateRoleModal()} rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
                         </PermissionsGate>
                     </div>
                 </div>
@@ -126,7 +130,7 @@ const Roles = () => {
                                                                         <MenuItem icon={<MdOutlineChecklist />}> Permissões</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["ROLE_UPDATE"]}>
-                                                                        <MenuItem icon={<FiEdit />}> Editar</MenuItem>
+                                                                        <MenuItem onClick={() => turnCreateRoleModal(item)} icon={<FiEdit />}> Editar</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["ROLE_DELETE"]}>
                                                                         <MenuItem color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
@@ -201,14 +205,14 @@ const Roles = () => {
                     </div>
                 </div>
 
-                {/* <CreateUserModal
-                    isOpen={showCreateUserModal}
+                <CreateRoleModal
+                    isOpen={showCreateRoleModal}
                     turnModal={({ data, reload }) => {
-                        turnCreateUserModal(data);
-                        if (reload === true) loadUsers();
+                        turnCreateRoleModal(data);
+                        if (reload === true) loadRoles();
                     }}
-                    user={userToEdit}
-                /> */}
+                    role={roleToEdit}
+                />
             </Container>
         </MainContainer>
     );

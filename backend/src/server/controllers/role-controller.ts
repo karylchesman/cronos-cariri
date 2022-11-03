@@ -115,12 +115,9 @@ class RoleController {
 
     async updateRole(request: Request, response: Response) {
         const {
+            id,
             name
         } = request.body;
-
-        const {
-            id
-        } = request.params;
 
         isEmpty(id, "Perfil não definido.");
 

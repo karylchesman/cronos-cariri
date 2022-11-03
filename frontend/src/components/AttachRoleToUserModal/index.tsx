@@ -19,25 +19,25 @@ import {
 } from '@chakra-ui/react';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { useApiRequest } from '../../hooks/useApiRequest';
-import { Permission, Role } from '../../@types/users';
+import { IPermission, IRole } from '../../@types/users';
 
-interface ISideBarProps {
+interface IAttachRoleToUserModalProps {
     isOpen: boolean;
     turnModal: ({ reload, data }: { reload: boolean, data: any | null }) => void;
     userId: string | null;
 }
 
 interface IRequestUserRolesReturn {
-    roles: Role[];
-    permissions: Permission[];
+    roles: IRole[];
+    permissions: IPermission[];
 }
 
 interface IRequestRolesReturn {
-    roles: Role[];
+    roles: IRole[];
     registers: number;
 }
 
-const AttachRoleToUserModal = ({ isOpen, turnModal, userId }: ISideBarProps) => {
+const AttachRoleToUserModal = ({ isOpen, turnModal, userId }: IAttachRoleToUserModalProps) => {
 
     const [rolesToAttach, setRolesToAttach] = useState<string[]>([]);
 
