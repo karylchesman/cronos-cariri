@@ -94,7 +94,7 @@ const CreateRoleModal = ({ isOpen, turnModal, role }: ICreateRoleModalProps) => 
             onClose={handleClose}
             size="2xl"
             isOpen={isOpen}
-            isCentered
+            scrollBehavior="outside"
         >
             <ModalOverlay />
             <ModalContent>

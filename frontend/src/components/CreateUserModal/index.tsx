@@ -108,7 +108,7 @@ const CreateUserModal = ({ isOpen, turnModal, user }: ICreateUserModalProps) => 
             onClose={handleClose}
             size="2xl"
             isOpen={isOpen}
-            isCentered
+            scrollBehavior="outside"
         >
             <ModalOverlay />
             <ModalContent>

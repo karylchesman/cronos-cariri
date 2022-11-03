@@ -123,7 +123,7 @@ const AttachPermissionToRoleModal = ({ isOpen, turnModal, roleId }: IAttachPermi
             onClose={handleClose}
             size="2xl"
             isOpen={isOpen}
-            isCentered
+            scrollBehavior="outside"
         >
             <ModalOverlay />
             <ModalContent>
@@ -148,7 +148,7 @@ const AttachPermissionToRoleModal = ({ isOpen, turnModal, roleId }: IAttachPermi
                                         />
                                     </div>
                                     :
-                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 4 }}>
+                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 4 }} >
                                         {
                                             (permissionsData !== null && permissionsToAttach) && permissionsData.permissions.map((item, idx) => {
                                                 return (

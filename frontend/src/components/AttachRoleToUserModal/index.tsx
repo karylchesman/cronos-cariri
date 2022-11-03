@@ -126,7 +126,7 @@ const AttachRoleToUserModal = ({ isOpen, turnModal, userId }: IAttachRoleToUserM
             onClose={handleClose}
             size="2xl"
             isOpen={isOpen}
-            isCentered
+            scrollBehavior="outside"
         >
             <ModalOverlay />
             <ModalContent>
