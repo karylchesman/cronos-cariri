@@ -78,7 +78,7 @@ const CreateUserModal = ({ isOpen, turnModal, user }: ICreateUserModalProps) => 
                 status: "success",
                 duration: 3000,
                 variant: "left-accent",
-                position: "bottom"
+                position: "top"
             });
 
             handleClose(true);
@@ -89,7 +89,7 @@ const CreateUserModal = ({ isOpen, turnModal, user }: ICreateUserModalProps) => 
                 status: "warning",
                 duration: 3000,
                 variant: "left-accent",
-                position: "bottom"
+                position: "top"
             })
         }
         setIsloading(false);
