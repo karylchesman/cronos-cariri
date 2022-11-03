@@ -151,11 +151,11 @@ const AttachRoleToUserModal = ({ isOpen, turnModal, userId }: IAttachRoleToUserM
                                         />
                                     </div>
                                     :
-                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 4 }}>
+                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg:2 }}>
                                         {
                                             (rolesData !== null && rolesToAttach) && rolesData.roles.map((item, idx) => {
                                                 return (
-                                                    <>
+                                                    <SimpleGrid w="100%" key={`bx-${idx}`} columns={{ base: 1, lg: 2 }}>
                                                         <FormLabel key={idx} htmlFor={`role-${idx}`}>{item.name}</FormLabel>
                                                         <Switch
                                                             key={`role-${idx}`}
@@ -163,7 +163,7 @@ const AttachRoleToUserModal = ({ isOpen, turnModal, userId }: IAttachRoleToUserM
                                                             isChecked={rolesToAttach.includes(item.id) ? true : false}
                                                             onChange={() => addOrRemoveRole(item.id)}
                                                         />
-                                                    </>
+                                                    </SimpleGrid>
                                                 )
                                             })
                                         }

@@ -148,11 +148,11 @@ const AttachPermissionToRoleModal = ({ isOpen, turnModal, roleId }: IAttachPermi
                                         />
                                     </div>
                                     :
-                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 4 }} >
+                                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 2 }} >
                                         {
                                             (permissionsData !== null && permissionsToAttach) && permissionsData.permissions.map((item, idx) => {
                                                 return (
-                                                    <>
+                                                    <SimpleGrid w="100%" key={`bx-${idx}`} columns={{ base: 1, lg: 2 }}>
                                                         <FormLabel key={idx} htmlFor={`role-${idx}`}>{item.name}</FormLabel>
                                                         <Switch
                                                             key={`permission-${idx}`}
@@ -160,7 +160,7 @@ const AttachPermissionToRoleModal = ({ isOpen, turnModal, roleId }: IAttachPermi
                                                             isChecked={permissionsToAttach.includes(item.id) ? true : false}
                                                             onChange={() => addOrRemovePermission(item.id)}
                                                         />
-                                                    </>
+                                                    </SimpleGrid>
                                                 )
                                             })
                                         }
