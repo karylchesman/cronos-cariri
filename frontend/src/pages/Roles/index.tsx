@@ -19,6 +19,9 @@ import { CreateRoleModal } from '../../components/CreateRoleModal';
 import { useModalControl } from '../../hooks/useModalControl';
 import { IRole } from '../../@types/users';
 import { AttachPermissionToRoleModal } from '../../components/AttachPermissionToRoleModal';
+import Swal from 'sweetalert2';
+import { api } from '../../services/ApiService';
+import { AxiosError } from 'axios';
 
 export interface Role {
     id: string;
@@ -36,6 +39,7 @@ const Roles = () => {
 
     const pageNavigator = useNavigate();
     const theme = useTheme();
+    const toast = useToast();
     const {
         data,
         changeOrder,
@@ -53,6 +57,52 @@ const Roles = () => {
 
     const [showCreateRoleModal, roleToEdit, turnCreateRoleModal] = useModalControl<IRole>();
     const [showAttachPermissionToRoleModal, roleIdToAttach, turnAttachPermissionToRoleModal] = useModalControl<string>();
+
+    async function deleteRole(role_id: string) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Excluir perfil de acesso',
+            text: "Tem certeza que deseja excluir este perfil de acesso?\nTodos os usuários atualmente vinculados a este perfil perderão todas as permissões exclusivas a ele.",
+            toast: true,
+            confirmButtonColor: theme.button_colors.primary,
+            confirmButtonText: "Confirmar",
+            showDenyButton: true,
+            denyButtonText: "Cancelar",
+            denyButtonColor: theme.button_colors.danger,
+            preConfirm: () => execute(),
+            showLoaderOnConfirm: true
+        })
+
+        const execute = async () => {
+            try {
+                await api.delete(`/roles/${role_id}`);
+
+                toast({
+                    title: "Feito!",
+                    description: "Perfil excluído com sucesso!",
+                    status: "success",
+                    duration: 3000,
+                    variant: "left-accent",
+                    position: "top"
+                });
+                loadRoles();
+            } catch (err: AxiosError | any) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: err.response ? err.response.data.error : "Falha ao tentar comunicar-se com o servidor.",
+                    toast: true,
+                    confirmButtonColor: theme.button_colors.primary,
+                    confirmButtonText: "Tentar novamente",
+                    showDenyButton: true,
+                    denyButtonText: "Cancelar",
+                    denyButtonColor: theme.button_colors.danger,
+                    preConfirm: () => deleteRole(role_id)
+                })
+            }
+        }
+    }
 
     return (
         <MainContainer>
@@ -135,7 +185,7 @@ const Roles = () => {
                                                                         <MenuItem onClick={() => turnCreateRoleModal(item)} icon={<FiEdit />}> Editar</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["ROLE_DELETE"]}>
-                                                                        <MenuItem color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
+                                                                        <MenuItem onClick={() => deleteRole(item.id)} color="red.500" icon={<FaTrash />}> Excluir</MenuItem>
                                                                     </PermissionsGate>
                                                                 </MenuList>
                                                             </Menu>

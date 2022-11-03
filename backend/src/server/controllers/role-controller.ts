@@ -7,6 +7,7 @@ import { UserRepository } from "../../domain/repositories/user-repository";
 import { UserRoleRepository } from "../../domain/repositories/user-role-repository";
 import { AttachRoleToUserUsecase } from "../../domain/usecases/roles/attach-role-to-user-usecase";
 import { CreateRoleUsecase } from "../../domain/usecases/roles/create-role-usecase";
+import { DeleteRoleUsecase } from "../../domain/usecases/roles/delete-role-usecase";
 import { GetUserRolesAndPermissionsUsecase } from "../../domain/usecases/roles/get-user-roles-and-permissions-usecase";
 import { SearchRoleUsecase } from "../../domain/usecases/roles/search-role-usecase";
 import { UpdateRoleUsecase } from "../../domain/usecases/roles/update-role-usecase";
@@ -127,6 +128,19 @@ class RoleController {
         const result = await updateRoleUsecase.execute({ id, name });
 
         return response.json(result);
+    }
+
+    async deleteRole(request: Request, response: Response) {
+        const {
+            id
+        } = request.params;
+
+        const roleRepository = new RoleRepository();
+        const deleteRoleUsecase = new DeleteRoleUsecase(roleRepository);
+
+        await deleteRoleUsecase.execute({ role_id: id });
+
+        return response.json({ message: "Success" });
     }
 }
 

@@ -14,5 +14,6 @@ roleRoutes.post("/search", havePermission(["ROLE_LIST"]), roleController.search)
 roleRoutes.post("/attach-to-user", havePermission(["ROLE_ATTACH"]), roleController.attachRoleToUser);
 roleRoutes.get("/user/:user_id", havePermission(["ROLE_LIST_BY_USER"]), roleController.getByUser);
 roleRoutes.put("/update", havePermission(["ROLE_UPDATE"]), roleController.updateRole);
+roleRoutes.delete("/:id", havePermission(["ROLE_DELETE"]), roleController.deleteRole);
 
 export { roleRoutes };
