@@ -89,8 +89,8 @@ class UserController {
             email,
             name,
             password,
-            role,
-            token_user_id
+            token_user_id,
+            token_user_permissions
         } = request.body;
 
         const userRepository = new UserRepository();
@@ -98,7 +98,8 @@ class UserController {
 
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
         const userLogged = await getUserUsecase.execute(token_user_id);
-
+        userLogged.permissions = token_user_permissions;
+        
         const updateUserUsecase = new UpdateUserUsecase(userLogged, userRepository);
         const updated_user = await updateUserUsecase.execute({
             id,

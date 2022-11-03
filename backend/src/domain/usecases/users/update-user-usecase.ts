@@ -23,7 +23,11 @@ class UpdateUserUsecase {
             throw new Error("Usuário não encontrado.");
         }
 
-        if (this.userRequestedUpdate.id !== userExists.id) {
+        if (
+            this.userRequestedUpdate.id !== userExists.id
+            && this.userRequestedUpdate.permissions !== undefined
+            && (!this.userRequestedUpdate.permissions.map(item => item.identifier).some(perm => perm === "USER_ADMIN_UPDATE"))
+        ) {
             throw new Error("Você não tem permissão para realizar esta ação.");
         }
 

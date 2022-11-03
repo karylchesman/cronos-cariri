@@ -33,7 +33,7 @@ export function havePermission(permissions: string[]) {
             throw new Error("Você não tem permissão para executar esta ação.");
         }
 
-        request.body["toke_user_permissions"] = roles_and_permissions.permissions;
+        request.body["token_user_permissions"] = roles_and_permissions.permissions;
 
         return next();
     }
