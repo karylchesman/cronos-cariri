@@ -227,26 +227,26 @@ const Users = () => {
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <MenuItem icon={<RiUserSettingsFill />}>
-                                                                        <PermissionsGate>
+                                                                    <PermissionsGate>
+                                                                        <MenuItem icon={<RiUserSettingsFill />}>
                                                                             Dados pessoais
-                                                                        </PermissionsGate>
-                                                                    </MenuItem>
-                                                                    <MenuItem onClick={() => turnAttachRoleToUserModal(item.id)} icon={<FaShieldAlt />}>
-                                                                        <PermissionsGate permissions={["ROLE_ATTACH"]}>
+                                                                        </MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["ROLE_ATTACH"]}>
+                                                                        <MenuItem onClick={() => turnAttachRoleToUserModal(item.id)} icon={<FaShieldAlt />}>
                                                                             Perfis de acesso
-                                                                        </PermissionsGate>
-                                                                    </MenuItem>
-                                                                    <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}>
-                                                                        <PermissionsGate permissions={["USER_UPDATE"]}>
+                                                                        </MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["USER_UPDATE"]}>
+                                                                        <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}>
                                                                             Editar
-                                                                        </PermissionsGate>
-                                                                    </MenuItem>
-                                                                    <MenuItem onClick={() => deleteUser(item.id || "")} color="red.500" icon={<FaTrash />}>
-                                                                        <PermissionsGate permissions={["USER_DELETE"]}>
+                                                                        </MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["USER_DELETE"]}>
+                                                                        <MenuItem onClick={() => deleteUser(item.id || "")} color="red.500" icon={<FaTrash />}>
                                                                             Excluir
-                                                                        </PermissionsGate>
-                                                                    </MenuItem>
+                                                                        </MenuItem>
+                                                                    </PermissionsGate>
                                                                 </MenuList>
                                                             </Menu>
                                                         </Td>
