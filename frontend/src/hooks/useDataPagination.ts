@@ -9,7 +9,7 @@ import { SearchObject } from '../utils/search-object';
 interface ISearchState<DataType> {
     limit: number;
     page: number;
-    search_params?: SearchObject<DataType> | string;
+    search_params?: SearchObject<DataType>[] | string;
     registers: number;
     order_by: string;
     order: "ASC" | "DESC";
@@ -24,7 +24,6 @@ interface IUseDataPaginationProps<RequestReturnType, DataType> {
 export function useDataPagination<RequestReturnType, DataType>({ initalState, endPointPath }: IUseDataPaginationProps<RequestReturnType, DataType>) {
     const theme = useTheme();
     const [data, setData] = useState<RequestReturnType | null>(initalState);
-    const [searchTerm, setSearchTerm] = useState<string | undefined>("");
     const [isLoading, setIsloading] = useState(false);
     const [searchPagination, setSearchPagination] = useState<ISearchState<DataType>>({
         limit: 10,
@@ -42,8 +41,8 @@ export function useDataPagination<RequestReturnType, DataType>({ initalState, en
                 search_params: searchPagination.search_params,
                 order_by: searchPagination.order_by,
                 order: searchPagination.order
-            }, { signal });
-
+            }, { signal: signal });
+            
             setData(result.data);
             setSearchPagination((state) => ({
                 ...state,
@@ -69,23 +68,41 @@ export function useDataPagination<RequestReturnType, DataType>({ initalState, en
         setIsloading(false)
     }
 
-    function searchByTerm() {
-        setSearchPagination((state) => ({ ...state, search_params: searchTerm }))
+    function changeSearch(search_value: SearchObject<DataType>[] | string) {
+        setSearchPagination((state) => ({ ...state, search_params: search_value }))
     }
 
     function changeOrder(order_by: string) {
         setSearchPagination((state) => ({ ...state, order_by, order: state.order === "ASC" ? "DESC" : "ASC" }))
     }
 
-    useEffect(() => {
-        const controller = new AbortController();
-        handleRequestData(controller.signal);
+    function addOrRemoveFilter(filter: SearchObject<DataType>) {
+        if (typeof searchPagination.search_params === "string" || searchPagination.search_params === undefined) return;
 
+        let alreadyExists = searchPagination.search_params.findIndex(item => item === filter);
+        let new_array: SearchObject<DataType>[] = searchPagination.search_params;
+
+        if (alreadyExists !== -1) {
+            let to_remove = searchPagination.search_params.slice(alreadyExists, (alreadyExists + 1));
+            new_array = searchPagination.search_params.filter(item => {
+                if (!to_remove.includes(item)) return item
+            })
+
+            changeSearch(new_array);
+        } else {
+            changeSearch(new_array.concat(filter));
+        }
+    }
+
+    useEffect(() => {     
+        const controller = new AbortController(); 
+        handleRequestData(controller.signal);
+        
         return () => {
             controller.abort();
         }
     }, [
-        searchPagination.search_params,
+        /* searchPagination.search_params, */
         searchPagination.limit,
         searchPagination.page,
         searchPagination.order_by,
@@ -93,8 +110,8 @@ export function useDataPagination<RequestReturnType, DataType>({ initalState, en
     ])
 
     return {
-        searchByTerm,
-        setSearchTerm,
+        changeSearch,
+        addOrRemoveFilter,
         changeOrder,
         isLoading,
         searchPagination,

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
 import { Container } from './styles';
-import { BsPlusCircleDotted, BsSearch } from 'react-icons/bs';
+import { BsPlusCircleDotted } from 'react-icons/bs';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { AiFillSetting } from 'react-icons/ai';
 import { useTheme } from 'styled-components';
@@ -12,16 +14,15 @@ import { SpanOrderIcon } from '../../components/SpanOrderIcon';
 import { FaTrash } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useDataPagination } from '../../hooks/useDataPagination';
-import dayjs from 'dayjs';
 import { MdOutlineChecklist } from 'react-icons/md';
 import PermissionsGate from '../../helpers/PermissionsGate';
 import { CreateRoleModal } from '../../components/CreateRoleModal';
 import { useModalControl } from '../../hooks/useModalControl';
 import { IRole } from '../../@types/users';
 import { AttachPermissionToRoleModal } from '../../components/AttachPermissionToRoleModal';
-import Swal from 'sweetalert2';
 import { api } from '../../services/ApiService';
 import { AxiosError } from 'axios';
+import { SearchWithFilter } from '../../components/SearchWithFilter';
 
 export interface Role {
     id: string;
@@ -45,10 +46,10 @@ const Roles = () => {
         changeOrder,
         handleRequestData: loadRoles,
         isLoading,
-        searchByTerm,
         searchPagination,
         setSearchPagination,
-        setSearchTerm
+        addOrRemoveFilter,
+        changeSearch,
     } = useDataPagination<IGetRolesReturnType, Role>({
         initalState: null,
         initalOrderBy: "name",
@@ -120,32 +121,34 @@ const Roles = () => {
                 </div>
                 <div id="body">
                     <div className="search-box">
-                        <InputGroup size='md'>
-                            <Input
-                                pr='4.5rem'
-                                type="text"
-                                placeholder='Digite algo para procurar...'
-                                onChange={(event) => {
-                                    let value = event.target.value;
-
-                                    if (value === "") {
-                                        setSearchTerm(undefined);
-                                    } else {
-                                        setSearchTerm(value);
+                        <SearchWithFilter
+                            onChangeFilter={(data) => {
+                                if (typeof data === "string") {
+                                    changeSearch(data)
+                                } else {
+                                    addOrRemoveFilter(data)
+                                }
+                            }}
+                            onEnterPress={() => {
+                                loadRoles()
+                            }}
+                            onSearchTypeChange={(type) => {
+                                if (type === "filter") {
+                                    changeSearch([])
+                                } else {
+                                    changeSearch("")
+                                }
+                            }}
+                            searchValue={searchPagination.search_params === undefined ? "" : searchPagination.search_params}
+                            filterOptions={
+                                [
+                                    {
+                                        alias: "Nome",
+                                        key: "name"
                                     }
-                                }}
-                                onKeyDown={(event) => {
-                                    if (event.key === "Enter") {
-                                        searchByTerm()
-                                    }
-                                }}
-                            />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={searchByTerm}>
-                                    <BsSearch color="#FFF" />
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
+                                ]
+                            }
+                        />
                     </div>
 
                     <div className="table-box">
@@ -160,7 +163,7 @@ const Roles = () => {
                                         <Th>
                                             <SpanOrderIcon fieldDisplayName="Criado em" fieldName="created_at" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
-                                        <Th>Ações</Th>
+                                        <Th display="flex" justifyContent="center">Ações</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
@@ -172,7 +175,7 @@ const Roles = () => {
                                                         <Td>{idx + 1}</Td>
                                                         <Td>{item.name}</Td>
                                                         <Td>{dayjs(item.created_at).format("DD/MM/YYYY")}</Td>
-                                                        <Td>
+                                                        <Td display="flex" justifyContent="center">
                                                             <Menu>
                                                                 <MenuButton as={Button}>
                                                                     <AiFillSetting />

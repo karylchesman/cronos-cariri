@@ -73,10 +73,11 @@ const Events = () => {
         changeOrder,
         // handleRequestData: loadEvents,
         isLoading,
-        searchByTerm,
+        changeSearch,
         searchPagination,
         setSearchPagination,
-        setSearchTerm
+        addOrRemoveFilter,
+        handleRequestData: handleSearch
     } = useDataPagination<IGetEventsReturnType, Event>({
         initalState: null,
         initalOrderBy: "name",
@@ -103,22 +104,16 @@ const Events = () => {
                                 type="text"
                                 placeholder='Digite algo para procurar...'
                                 onChange={(event) => {
-                                    let value = event.target.value;
-
-                                    if (value === "") {
-                                        setSearchTerm(undefined);
-                                    } else {
-                                        setSearchTerm(value);
-                                    }
+                                    changeSearch(event.target.value)
                                 }}
                                 onKeyDown={(event) => {
                                     if (event.key === "Enter") {
-                                        searchByTerm()
+                                        handleSearch()
                                     }
                                 }}
                             />
                             <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={searchByTerm}>
+                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={()=> handleSearch()}>
                                     <BsSearch color="#FFF" />
                                 </Button>
                             </InputRightElement>
@@ -140,7 +135,7 @@ const Events = () => {
                                         <Th>
                                             <SpanOrderIcon fieldDisplayName="Status" fieldName="status" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
-                                        <Th>Ações</Th>
+                                        <Th display="flex" justifyContent="center">Ações</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
@@ -155,7 +150,7 @@ const Events = () => {
                                                         <Td>
                                                             <EventStatusBadge status={item.status} />
                                                         </Td>
-                                                        <Td>
+                                                        <Td display="flex" justifyContent="center">
                                                             <Menu>
                                                                 <MenuButton as={Button}>
                                                                     <AiFillSetting />

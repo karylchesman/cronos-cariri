@@ -209,7 +209,7 @@ const Users = () => {
                                         <Th>
                                             <SpanOrderIcon fieldDisplayName="E-mail" fieldName="email" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
-                                        <Th>Ações</Th>
+                                        <Th display="flex" justifyContent="center">Ações</Th>
                                     </Tr>
                                 </Thead>
                                 <Tbody>
@@ -221,7 +221,7 @@ const Users = () => {
                                                         <Td>{idx + 1}</Td>
                                                         <Td>{item.name}</Td>
                                                         <Td>{item.email}</Td>
-                                                        <Td>
+                                                        <Td display="flex" justifyContent="center">
                                                             <Menu>
                                                                 <MenuButton as={Button}>
                                                                     <AiFillSetting />
