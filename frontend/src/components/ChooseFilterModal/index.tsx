@@ -26,7 +26,7 @@ export const OPERATORS: TOperatorObject = {
     "<": { types_allowed: ["number"], alias: "Menor que" },
     ">": { types_allowed: ["number"], alias: "Maior que" },
     "<=": { types_allowed: ["number"], alias: "Menor ou igual a..." },
-    "=>": { types_allowed: ["number"], alias: "Maior ou igual a..." },
+    ">=": { types_allowed: ["number"], alias: "Maior ou igual a..." },
     "A*": { types_allowed: ["string",], alias: "Começa com" },
     "*A": { types_allowed: ["string",], alias: "Termina com" },
     "*A*": { types_allowed: ["string",], alias: "Contém" },

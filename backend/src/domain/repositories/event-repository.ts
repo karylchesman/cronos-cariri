@@ -2,7 +2,7 @@ import { Equal, Like, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMEvent } from "../../infra/typeORM/entities/ORMEvent";
 import { EventProps } from "../entities/event";
-import { getWhereString, ISearchObject } from "../utils/search-object";
+import { getWhereObject, ISearchObject } from "../utils/search-object";
 import { EventRepositoryProtocol } from "./interfaces/event-repository-protocol";
 
 class EventRepository implements EventRepositoryProtocol {
@@ -76,7 +76,7 @@ class EventRepository implements EventRepositoryProtocol {
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereString(item.operator, item.key, item.value, "events");
+                    let search_object = getWhereObject(item.operator, item.key, item.value, "events");
 
                     if (idx === 0) {
                         query.where(search_object.where_string, search_object.value_param);

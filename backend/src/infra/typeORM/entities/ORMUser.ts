@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne } from 'typeorm';
+import { ORMPerson } from './ORMPerson';
 
 @Entity("users")
 class ORMUser {
@@ -24,7 +25,11 @@ class ORMUser {
     created_at!: Date;
 
     @UpdateDateColumn()
-    updated_at!: Date
+    updated_at!: Date;
+
+    @JoinColumn({ name: "person_id", referencedColumnName: "id" })
+    @OneToOne(() => ORMPerson)
+    person!: ORMPerson;
 }
 
 export { ORMUser }

@@ -12,6 +12,24 @@ export const isNullOrUndefined = (value: string) => {
     return false;
 }
 
+export const isString = (value: any, error_message: string) => {
+    if (typeof value !== "string") throw new Error(error_message);
+
+    return value;
+}
+
+export const isBoolean = (value: any, error_message: string) => {
+    if (typeof value !== "boolean") throw new Error(error_message);
+
+    return value;
+}
+
+export const isNumber = (value: any, error_message: string) => {
+    if (typeof value !== "number") throw new Error(error_message);
+    if (Number.isNaN(Number(value))) throw new Error(error_message);
+    return value;
+}
+
 export const isEmpty = (value: string, error_message: string) => {
     if (typeof value !== "string") throw new Error(error_message);
     if (isNullOrUndefined(value) || value.trim() === "") throw new Error(error_message);

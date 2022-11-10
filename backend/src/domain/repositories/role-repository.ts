@@ -2,7 +2,7 @@ import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMRole } from "../../infra/typeORM/entities/ORMRole";
 import { RoleProps } from "../entities/role";
-import { getWhereString, ISearchObject } from "../utils/search-object";
+import { getWhereObject, ISearchObject } from "../utils/search-object";
 import { RoleRepositoryProtocol, TRoleOrderByFields } from "./interfaces/role-repository-protocol";
 
 class RoleRepository implements RoleRepositoryProtocol {
@@ -48,7 +48,7 @@ class RoleRepository implements RoleRepositoryProtocol {
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereString(item.operator, item.key, item.value, "roles");
+                    let search_object = getWhereObject(item.operator, item.key, item.value, "roles");
 
                     if (idx === 0) {
                         query.where(search_object.where_string, search_object.value_param);

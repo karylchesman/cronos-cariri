@@ -2,7 +2,7 @@ import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMPermission } from "../../infra/typeORM/entities/ORMPermission";
 import { PermissionProps } from "../entities/permission";
-import { getWhereString, ISearchObject } from "../utils/search-object";
+import { getWhereObject, ISearchObject } from "../utils/search-object";
 import { PermissionRepositoryProtocol, TPermissionOrderByFields } from "./interfaces/permission-repository-protocol";
 
 class PermissionRepository implements PermissionRepositoryProtocol {
@@ -48,7 +48,7 @@ class PermissionRepository implements PermissionRepositoryProtocol {
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereString(item.operator, item.key, item.value, "permissions");
+                    let search_object = getWhereObject(item.operator, item.key, item.value, "permissions");
 
                     if (idx === 0) {
                         query.where(search_object.where_string, search_object.value_param);

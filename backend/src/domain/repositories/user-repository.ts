@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMUser } from "../../infra/typeORM/entities/ORMUser";
 import { UserProps } from "../entities/user";
-import { getWhereString, ISearchObject } from "../utils/search-object";
+import { getWhereObject, ISearchObject } from "../utils/search-object";
 import { UserRepositoryProtocol } from "./interfaces/user-repository-protocol";
 
 class UserRepository implements UserRepositoryProtocol {
@@ -53,7 +53,8 @@ class UserRepository implements UserRepositoryProtocol {
 
     async search(search_params?: ISearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof UserProps, order?: "ASC" | "DESC") {
 
-        const query = this.userRepository.createQueryBuilder("users").select("users");
+        const query = this.userRepository.createQueryBuilder("users")
+            .leftJoinAndSelect("users.person", "person")
 
         if (search_params !== undefined) {
             if (typeof search_params === "string") {
@@ -63,7 +64,7 @@ class UserRepository implements UserRepositoryProtocol {
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereString(item.operator, item.key, item.value, "users");
+                    let search_object = getWhereObject(item.operator, item.key, item.value, "users");
 
                     if (idx === 0) {
                         query.where(search_object.where_string, search_object.value_param);
@@ -82,7 +83,7 @@ class UserRepository implements UserRepositoryProtocol {
         }
 
         if (order_by !== undefined && order !== undefined) {
-            query.addOrderBy(order_by, order);
+            query.addOrderBy(`users.${order_by}`, order);
         }
 
         const users_found = await query.getManyAndCount();

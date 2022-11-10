@@ -141,6 +141,10 @@ const Users = () => {
                                     {
                                         alias: "E-mail",
                                         key: "email"
+                                    },
+                                    {
+                                        alias: "CPF",
+                                        key: "person:cpf"
                                     }
                                 ]
                             }
