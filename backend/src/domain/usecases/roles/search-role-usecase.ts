@@ -1,9 +1,9 @@
 import { RoleProps } from "../../entities/role";
 import { RoleRepositoryProtocol, TRoleOrderByFields } from "../../repositories/interfaces/role-repository-protocol";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type ISearchRoleUsecaseRequest = {
-    search_params?: SearchObject<RoleProps>[] | string;
+    search_params?: ISearchObject<RoleProps>[] | string;
     page?: number;
     limit?: number;
     order_by?: TRoleOrderByFields;
