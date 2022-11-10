@@ -23,12 +23,24 @@ class SearchUserUsecase {
             if (order !== "ASC" && order !== "DESC") throw new Error("Defina uma ordem para a chave de ordenação selecionada.");
         }
 
-        if(Array.isArray(search_params)){
-            search_params.forEach(item =>{
+        if (Array.isArray(search_params)) {
+            search_params.forEach(item => {
                 isValidSearchKey(item.key, [
                     "name",
                     "email",
-                    "person:cpf"
+                    "person:cpf",
+                    "person:phonenumber1",
+                    "person:phonenumber2",
+                    "person:gender",
+                    "person:rg",
+                    "person:bith_date",
+                    "person:blood_type",
+                    "person:address_street",
+                    "person:address_number",
+                    "person:address_district",
+                    "person:address_city",
+                    "person:address_uf",
+                    "person:address_cep",
                 ])
                 isValidSearchValue(item.value)
                 isValidSearchOperator(item.operator)
