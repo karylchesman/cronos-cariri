@@ -22,6 +22,7 @@ import { useForm } from 'react-hook-form';
 
 export const OPERATORS: TOperatorObject = {
     "=": { types_allowed: ["string", "number", "boolean"], alias: "Igual" },
+    "<>": { types_allowed: ["string", "number", "boolean"], alias: "Diferente de" },
     "<": { types_allowed: ["number"], alias: "Menor que" },
     ">": { types_allowed: ["number"], alias: "Maior que" },
     "<=": { types_allowed: ["number"], alias: "Menor ou igual a..." },

@@ -1,4 +1,4 @@
-export type TSearchObjectOperator = "=" | "<" | ">" | "<=" | "=>" | "A*" | "*A" | "*A*";
+export type TSearchObjectOperator = "=" | "<>" | "<" | ">" | "<=" | "=>" | "A*" | "*A" | "*A*";
 
 export interface SearchObject<T> {
     alias: string;
