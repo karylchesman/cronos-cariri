@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTheme } from 'styled-components';
 import Swal from 'sweetalert2';
 import { api } from '../services/ApiService';
-import { SearchObject } from '../utils/search-object';
+import { SearchObject } from '../@types/search-object';
 
 interface ISearchState<DataType> {
     limit: number;

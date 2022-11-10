@@ -4,17 +4,19 @@ import { BsSearch } from 'react-icons/bs';
 import { GoSettings } from 'react-icons/go';
 import { IoText } from 'react-icons/io5';
 import { Container, FilterInput } from './styles';
-import { SearchObject } from '../../utils/search-object';
-import { ChooseFilterModal } from '../ChooseFilterModal';
+import { SearchObject } from '../../@types/search-object';
+import { ChooseFilterModal, TFilterOptions } from '../ChooseFilterModal';
 import { useModalControl } from '../../hooks/useModalControl';
 import { IoMdAdd } from 'react-icons/io';
+
+
 
 interface ISearchWithFilterProps {
     onChangeFilter: (data: any) => void;
     onEnterPress: () => void;
     onSearchTypeChange: (value: "text" | "filter") => void;
     searchValue: SearchObject<any>[] | string;
-    filterOptions: { alias: string, key: string }[];
+    filterOptions: TFilterOptions[];
 }
 
 const SearchWithFilter = ({ onChangeFilter, onEnterPress, searchValue, onSearchTypeChange, filterOptions }: ISearchWithFilterProps) => {
@@ -74,7 +76,12 @@ const SearchWithFilter = ({ onChangeFilter, onEnterPress, searchValue, onSearchT
                                                     turnChooseFilterModal(item)
                                                 }}
                                             >
-                                                <TagLabel>{item.alias} {item.operator} {item.value}</TagLabel>
+                                                {
+                                                    (typeof item.value === "boolean") ?
+                                                        <TagLabel>{item.alias} {item.operator} {item.value ? "SIM" : "NÃO"}</TagLabel>
+                                                        :
+                                                        <TagLabel>{item.alias} {item.operator} {item.value}</TagLabel>
+                                                }
                                                 <TagCloseButton onClick={(target) => {
                                                     target.stopPropagation()
                                                     onChangeFilter(item)

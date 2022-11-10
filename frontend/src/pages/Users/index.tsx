@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon, Badge, Button, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Menu, MenuButton, MenuItem, MenuList, Select, Spinner, Table, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
 import { Container } from './styles';
-import { BsPlusCircleDotted, BsSearch } from 'react-icons/bs';
+import { BsPlusCircleDotted } from 'react-icons/bs';
 import { BiLeftArrowAlt } from 'react-icons/bi';
 import { AiFillSetting } from 'react-icons/ai';
 import { RiUserSettingsFill } from 'react-icons/ri';
 import { useTheme } from 'styled-components';
 import { IUser } from '../../@types/users';
 import { api } from '../../services/ApiService';
-import { SearchObject } from '../../utils/search-object';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import { Pagination } from '../../components/Pagination';
@@ -142,6 +141,11 @@ const Users = () => {
                                     {
                                         alias: "E-mail",
                                         key: "email"
+                                    },
+                                    {
+                                        alias: "Ativo",
+                                        key: "active",
+                                        value_type: "boolean"
                                     }
                                 ]
                             }
