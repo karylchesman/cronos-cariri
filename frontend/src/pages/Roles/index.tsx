@@ -24,15 +24,8 @@ import { api } from '../../services/ApiService';
 import { AxiosError } from 'axios';
 import { SearchWithFilter } from '../../components/SearchWithFilter';
 
-export interface Role {
-    id: string;
-    name: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
 interface IGetRolesReturnType {
-    roles: Role[];
+    roles: IRole[];
     registers: number;
 }
 
@@ -50,7 +43,7 @@ const Roles = () => {
         setSearchPagination,
         addOrRemoveFilter,
         changeSearch,
-    } = useDataPagination<IGetRolesReturnType, Role>({
+    } = useDataPagination<IGetRolesReturnType, IRole>({
         initalState: null,
         initalOrderBy: "name",
         endPointPath: "/roles/search"

@@ -20,14 +20,12 @@ import { FaShieldAlt, FaTrash, FaUserEdit } from 'react-icons/fa';
 import { CreateUserModal } from '../../components/CreateUserModal';
 import PermissionsGate from '../../helpers/PermissionsGate';
 import { AttachRoleToUserModal } from '../../components/AttachRoleToUserModal';
+import { SearchWithFilter } from '../../components/SearchWithFilter';
+import { useDataPagination } from '../../hooks/useDataPagination';
 
-interface ISearchState {
-    limit: number;
-    page: number;
-    search_params?: SearchObject<IUser> | string;
+interface IGetUsersReturnType {
+    users: IUser[];
     registers: number;
-    order_by: string;
-    order: "ASC" | "DESC";
 }
 
 const Users = () => {
@@ -35,54 +33,24 @@ const Users = () => {
     const pageNavigator = useNavigate();
     const theme = useTheme();
     const toast = useToast();
-    const [users, setUsers] = useState<IUser[]>([]);
-    const [isLoading, setIsloading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState<string | undefined>("");
-    const [searchPagination, setSearchPagination] = useState<ISearchState>({
-        limit: 10,
-        page: 1,
-        search_params: undefined,
-        registers: 0,
-        order_by: "name",
-        order: "ASC"
-    })
 
     const [showCreateUserModal, userToEdit, turnCreateUserModal] = useModalControl<IUser>();
     const [showAttachRoleToUserModal, userIdToAttach, turnAttachRoleToUserModal] = useModalControl<string>();
 
-    async function loadUsers(signal?: AbortSignal) {
-        setIsloading(true)
-        try {
-            const result = await api.post(`/users/search?limit=${searchPagination.limit}&page=${searchPagination.page}`, {
-                search_params: searchPagination.search_params,
-                order_by: searchPagination.order_by,
-                order: searchPagination.order
-            }, { signal });
-
-            setUsers(result.data.users);
-            setSearchPagination((state) => ({
-                ...state,
-                registers: result.data.registers,
-                page: result.data.registers !== searchPagination.registers ? 1 : searchPagination.page
-            }))
-        } catch (err: AxiosError | any) {
-            if (err.name === "CanceledError") return;
-
-            Swal.fire({
-                icon: 'warning',
-                title: 'Oops...',
-                text: err.response ? err.response.data.error : "Falha ao tentar comunicar-se com o servidor.",
-                toast: true,
-                confirmButtonColor: theme.button_colors.primary,
-                confirmButtonText: "Tentar novamente",
-                showDenyButton: true,
-                denyButtonText: "Cancelar",
-                denyButtonColor: theme.button_colors.danger,
-                preConfirm: () => loadUsers()
-            })
-        }
-        setIsloading(false)
-    }
+    const {
+        data: usersData,
+        changeOrder,
+        handleRequestData: loadUsers,
+        isLoading,
+        searchPagination,
+        setSearchPagination,
+        addOrRemoveFilter,
+        changeSearch,
+    } = useDataPagination<IGetUsersReturnType, IUser>({
+        initalState: null,
+        initalOrderBy: "name",
+        endPointPath: "/users/search"
+    });
 
     async function deleteUser(user_id: string) {
 
@@ -130,29 +98,6 @@ const Users = () => {
         }
     }
 
-    function searchByTerm() {
-        setSearchPagination((state) => ({ ...state, search_params: searchTerm }))
-    }
-
-    function changeOrder(order_by: string) {
-        setSearchPagination((state) => ({ ...state, order_by, order: state.order === "ASC" ? "DESC" : "ASC" }))
-    }
-
-    useEffect(() => {
-        const controller = new AbortController();
-        loadUsers(controller.signal);
-
-        return () => {
-            controller.abort();
-        }
-    }, [
-        searchPagination.search_params,
-        searchPagination.limit,
-        searchPagination.page,
-        searchPagination.order_by,
-        searchPagination.order
-    ])
-
     return (
         <MainContainer>
             <Container>
@@ -169,32 +114,38 @@ const Users = () => {
                 </div>
                 <div id="body">
                     <div className="search-box">
-                        <InputGroup size='md'>
-                            <Input
-                                pr='4.5rem'
-                                type="text"
-                                placeholder='Digite algo para procurar...'
-                                onChange={(event) => {
-                                    let value = event.target.value;
-
-                                    if (value === "") {
-                                        setSearchTerm(undefined);
-                                    } else {
-                                        setSearchTerm(value);
+                        <SearchWithFilter
+                            onChangeFilter={(data) => {
+                                if (typeof data === "string") {
+                                    changeSearch(data)
+                                } else {
+                                    addOrRemoveFilter(data)
+                                }
+                            }}
+                            onEnterPress={() => {
+                                loadUsers()
+                            }}
+                            onSearchTypeChange={(type) => {
+                                if (type === "filter") {
+                                    changeSearch([])
+                                } else {
+                                    changeSearch("")
+                                }
+                            }}
+                            searchValue={searchPagination.search_params === undefined ? "" : searchPagination.search_params}
+                            filterOptions={
+                                [
+                                    {
+                                        alias: "Nome",
+                                        key: "name"
+                                    },
+                                    {
+                                        alias: "E-mail",
+                                        key: "email"
                                     }
-                                }}
-                                onKeyDown={(event) => {
-                                    if (event.key === "Enter") {
-                                        searchByTerm()
-                                    }
-                                }}
-                            />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={searchByTerm}>
-                                    <BsSearch color="#FFF" />
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
+                                ]
+                            }
+                        />
                     </div>
 
                     <div className="table-box">
@@ -214,8 +165,8 @@ const Users = () => {
                                 </Thead>
                                 <Tbody>
                                     {
-                                        (users.length > 0 && isLoading === false) ?
-                                            users.map((item, idx) => {
+                                        (usersData !== null && usersData.users.length > 0 && isLoading === false) ?
+                                            usersData.users.map((item, idx) => {
                                                 return (
                                                     <Tr key={idx} _hover={{ background: theme.colors.main + "20" }}>
                                                         <Td>{idx + 1}</Td>

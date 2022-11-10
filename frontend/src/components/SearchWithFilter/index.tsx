@@ -35,12 +35,7 @@ const SearchWithFilter = ({ onChangeFilter, onEnterPress, searchValue, onSearchT
                                 placeholder='Digite algo para procurar...'
                                 onChange={(event) => {
                                     let value = event.target.value;
-
-                                    if (value === "") {
-                                        onChangeFilter(undefined);
-                                    } else {
-                                        onChangeFilter(value);
-                                    }
+                                    onChangeFilter(value);
                                 }}
                                 onKeyDown={(event) => {
                                     if (event.key === "Enter") {
