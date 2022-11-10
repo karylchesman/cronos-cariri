@@ -141,11 +141,6 @@ const Users = () => {
                                     {
                                         alias: "E-mail",
                                         key: "email"
-                                    },
-                                    {
-                                        alias: "Ativo",
-                                        key: "active",
-                                        value_type: "boolean"
                                     }
                                 ]
                             }
