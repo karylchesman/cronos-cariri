@@ -9,8 +9,6 @@ import { ChooseFilterModal, TFilterOptions } from '../ChooseFilterModal';
 import { useModalControl } from '../../hooks/useModalControl';
 import { IoMdAdd } from 'react-icons/io';
 
-
-
 interface ISearchWithFilterProps {
     onChangeFilter: (data: any) => void;
     onEnterPress: () => void;

@@ -47,9 +47,9 @@ interface ICreateRoleModalProps {
 }
 
 interface IFormValues {
-    field: string,
-    operator: string,
-    value: string | number | boolean
+    field: string;
+    operator: string;
+    value: string | number | boolean;
 }
 
 const ChooseFilterModal = ({ isOpen, turnModal, filterOptions, onChoose, filterToEdit }: ICreateRoleModalProps) => {
@@ -74,7 +74,34 @@ const ChooseFilterModal = ({ isOpen, turnModal, filterOptions, onChoose, filterT
         turnModal({ reload, data: null });
     }
 
+    function isBooleanActualField(field: string) {
+        let field_selected = filterOptions.find(item => item.key === field);
+        if (field_selected && field_selected.value_type === "boolean") {
+            switch (getValues("value")) {
+                case "true":
+                    return {
+                        isBoolean: true,
+                        value: true
+                    };
+                case "false":
+                    return {
+                        isBoolean: true,
+                        value: false
+                    };
+                default:
+                    return {
+                        isBoolean: true,
+                        value: true
+                    };
+            }
+        }
+
+        return { isBoolean: false }
+    }
+
     function onSubmit(data: IFormValues) {
+        let { value } = isBooleanActualField(getValues("field"));
+
         onChoose({
             alias: (() => {
                 let aliasFound = filterOptions.find(item => item.key === data.field)
@@ -82,7 +109,7 @@ const ChooseFilterModal = ({ isOpen, turnModal, filterOptions, onChoose, filterT
             })(),
             key: data.field,
             operator: data.operator,
-            value: data.value === "true" ? true : false
+            value: value ? value : data.value
         })
         toast({
             title: "Feito!",
@@ -173,9 +200,8 @@ const ChooseFilterModal = ({ isOpen, turnModal, filterOptions, onChoose, filterT
                                     <FormLabel>Valor</FormLabel>
                                     {
                                         watchField ? (() => {
-                                            let field_selected = filterOptions.find(item => item.key === getValues("field"))
-
-                                            if (field_selected && field_selected.value_type === "boolean") {
+                                            let { isBoolean } = isBooleanActualField(getValues("field"));
+                                            if (isBoolean === true) {
                                                 return (
                                                     <Select
                                                         {...register("value", {
