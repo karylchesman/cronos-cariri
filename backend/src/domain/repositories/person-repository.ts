@@ -2,7 +2,6 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMPerson } from "../../infra/typeORM/entities/ORMPerson";
 import { PersonProps } from "../entities/person";
-import { SearchObject } from "../utils/search-object";
 import { PersonRepositoryProtocol } from "./interfaces/person-repository-protocol";
 
 class PersonRepository implements PersonRepositoryProtocol {

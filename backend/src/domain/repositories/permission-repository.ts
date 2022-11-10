@@ -2,7 +2,7 @@ import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMPermission } from "../../infra/typeORM/entities/ORMPermission";
 import { PermissionProps } from "../entities/permission";
-import { getWhereString, SearchObject } from "../utils/search-object";
+import { getWhereString, ISearchObject } from "../utils/search-object";
 import { PermissionRepositoryProtocol, TPermissionOrderByFields } from "./interfaces/permission-repository-protocol";
 
 class PermissionRepository implements PermissionRepositoryProtocol {
@@ -37,7 +37,7 @@ class PermissionRepository implements PermissionRepositoryProtocol {
         return found_permissions;
     }
 
-    async search(search_params?: SearchObject<PermissionProps>[] | string, page?: number, limit?: number, order_by?: TPermissionOrderByFields, order?: "ASC" | "DESC") {
+    async search(search_params?: ISearchObject<PermissionProps>[] | string, page?: number, limit?: number, order_by?: TPermissionOrderByFields, order?: "ASC" | "DESC") {
 
         const query = this.permissionRepository.createQueryBuilder("permissions").select("permissions");
 

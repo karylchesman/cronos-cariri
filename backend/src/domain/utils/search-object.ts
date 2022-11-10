@@ -1,6 +1,6 @@
-export type TSearchObjectOperator = "=" | "<" | ">" | "<=" | "=>" | "A*" | "*A" | "*A*";
+export type TSearchObjectOperator = "=" | "<>" | "<" | ">" | "<=" | "=>" | "A*" | "*A" | "*A*";
 
-export interface SearchObject<T> {
+export interface ISearchObject<T> {
     key: keyof T;
     operator: TSearchObjectOperator;
     value: string;
@@ -10,6 +10,8 @@ export function getWhereString(app_operator: TSearchObjectOperator, key: string,
     switch (app_operator) {
         case "=":
             return { where_string: `${key} = :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
+        case "<>":
+            return { where_string: `${key} != :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case "<":
             return { where_string: `${key} < :${alias}_${key}`, value_param: { [`${alias}_${key}`]: value } };
         case ">":

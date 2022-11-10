@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMUser } from "../../infra/typeORM/entities/ORMUser";
 import { UserProps } from "../entities/user";
-import { getWhereString, SearchObject } from "../utils/search-object";
+import { getWhereString, ISearchObject } from "../utils/search-object";
 import { UserRepositoryProtocol } from "./interfaces/user-repository-protocol";
 
 class UserRepository implements UserRepositoryProtocol {
@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof UserProps, order?: "ASC" | "DESC") {
+    async search(search_params?: ISearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof UserProps, order?: "ASC" | "DESC") {
 
         const query = this.userRepository.createQueryBuilder("users").select("users");
 

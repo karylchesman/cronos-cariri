@@ -1,5 +1,4 @@
 import { PersonProps } from "../../entities/person";
-import { SearchObject } from "../../utils/search-object";
 
 interface PersonRepositoryProtocol {
     save: (person: PersonProps) => Promise<PersonProps>;

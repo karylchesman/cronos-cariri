@@ -1,5 +1,5 @@
 import { UserProps } from "../../entities/user";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type TUserOrderByFields = keyof Omit<UserProps, "person_id" | "person" | "permissions" | "roles">;
 
@@ -8,7 +8,7 @@ interface UserRepositoryProtocol {
     update: (user: UserProps) => Promise<UserProps>;
     find: (user?: Partial<UserProps>) => Promise<UserProps[]>;
     search: (
-        search_params?: SearchObject<UserProps>[] | string,
+        search_params?: ISearchObject<UserProps>[] | string,
         page?: number,
         limit?: number,
         order_by?: TUserOrderByFields,

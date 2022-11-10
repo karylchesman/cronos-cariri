@@ -2,7 +2,7 @@ import { Equal, Like, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMEvent } from "../../infra/typeORM/entities/ORMEvent";
 import { EventProps } from "../entities/event";
-import { getWhereString, SearchObject } from "../utils/search-object";
+import { getWhereString, ISearchObject } from "../utils/search-object";
 import { EventRepositoryProtocol } from "./interfaces/event-repository-protocol";
 
 class EventRepository implements EventRepositoryProtocol {
@@ -65,7 +65,7 @@ class EventRepository implements EventRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: SearchObject<EventProps>[] | string, page?: number, limit?: number, order_by?: keyof EventProps, order?: "ASC" | "DESC") {
+    async search(search_params?: ISearchObject<EventProps>[] | string, page?: number, limit?: number, order_by?: keyof EventProps, order?: "ASC" | "DESC") {
 
         const query = this.eventRepository.createQueryBuilder("events").select("events");
 

@@ -1,5 +1,5 @@
 import { PermissionProps } from "../../entities/permission";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type TPermissionOrderByFields = keyof PermissionProps;
 
@@ -8,7 +8,7 @@ interface PermissionRepositoryProtocol {
     update: (permission: PermissionProps) => Promise<PermissionProps>;
     find: (permission?: Partial<PermissionProps>) => Promise<PermissionProps[]>;
     search: (
-        search_params?: SearchObject<PermissionProps>[] | string,
+        search_params?: ISearchObject<PermissionProps>[] | string,
         page?: number,
         limit?: number,
         order_by?: TPermissionOrderByFields,

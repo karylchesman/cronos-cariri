@@ -1,5 +1,5 @@
 import { EventProps } from "../../entities/event";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type TEventOrderByFields = keyof EventProps;
 
@@ -8,7 +8,7 @@ interface EventRepositoryProtocol {
     update: (event: EventProps) => Promise<EventProps>;
     find: (event?: Partial<EventProps>) => Promise<EventProps[]>;
     search: (
-        search_params?: SearchObject<EventProps>[] | string,
+        search_params?: ISearchObject<EventProps>[] | string,
         page?: number,
         limit?: number,
         order_by?: TEventOrderByFields,

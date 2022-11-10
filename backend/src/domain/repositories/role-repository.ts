@@ -2,7 +2,7 @@ import { In, Repository } from "typeorm";
 import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMRole } from "../../infra/typeORM/entities/ORMRole";
 import { RoleProps } from "../entities/role";
-import { getWhereString, SearchObject } from "../utils/search-object";
+import { getWhereString, ISearchObject } from "../utils/search-object";
 import { RoleRepositoryProtocol, TRoleOrderByFields } from "./interfaces/role-repository-protocol";
 
 class RoleRepository implements RoleRepositoryProtocol {
@@ -37,7 +37,7 @@ class RoleRepository implements RoleRepositoryProtocol {
         return found_roles;
     }
 
-    async search(search_params?: SearchObject<RoleProps>[] | string, page?: number, limit?: number, order_by?: TRoleOrderByFields, order?: "ASC" | "DESC") {
+    async search(search_params?: ISearchObject<RoleProps>[] | string, page?: number, limit?: number, order_by?: TRoleOrderByFields, order?: "ASC" | "DESC") {
 
         const query = this.roleRepository.createQueryBuilder("roles").select("roles");
 

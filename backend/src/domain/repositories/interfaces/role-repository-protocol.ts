@@ -1,5 +1,5 @@
 import { RoleProps } from "../../entities/role";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type TRoleOrderByFields = keyof RoleProps;
 
@@ -8,7 +8,7 @@ interface RoleRepositoryProtocol {
     update: (role: RoleProps) => Promise<RoleProps>;
     find: (role?: Partial<RoleProps>) => Promise<RoleProps[]>;
     search: (
-        search_params?: SearchObject<RoleProps>[] | string,
+        search_params?: ISearchObject<RoleProps>[] | string,
         page?: number,
         limit?: number,
         order_by?: TRoleOrderByFields,
