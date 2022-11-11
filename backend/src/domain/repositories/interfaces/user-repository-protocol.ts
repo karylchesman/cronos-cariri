@@ -1,14 +1,18 @@
+import { PersonProps } from "../../entities/person";
 import { UserProps } from "../../entities/user";
 import { ISearchObject } from "../../utils/search-object";
+import { PrefixKeys } from "../../utils/types/utilities";
 
-export type TUserOrderByFields = keyof Omit<UserProps, "person_id" | "person" | "permissions" | "roles">;
+export type TUserSearchProps = PrefixKeys<PersonProps, "person"> & Omit<UserProps, "person_id" | "person" | "permissions" | "roles" | "password">
+
+export type TUserOrderByFields = keyof TUserSearchProps;
 
 interface UserRepositoryProtocol {
     save: (user: UserProps) => Promise<UserProps>;
     update: (user: UserProps) => Promise<UserProps>;
     find: (user?: Partial<UserProps>) => Promise<UserProps[]>;
     search: (
-        search_params?: ISearchObject<UserProps>[] | string,
+        search_params?: ISearchObject<TUserSearchProps>[] | string,
         page?: number,
         limit?: number,
         order_by?: TUserOrderByFields,

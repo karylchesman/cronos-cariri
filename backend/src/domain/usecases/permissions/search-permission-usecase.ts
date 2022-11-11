@@ -1,9 +1,9 @@
 import { PermissionProps } from "../../entities/permission";
 import { PermissionRepositoryProtocol, TPermissionOrderByFields } from "../../repositories/interfaces/permission-repository-protocol";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type ISearchPermissionUsecaseRequest = {
-    search_params?: SearchObject<PermissionProps>[] | string;
+    search_params?: ISearchObject<PermissionProps>[] | string;
     page?: number;
     limit?: number;
     order_by?: TPermissionOrderByFields;

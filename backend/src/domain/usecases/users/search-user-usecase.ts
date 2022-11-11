@@ -1,9 +1,9 @@
 import { UserProps } from "../../entities/user";
-import { TUserOrderByFields, UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
+import { TUserOrderByFields, TUserSearchProps, UserRepositoryProtocol } from "../../repositories/interfaces/user-repository-protocol";
 import { ISearchObject, isValidSearchKey, isValidSearchOperator, isValidSearchValue } from "../../utils/search-object";
 
 export type ISearchUserUsecaseRequest = {
-    search_params?: ISearchObject<UserProps>[] | string;
+    search_params?: ISearchObject<TUserSearchProps>[] | string;
     page?: number;
     limit?: number;
     order_by?: TUserOrderByFields;
@@ -28,6 +28,8 @@ class SearchUserUsecase {
                 isValidSearchKey(item.key, [
                     "name",
                     "email",
+                    "created_at",
+                    "updated_at",
                     "person:cpf",
                     "person:phonenumber1",
                     "person:phonenumber2",

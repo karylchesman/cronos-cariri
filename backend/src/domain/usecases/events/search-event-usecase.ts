@@ -1,9 +1,9 @@
 import { EventProps } from "../../entities/event";
 import { EventRepositoryProtocol, TEventOrderByFields } from "../../repositories/interfaces/event-repository-protocol";
-import { SearchObject } from "../../utils/search-object";
+import { ISearchObject } from "../../utils/search-object";
 
 export type ISearchEventUsecaseRequest = {
-    search_params?: SearchObject<EventProps>[] | string;
+    search_params?: ISearchObject<EventProps>[] | string;
     page?: number;
     limit?: number;
     order_by?: TEventOrderByFields;

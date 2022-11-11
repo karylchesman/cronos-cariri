@@ -3,7 +3,7 @@ import { AppDataSource } from "../../infra/typeORM/connection";
 import { ORMUser } from "../../infra/typeORM/entities/ORMUser";
 import { UserProps } from "../entities/user";
 import { getWhereObject, ISearchObject } from "../utils/search-object";
-import { UserRepositoryProtocol } from "./interfaces/user-repository-protocol";
+import { TUserOrderByFields, TUserSearchProps, UserRepositoryProtocol } from "./interfaces/user-repository-protocol";
 
 class UserRepository implements UserRepositoryProtocol {
     private userRepository: Repository<ORMUser>;
@@ -51,7 +51,7 @@ class UserRepository implements UserRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: ISearchObject<UserProps>[] | string, page?: number, limit?: number, order_by?: keyof UserProps, order?: "ASC" | "DESC") {
+    async search(search_params?: ISearchObject<TUserSearchProps>[] | string, page?: number, limit?: number, order_by?: TUserOrderByFields, order?: "ASC" | "DESC") {
 
         const query = this.userRepository.createQueryBuilder("users")
             .leftJoinAndSelect("users.person", "person")
@@ -60,6 +60,7 @@ class UserRepository implements UserRepositoryProtocol {
             if (typeof search_params === "string") {
                 query.where(`name LIKE :users_name`, { users_name: `%${search_params}%` });
                 query.orWhere(`email LIKE :users_email`, { users_email: `%${search_params}%` });
+                query.orWhere(`person.cpf LIKE :person_cpf`, { person_cpf: `%${search_params}%` });
             }
 
             if (Array.isArray(search_params)) {
@@ -83,7 +84,13 @@ class UserRepository implements UserRepositoryProtocol {
         }
 
         if (order_by !== undefined && order !== undefined) {
-            query.addOrderBy(`users.${order_by}`, order);
+            let orderByHasJoin = order_by.split(":");
+
+            if (orderByHasJoin.length > 1) {
+                query.addOrderBy(`${orderByHasJoin[0]}.${orderByHasJoin[1]}`, order);
+            } else {
+                query.addOrderBy(`users.${orderByHasJoin[0]}`, order);
+            }
         }
 
         const users_found = await query.getManyAndCount();

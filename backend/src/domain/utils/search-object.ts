@@ -5,10 +5,10 @@ export type TSearchObjectOperator = "=" | "<>" | "<" | ">" | "<=" | ">=" | "A*" 
 export interface ISearchObject<T> {
     key: keyof T;
     operator: TSearchObjectOperator;
-    value: string;
+    value: string | number | boolean;
 }
 
-export function getWhereObject(app_operator: TSearchObjectOperator, key: string, value: string, default_alias?: string) {
+export function getWhereObject(app_operator: TSearchObjectOperator, key: string, value: string | number | boolean, default_alias?: string) {
     let keyHasJoin = key.split(":");
 
     const genderWhereString = (operator: string) => {

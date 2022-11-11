@@ -211,6 +211,9 @@ const Users = () => {
                                         <Th>
                                             <SpanOrderIcon fieldDisplayName="E-mail" fieldName="email" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
                                         </Th>
+                                        <Th>
+                                            <SpanOrderIcon fieldDisplayName="CPF" fieldName="person:cpf" orderByCurrent={searchPagination} setOrderFunction={changeOrder} />
+                                        </Th>
                                         <Th display="flex" justifyContent="center">Ações</Th>
                                     </Tr>
                                 </Thead>
@@ -223,6 +226,7 @@ const Users = () => {
                                                         <Td>{idx + 1}</Td>
                                                         <Td>{item.name}</Td>
                                                         <Td>{item.email}</Td>
+                                                        <Td>{item.person ? item.person.cpf : "Não informado."}</Td>
                                                         <Td display="flex" justifyContent="center">
                                                             <Menu>
                                                                 <MenuButton as={Button}>
@@ -257,7 +261,7 @@ const Users = () => {
                                             })
                                             :
                                             <Tr>
-                                                <Th textAlign="center" colSpan={4}>
+                                                <Th textAlign="center" colSpan={5}>
                                                     {
                                                         isLoading ?
                                                             <Spinner
@@ -279,7 +283,7 @@ const Users = () => {
                                 </Tbody>
                                 <Tfoot>
                                     <Tr>
-                                        <Th colSpan={3}>
+                                        <Th colSpan={4}>
                                             <Select maxWidth={200} variant='unstyled' onChange={(e) => {
                                                 setSearchPagination((state) => {
                                                     let value = Number(e.target.value);
