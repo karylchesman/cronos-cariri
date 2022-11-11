@@ -139,18 +139,17 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
         }
     }
 
-    async function getCities(signal?: AbortSignal) {
-        let state = states.find(item => item.sigla === getValues("address_uf"))
-        if (state === undefined) return;
+    async function getCities(city:string ,signal?: AbortSignal) {
+        if (city === undefined) return;
         try {
-            const result = await ibgeApi.get<IIbgeCitiesResultItem[]>(`/v1/localidades/estados/${state.id}/municipios`, { signal });
+            const result = await ibgeApi.get<IIbgeCitiesResultItem[]>(`/v1/localidades/estados/${city}/municipios`, { signal });
 
             setCities(result.data);
         } catch (error: any) {
             if (error.name === "CanceledError") return;
 
             toast({
-                title: "Nenhuma cidadde encontrada para esse UF",
+                title: "Nenhuma cidade encontrada para esse UF",
                 status: "warning",
                 duration: 3000,
                 variant: "left-accent",
@@ -170,7 +169,7 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
 
     useEffect(() => {
         const controller = new AbortController();
-        getCities(controller.signal);
+        getCities(watchState, controller.signal);
 
         return () => {
             controller.abort();
@@ -247,6 +246,7 @@ const AddressInputs = ({ formHandlers: { register, errors, getValues, watch, set
                         {...register("address_uf", {
                             required: "O UF é obrigatório.",
                         })}
+                        value={watchState}
                     >
                         {
                             states.length > 0 &&

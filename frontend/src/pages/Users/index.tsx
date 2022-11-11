@@ -21,6 +21,8 @@ import PermissionsGate from '../../helpers/PermissionsGate';
 import { AttachRoleToUserModal } from '../../components/AttachRoleToUserModal';
 import { SearchWithFilter } from '../../components/SearchWithFilter';
 import { useDataPagination } from '../../hooks/useDataPagination';
+import { UpdatePersonModal } from '../../components/UpdatePersonModal';
+import { IPerson } from '../../@types/persons';
 
 interface IGetUsersReturnType {
     users: IUser[];
@@ -34,6 +36,7 @@ const Users = () => {
     const toast = useToast();
 
     const [showCreateUserModal, userToEdit, turnCreateUserModal] = useModalControl<IUser>();
+    const [showUpdatePersonModal, personToEdit, turnUpdatePersonModal] = useModalControl<IPerson>();
     const [showAttachRoleToUserModal, userIdToAttach, turnAttachRoleToUserModal] = useModalControl<string>();
 
     const {
@@ -233,19 +236,19 @@ const Users = () => {
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <PermissionsGate>
-                                                                        <MenuItem icon={<RiUserSettingsFill />}>
-                                                                            Dados pessoais
+                                                                    <PermissionsGate permissions={["USER_UPDATE"]}>
+                                                                        <MenuItem onClick={() => turnUpdatePersonModal(item.person)} icon={<RiUserSettingsFill />}>
+                                                                            Editar dados pessoais
+                                                                        </MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["USER_UPDATE"]}>
+                                                                        <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}>
+                                                                            Editar usuário
                                                                         </MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["ROLE_ATTACH"]}>
                                                                         <MenuItem onClick={() => turnAttachRoleToUserModal(item.id)} icon={<FaShieldAlt />}>
                                                                             Perfis de acesso
-                                                                        </MenuItem>
-                                                                    </PermissionsGate>
-                                                                    <PermissionsGate permissions={["USER_UPDATE"]}>
-                                                                        <MenuItem onClick={() => turnCreateUserModal(item)} icon={<FaUserEdit />}>
-                                                                            Editar
                                                                         </MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["USER_DELETE"]}>
@@ -330,6 +333,15 @@ const Users = () => {
                         if (reload === true) loadUsers();
                     }}
                     user={userToEdit}
+                />
+
+                <UpdatePersonModal
+                    isOpen={showUpdatePersonModal}
+                    turnModal={({ data, reload }) => {
+                        turnUpdatePersonModal(data);
+                        if (reload === true) loadUsers();
+                    }}
+                    person={personToEdit}
                 />
 
                 <AttachRoleToUserModal

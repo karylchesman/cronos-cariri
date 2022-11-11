@@ -13,7 +13,8 @@ userRoutes.post("/register", userController.registerUser);
 userRoutes.use(ensureAuthenticated);
 
 userRoutes.post("/create", havePermission(["USER_CREATE"]), userController.createUser);
-userRoutes.put("/update", havePermission(["USER_UPDATE"]), userController.updateUser);
+userRoutes.put("/update", havePermission(["USER_UPDATE", "USER_ADMIN_UPDATE"]), userController.updateUser);
+userRoutes.put("/person/update", havePermission(["USER_UPDATE", "USER_ADMIN_UPDATE"]), userController.updatePersonData);
 userRoutes.get("/logged", userController.getLoggedUser);
 userRoutes.get("/:id", havePermission(["USER_LIST"]), userController.getUserById);
 userRoutes.delete("/:id", havePermission(["USER_DELETE"]), userController.deleteUser);

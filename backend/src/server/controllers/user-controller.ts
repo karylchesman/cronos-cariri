@@ -6,6 +6,7 @@ import { RoleRepository } from "../../domain/repositories/role-repository";
 import { UserRepository } from "../../domain/repositories/user-repository";
 import { UserRoleRepository } from "../../domain/repositories/user-role-repository";
 import { GetPersonUsecase } from "../../domain/usecases/persons/get-person-usecase";
+import { UpdatePersonUsecase } from "../../domain/usecases/persons/update-person-usecase";
 import { GetUserRolesAndPermissionsUsecase } from "../../domain/usecases/roles/get-user-roles-and-permissions-usecase";
 import { AuthenticateUserUsecase } from "../../domain/usecases/users/authenticate-user-usecase";
 import { CreateUserUsecase } from "../../domain/usecases/users/create-user-usecase";
@@ -99,7 +100,7 @@ class UserController {
         const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
         const userLogged = await getUserUsecase.execute(token_user_id);
         userLogged.permissions = token_user_permissions;
-        
+
         const updateUserUsecase = new UpdateUserUsecase(userLogged, userRepository);
         const updated_user = await updateUserUsecase.execute({
             id,
@@ -236,6 +237,54 @@ class UserController {
         authResult.user.permissions = roles_and_permissions.permissions
 
         return response.json(authResult);
+    }
+
+    async updatePersonData(request: Request, response: Response) {
+        const {
+            id,
+            phonenumber1,
+            phonenumber2,
+            gender,
+            cpf,
+            rg,
+            bith_date,
+            blood_type,
+            address_street,
+            address_number,
+            address_district,
+            address_city,
+            address_uf,
+            address_cep,
+            token_user_id,
+            token_user_permissions
+        } = request.body;
+
+        const userRepository = new UserRepository();
+        const personRepository = new PersonRepository();
+
+        const getUserUsecase = new GetUserUsecase(userRepository, personRepository);
+        const userLogged = await getUserUsecase.execute(token_user_id);
+        userLogged.permissions = token_user_permissions;
+
+        const updatePersonUsecase = new UpdatePersonUsecase(userLogged, personRepository);
+        const updated_person = await updatePersonUsecase.execute({
+            id,
+            phonenumber1,
+            phonenumber2,
+            gender,
+            cpf,
+            rg,
+            bith_date,
+            blood_type,
+            address_street,
+            address_number,
+            address_district,
+            address_city,
+            address_uf,
+            address_cep,
+        })
+
+        return response.json(updated_person);
     }
 }
 

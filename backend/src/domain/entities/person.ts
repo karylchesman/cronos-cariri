@@ -1,5 +1,5 @@
 import { UuidGender } from "../utils/uuid-gender";
-import { isCPF, isEmail, isEmpty, isPhoneNumber, isValidBithDate, isValidLength } from "../utils/validators";
+import { isBloodType, isCPF, isEmail, isEmpty, isPhoneNumber, isValidBithDate, isValidLength } from "../utils/validators";
 import { BaseEntityProps } from "./base-entity";
 
 export enum EPersonGender {
@@ -41,7 +41,7 @@ class Person {
         isCPF(this.props.cpf, "O e-mail deve conter formato válido.");
         this.props.rg && isEmpty(this.props.rg, "O e-mail deve conter formato válido.");
         isValidBithDate(this.props.bith_date, "Data de nascimento inválida.");
-        this.props.blood_type && isEmpty(this.props.blood_type, "O tipo de sangue deve estar preenchido corretamente.");
+        this.props.blood_type && isBloodType(this.props.blood_type, "O tipo de sangue deve estar preenchido corretamente.");
         isValidLength({ value: this.props.address_street, min: 2, max: 255, error_message: "O nome da rua deve conter no mínimo 2 no máximo 255 caracteres." });
         isValidLength({ value: this.props.address_number, min: 2, max: 255, error_message: "O número da residência deve conter no mínimo 2 no máximo 255 caracteres." });
         isValidLength({ value: this.props.address_district, min: 2, max: 255, error_message: "O nome do bairro deve conter no mínimo 2 no máximo 255 caracteres." });

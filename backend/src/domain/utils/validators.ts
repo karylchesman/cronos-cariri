@@ -91,6 +91,18 @@ export const isCPF = (value: string, error_message: string) => {
     return value
 }
 
+export const isBloodType = (value: string, error_message: string) => {
+    if (isNullOrUndefined(value) || value.trim() === "") throw new Error(error_message);
+
+    const cpfRegexp = new RegExp(/^([ABO]{1})([B+-]{1})([+-]{0,1})$/)
+
+    if (!cpfRegexp.test(value)) {
+        throw new Error(error_message);
+    }
+
+    return value
+}
+
 export const isValidBithDate = (value: Date | string, error_message: string) => {
     let date = dayjs(value);
 
