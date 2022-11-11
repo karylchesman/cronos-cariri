@@ -1,7 +1,5 @@
 import { UserRoleProps } from "../../entities/user-role";
 
-export type TUserRoleOrderByFields = keyof UserRoleProps;
-
 export type TUserRolesStoreParams = {
     user_roles_to_attach: UserRoleProps[];
     user_roles_ids_to_detach: string[];
