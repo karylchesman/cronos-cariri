@@ -77,13 +77,13 @@ export class Events1666109632486 implements MigrationInterface {
                     isUnique: true
                 },
                 {
-                    name: "banner_archive",
+                    name: "banner_archive_id",
                     type: "varchar",
                     isNullable: true,
                     default: null
                 },
                 {
-                    name: "banner_description",
+                    name: "card_archive_id",
                     type: "varchar",
                     isNullable: true,
                     default: null
@@ -92,6 +92,12 @@ export class Events1666109632486 implements MigrationInterface {
                     name: "result_type",
                     type: "enum",
                     enum: ["Importação", "Integração", "PDF"],
+                    isNullable: true,
+                    default: null
+                },
+                {
+                    name: "details",
+                    type: "text",
                     isNullable: true,
                     default: null
                 },

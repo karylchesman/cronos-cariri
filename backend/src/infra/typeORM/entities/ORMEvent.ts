@@ -68,14 +68,14 @@ class ORMEvent {
         nullable: true,
         default: null
     })
-    banner_archive!: string;
+    banner_archive_id!: string;
 
     @Column({
         nullable: true,
         default: null
     })
-    banner_description!: string;
-
+    card_archive_id!: string;
+    
     @Column({
         type: "enum",
         enum: EEventResultTypes,
@@ -83,6 +83,12 @@ class ORMEvent {
         default: null
     })
     result_type!: EEventResultTypes;
+    
+    @Column({
+        nullable: true,
+        default: null
+    })
+    details!: string;
 
     @CreateDateColumn()
     created_at!: Date;

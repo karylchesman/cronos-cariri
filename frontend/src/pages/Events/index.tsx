@@ -51,9 +51,10 @@ export interface Event {
     inscription_limit_date: Date;
     url_path: string;
     status: EEventStatus;
-    banner_archive?: string;
-    banner_description?: string;
+    banner_archive_id?: string;
+    card_archive_id?: string;
     result_type?: EEventResultTypes;
+    details?: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -113,7 +114,7 @@ const Events = () => {
                                 }}
                             />
                             <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={()=> handleSearch()}>
+                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={() => handleSearch()}>
                                     <BsSearch color="#FFF" />
                                 </Button>
                             </InputRightElement>

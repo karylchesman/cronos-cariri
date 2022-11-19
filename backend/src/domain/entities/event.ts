@@ -37,9 +37,10 @@ export interface EventProps extends BaseEntityProps {
     inscription_limit_date: Date;
     url_path: string;
     status?: EEventStatus;
-    banner_archive?: string;
-    banner_description?: string;
+    banner_archive_id?: string;
+    card_archive_id?: string;
     result_type?: EEventResultTypes;
+    details?: string;
 }
 
 class Event {
@@ -73,7 +74,7 @@ class Event {
         isValidLength({ value: this.props.url_path, min: 3, max: 255, error_message: "O caminho da url deve conter no mínimo 3 e no máximo 255 caracteres." });
         isEmail(this.props.email, "O e-mail deve conter formato válido.");
         this.props.phonenumber && isPhoneNumber(this.props.phonenumber, "O número de contato deve conter formato válido.");
-        isDateAfter(this.props.inscription_limit_date, this.props.event_date, "A data limite das inscrições deve ser superior a do evento.");
+        isDateAfter(this.props.event_date, this.props.inscription_limit_date, "A data limite das inscrições deve ser inferior a do evento.");
         this.validateEventType();
         this.validateEventStatus();
     }
