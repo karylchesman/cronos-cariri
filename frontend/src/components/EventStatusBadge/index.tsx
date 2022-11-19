@@ -1,5 +1,5 @@
 import { Badge } from '@chakra-ui/react';
-import { EEventStatus } from '../../pages/Events';
+import { EEventStatus } from '../../context/stores/events';
 // import { Container } from './styles';
 
 interface IEventStatusBadgeProps {

@@ -1,12 +1,15 @@
 import { ToastId, useToast, UseToastOptions } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-import { createContext, ReactNode, useEffect, useRef, useState } from 'react';
+import { createContext, ReactNode, useEffect, useReducer, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IUser, IUserSessionResponse } from '../@types/users';
 import { api } from '../services/ApiService';
+import { eventsInitialState, eventsReducer, IEventsContext, TEventsActions } from './stores/events';
 
 interface IAppContext {
     user: IUser | null;
+    events: IEventsContext;
+    eventsDispatch: React.Dispatch<TEventsActions>;
     handleLogin: (email: string, password: string) => Promise<void | string>;
     handleLogOut: () => void;
 }
@@ -20,6 +23,8 @@ interface IAppContextProviderProps {
 const AppContextProvider = (props: IAppContextProviderProps) => {
 
     const [user, setUser] = useState<IUser | null>(null);
+    const [events, eventsDispatch] = useReducer(eventsReducer, eventsInitialState);
+
     const pageNavigator = useNavigate();
     const toast = useToast();
     const toastIdRef = useRef<ToastId | null>();
@@ -87,6 +92,8 @@ const AppContextProvider = (props: IAppContextProviderProps) => {
         <AppContext.Provider value={
             {
                 user,
+                events,
+                eventsDispatch,
                 handleLogin,
                 handleLogOut
             } as IAppContext

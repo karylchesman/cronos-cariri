@@ -6,11 +6,12 @@ import Swal from 'sweetalert2';
 import { api } from '../services/ApiService';
 import { useToast } from '@chakra-ui/react';
 
-interface IUseDataPaginationProps {
+interface IUseApiRequestProps<RequestReturnType> {
     errorHandlerType?: "toast" | "dialog",
     handleOnFirstRender?: boolean;
     defaultConfig: AxiosRequestConfig;
     successMessage?: string;
+    onSuccess?: (data: RequestReturnType) => void;
 }
 
 type IUseApiRequestReturn<RequestReturnType> = {
@@ -20,7 +21,14 @@ type IUseApiRequestReturn<RequestReturnType> = {
     abortRequest: () => void
 }
 
-export function useApiRequest<RequestReturnType = any>({ errorHandlerType = "dialog", handleOnFirstRender = true, defaultConfig, successMessage }: IUseDataPaginationProps) {
+export function useApiRequest<RequestReturnType = any>({
+    errorHandlerType = "dialog",
+    handleOnFirstRender = true,
+    defaultConfig,
+    successMessage,
+    onSuccess
+}: IUseApiRequestProps<RequestReturnType>) {
+
     const theme = useTheme();
     const controller = new AbortController();
     const toast = useToast();
@@ -33,6 +41,7 @@ export function useApiRequest<RequestReturnType = any>({ errorHandlerType = "dia
             const result = await api.request(config || defaultConfig);
 
             setData(result.data);
+            onSuccess ? onSuccess(result.data) : null;
 
             if (successMessage !== undefined) {
                 toast({
