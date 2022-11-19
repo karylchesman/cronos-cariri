@@ -5,6 +5,7 @@ import { Home } from "./pages/Home";
 import { HomeAdmin } from "./pages/HomeAdmin";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
+import { Permissions } from "./pages/Permissions";
 import { Register } from "./pages/Register";
 import { Roles } from "./pages/Roles";
 import { Users } from "./pages/Users";
@@ -21,6 +22,7 @@ function AppRoutes() {
             <Route path="/admin/users" element={<PrivateRoute component={Users} permissions={["USER_LIST"]} />} />
             <Route path="/admin/events" element={<PrivateRoute component={Events} /* permissions={[""]} */ />} />
             <Route path="/admin/roles" element={<PrivateRoute component={Roles} permissions={["ROLE_LIST"]} />} />
+            <Route path="/admin/permissions" element={<PrivateRoute component={Permissions} permissions={["PERMISSION_LIST"]} />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );

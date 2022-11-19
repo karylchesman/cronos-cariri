@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@chakra-ui/react';
 import { MainContainer } from '../../components/MainContainer';
 import { FaUserFriends, FaUserShield } from 'react-icons/fa';
-import { GiCarousel } from 'react-icons/gi';
+import { GiCarousel, GiHouseKeys } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import { BsCalendar2WeekFill } from 'react-icons/bs';
 import { Container, MenuItem, MenuTitle, MenuWrapper } from './styles';
@@ -48,6 +48,11 @@ const HomeAdmin = () => {
                             <Text fontSize='2xl'>Sistema</Text>
                         </MenuTitle>
                         <MenuWrapper>
+                            <PermissionsGate permissions={["PERMISSION_LIST"]}>
+                                <MenuItem onClick={() => pageNavigator("/admin/permissions")}>
+                                    <GiHouseKeys size="2rem" />&nbsp;<span>Permissões</span>
+                                </MenuItem>
+                            </PermissionsGate>
                             <PermissionsGate permissions={["CARROUSEL_LIST"]}>
                                 <MenuItem>
                                     <GiCarousel size="2rem" />&nbsp;<span>Carrousel</span>

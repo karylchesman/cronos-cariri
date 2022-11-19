@@ -7,6 +7,7 @@ import { GetPermissionsByRoleUsecase } from "../../domain/usecases/permissions/g
 import { SearchPermissionUsecase } from "../../domain/usecases/permissions/search-permission-usecase";
 import { UpdatePermissionUsecase } from "../../domain/usecases/permissions/update-permission-usecase";
 import { AttachPermissionToRoleUsecase } from "../../domain/usecases/permissions/attach-permission-to-role-usecase";
+import { DeletePermissionUsecase } from "../../domain/usecases/permissions/delete-permission-usecase";
 
 class PermissionController {
     async createPermission(request: Request, response: Response) {
@@ -113,6 +114,22 @@ class PermissionController {
         })
 
         return response.json(permissions);
+    }
+
+    async deletePermission(request: Request, response: Response) {
+        const {
+            id
+        } = request.params;
+
+        const permissionRepository = new PermissionRepository();
+
+        const deletePermissionUsecase = new DeletePermissionUsecase(permissionRepository);
+
+        await deletePermissionUsecase.execute({
+            permission_id: id
+        })
+
+        return response.json({ message: "Success" });
     }
 }
 

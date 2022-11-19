@@ -14,5 +14,6 @@ permissionRoutes.post("/search", havePermission(["PERMISSION_LIST"]), roleContro
 permissionRoutes.put("/update", havePermission(["PERMISSION_UPDATE"]), roleController.updatePermission);
 permissionRoutes.post("/attach-to-role", havePermission(["PERMISSION_ATTACH"]), roleController.attachPermissionToRole);
 permissionRoutes.get("/role/:id", havePermission(["PERMISSION_LIST"]), roleController.getByRoleId);
+permissionRoutes.delete("/:id", havePermission(["PERMISSION_DELETE"]), roleController.deletePermission);
 
 export { permissionRoutes };
