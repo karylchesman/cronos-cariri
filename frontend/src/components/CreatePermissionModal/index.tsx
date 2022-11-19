@@ -141,6 +141,13 @@ const CreatePermissionModal = ({ isOpen, turnModal, permission }: ICreatePermiss
                                             }
                                         })}
                                         type='text'
+                                        onChange={event => {
+                                            let value = event.target.value;
+
+                                            value = value.toLocaleUpperCase().normalize("NFD").replace(/[^a-zA-Z\s0-9_]/g, "").replace(/[\s]/g, "_");
+
+                                            setValue("identifier", value)
+                                        }}
                                     />
                                     <FormErrorMessage>{errors.identifier?.message}</FormErrorMessage>
                                 </FormControl>

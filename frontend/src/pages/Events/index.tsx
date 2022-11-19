@@ -16,6 +16,7 @@ import { EventStatusBadge } from '../../components/EventStatusBadge';
 import { MdDashboard } from 'react-icons/md';
 import { GiCancel } from 'react-icons/gi';
 import { EEventStatus, IEvent } from '../../context/stores/events';
+import PermissionsGate from '../../helpers/PermissionsGate';
 
 interface IGetEventsReturnType {
     events: IEvent[];
@@ -52,7 +53,9 @@ const Events = () => {
                         <h1>Eventos</h1>
                     </div>
                     <div className="button-create-user">
-                        <Button /* onClick={() => turnCreateUserModal()} */ rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        <PermissionsGate permissions={["EVENT_CREATE"]}>
+                            <Button onClick={() => pageNavigator("/event/new")} rightIcon={<BsPlusCircleDotted />} colorScheme='teal'>Novo</Button>
+                        </PermissionsGate>
                     </div>
                 </div>
                 <div id="body">
@@ -115,8 +118,12 @@ const Events = () => {
                                                                     <AiFillSetting />
                                                                 </MenuButton>
                                                                 <MenuList>
-                                                                    <MenuItem icon={<MdDashboard />}> Dashboard</MenuItem>
-                                                                    <MenuItem icon={<AiFillSetting />}> Configurações</MenuItem>
+                                                                    <PermissionsGate permissions={["EVENT_DASHBOARD"]}>
+                                                                        <MenuItem icon={<MdDashboard />}> Dashboard</MenuItem>
+                                                                    </PermissionsGate>
+                                                                    <PermissionsGate permissions={["EVENT_CONFIG"]}>
+                                                                        <MenuItem icon={<AiFillSetting />}> Configurações</MenuItem>
+                                                                    </PermissionsGate>
                                                                     {
                                                                         item.status !== EEventStatus["Publicado"] &&
                                                                         <MenuItem color="green.500" icon={<BsUnlockFill />}> Publicar</MenuItem>
