@@ -25,6 +25,7 @@ function AppRoutes() {
             <Route path="/admin/roles" element={<PrivateRoute component={Roles} permissions={["ROLE_LIST"]} />} />
             <Route path="/admin/permissions" element={<PrivateRoute component={Permissions} permissions={["PERMISSION_LIST"]} />} />
             <Route path="/event/new" element={<PrivateRoute component={EventConfig} permissions={["EVENT_CREATE"]} />} />
+            <Route path="/event/config" element={<PrivateRoute component={EventConfig} permissions={["EVENT_CONFIG"]} />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
