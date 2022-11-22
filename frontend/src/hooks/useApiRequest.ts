@@ -11,7 +11,7 @@ interface IUseApiRequestProps<RequestReturnType> {
     handleOnFirstRender?: boolean;
     defaultConfig: AxiosRequestConfig;
     successMessage?: string;
-    onSuccess?: (data: RequestReturnType) => void;
+    onSuccess?: (data: RequestReturnType, requestConfig: AxiosRequestConfig) => void;
 }
 
 type IUseApiRequestReturn<RequestReturnType> = {
@@ -41,7 +41,7 @@ export function useApiRequest<RequestReturnType = any>({
             const result = await api.request(config || defaultConfig);
 
             setData(result.data);
-            onSuccess ? onSuccess(result.data) : null;
+            onSuccess ? onSuccess(result.data, result.config) : null;
 
             if (successMessage !== undefined) {
                 toast({

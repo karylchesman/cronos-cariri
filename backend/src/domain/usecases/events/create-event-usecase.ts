@@ -1,6 +1,7 @@
 import { EEventTypes, Event, EventProps } from "../../entities/event";
 import { EventRepositoryProtocol } from "../../repositories/interfaces/event-repository-protocol";
 import { normalizeString } from "../../utils/normalize-string";
+import { isString } from "../../utils/validators";
 
 export interface ICreateEventUsecaseResquest {
     event: {
@@ -29,10 +30,12 @@ class CreateEventUsecase {
 
     async execute({ event }: ICreateEventUsecaseResquest): Promise<ICreateEventUsecaseResponse> {
 
+        isString(event.name, "Nome do evento inválido.");
+
         const [eventExists] = await this.eventRepository.find({
             name: event.name
         })
-
+        
         if (eventExists) {
             throw new Error("Já existe um evento com esse nome, por favor tente outro.");
         }

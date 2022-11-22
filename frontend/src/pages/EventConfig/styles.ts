@@ -112,6 +112,7 @@ export const ConfigToggle = styled.div<IConfigBarProps>`
     position: fixed;
     bottom: 100px;
     left: 0;
+    z-index: 100;
 
     display: none;
     justify-content: flex-end;
@@ -149,9 +150,10 @@ export const ConfigMenu = styled.div<IConfigMenuProps>`
     padding: 5px 10px;
     background: ${props => props.active ? props.theme.colors.gradient_main : "#ECEFF1"};
     color: ${props => props.active ? "#FFF" : props.theme.colors.text_primary};
+    font-weight: ${props => props.active ? "500" : "initial"};
     
     transition: 0.3s;
-    cursor: ${props => props.disabled ? "pointer" : "not-allowed"};
+    cursor: ${props => props.disabled === false ? "pointer" : "not-allowed"};
 
     &:hover{
         background: ${props => props.active ? props.theme.colors.gradient_main : "#FFF"};

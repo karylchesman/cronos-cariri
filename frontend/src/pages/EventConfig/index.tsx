@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MainContainer } from '../../components/MainContainer';
 // import PermissionsGate from '../../helpers/PermissionsGate';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,10 +8,12 @@ import { EventData } from './ConfigPages/EventData';
 import { configMenus, IConfigMenuItem } from './configMenus';
 import { IoSettings } from 'react-icons/io5';
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
+import { useAppContext } from '../../hooks/useAppContext';
 
 const EventConfig = () => {
 
     const location = useLocation();
+    const { eventsDispatch } = useAppContext();
     const [configPage, setConfigPage] = useState<IConfigMenuItem>(configMenus[0]);
     const [showConfigBar, setShowConfigBar] = useState(false);
     const eventCreation = location.pathname === "/event/new" ? true : false;
@@ -25,6 +27,12 @@ const EventConfig = () => {
         if (eventCreation) return;
         setConfigPage(config)
     }
+
+    useEffect(() => {
+        return () => {
+            eventsDispatch({ type: "events/reset-selected" });
+        }
+    }, [])
 
     return (
         <MainContainer>
@@ -48,7 +56,7 @@ const EventConfig = () => {
                                             key={idx}
                                             active={isActiveConfigPage(idx)}
                                             onClick={() => changeConfigPage(item)}
-                                            disabled={eventCreation && item.title === "Dados do Evento"}
+                                            disabled={(eventCreation === true && item.title !== "Dados do Evento") ? true : false}
                                         >
                                             {item.title} {isActiveConfigPage(idx) ? <AiFillCaretRight /> : <item.Icon />}
                                         </ConfigMenu>

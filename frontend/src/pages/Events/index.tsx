@@ -122,7 +122,7 @@ const Events = () => {
                                                                         <MenuItem icon={<MdDashboard />}> Dashboard</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["EVENT_CONFIG"]}>
-                                                                        <MenuItem icon={<AiFillSetting />}> Configurações</MenuItem>
+                                                                        <MenuItem onClick={()=> pageNavigator(`/event/${item.url_path}/config`)} icon={<AiFillSetting />}> Configurações</MenuItem>
                                                                     </PermissionsGate>
                                                                     {
                                                                         item.status !== EEventStatus["Publicado"] &&
