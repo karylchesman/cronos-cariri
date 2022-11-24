@@ -9,6 +9,7 @@ import { configMenus, IConfigMenuItem } from './configMenus';
 import { IoSettings } from 'react-icons/io5';
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
 import { useAppContext } from '../../hooks/useAppContext';
+import { EventDetails } from './ConfigPages/EventDetails';
 
 const EventConfig = () => {
 
@@ -95,8 +96,8 @@ const EventConfig = () => {
                                 switch (configPage.title) {
                                     case "Dados do Evento":
                                         return <EventData />;
-                                    case "Detalhes da Página":
-                                        return <EventData />;
+                                    case "Detalhes do Evento":
+                                        return <EventDetails />;
                                     case "Banner e Capa":
                                         return <EventData />;
                                     case "Parametros":

@@ -19,7 +19,7 @@ export const configMenus: IConfigMenuItem[] = [
         Icon: GoTasklist
     },
     {
-        title: "Detalhes da Página",
+        title: "Detalhes do Evento",
         Icon: IoNewspaperOutline
     },
     {

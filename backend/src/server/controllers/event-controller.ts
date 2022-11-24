@@ -3,7 +3,10 @@ import { EventRepository } from "../../domain/repositories/event-repository";
 import { CreateEventUsecase } from "../../domain/usecases/events/create-event-usecase";
 import { GetEventByUrlUsecase } from "../../domain/usecases/events/get-event-by-url-usecase";
 import { SearchEventUsecase } from "../../domain/usecases/events/search-event-usecase";
+import { UpdateEventDetailsUsecase } from "../../domain/usecases/events/update-event-details-usecase";
 import { UpdateEventUsecase } from "../../domain/usecases/events/update-event-usecase";
+import fs from 'node:fs';
+import path from 'node:path';
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -129,6 +132,27 @@ class EventController {
         const event = await getEventByUrlUsecase.execute({ url_path });
 
         return response.json(event);
+    }
+
+    async updateDetails(request: Request, response: Response) {
+        const {
+            event_id,
+        } = request.body;
+
+        const details = request.file;
+
+        if (!details) {
+            throw new Error("Recurso não localizado.");
+        }
+
+        const details_in_text = fs.readFileSync(path.resolve(details.path)).toString("utf-8");
+        
+        const eventRepository = new EventRepository();
+        const updateEventDetailsUsecase = new UpdateEventDetailsUsecase(eventRepository);
+
+        await updateEventDetailsUsecase.execute({ event_id, details: details_in_text });
+
+        return response.json({ message: "Success" });
     }
 }
 

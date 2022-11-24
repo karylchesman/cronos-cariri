@@ -99,7 +99,8 @@ export class Events1666109632486 implements MigrationInterface {
                     name: "details",
                     type: "text",
                     isNullable: true,
-                    default: null
+                    default: null,
+                    collation: "utf8mb4_general_ci"
                 },
                 {
                     name: "created_at",

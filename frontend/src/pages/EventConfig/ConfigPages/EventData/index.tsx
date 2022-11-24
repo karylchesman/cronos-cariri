@@ -83,7 +83,7 @@ const EventData = () => {
             method = "put";
         }
 
-        createOrUpdateEvent({
+        await createOrUpdateEvent({
             method,
             url,
             data: data
@@ -91,7 +91,7 @@ const EventData = () => {
     }
 
     async function loadEvent() {
-        getEvent({
+        await getEvent({
             method: "get",
             url: `/events/url/${event_url}/config`
         })
