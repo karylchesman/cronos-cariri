@@ -7,13 +7,18 @@ export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    gap: 20px;
+    gap: 50px;
 `;
 
 export const Carousel = styled.div`
     width: 100%;
     display: flex;
     max-height: 400px;
+    max-width: 1024px;
+    padding: 10px;
+
+    background: #FFF;
+    border-radius: 0.45rem;
 
     .swiper {
         flex-grow: 1;
@@ -43,52 +48,132 @@ export const EventSearch = styled.div`
     max-width: 1024px;
     height: auto;
 
-    background: #FFF;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    padding: 25px;
-    border-radius: 50px;
-
     display: flex;
     flex-flow: column nowrap;
-    gap: 15px;
+    align-items: center;
 
-    .search-by-name{
+    --search-box-color: transparent;
+    --icon-color: #B0BEC5;
+
+    .search-box:hover, :focus-within{
+        --search-box-color: ${props => props.theme.colors.main};
+        --icon-color: #FFF;
+    }
+
+    .search-box{
+        background: #FFF;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        padding: 5px;
+        border-radius: 50px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: row nowrap;
+
         width: 100%;
+        z-index: 100;
+
+        
+
+        .input-box{
+            flex-grow: 1;
+            
+            input{
+                width: 100%;
+                border: none;
+                background: #FFF;
+                padding: 0.5rem;
+                outline: none;
+
+                margin-left: 10px;
+            }
+        }
+
+        .search-button{
+            height: 5rem;
+            width: 5rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background: var(--search-box-color);
+            cursor: pointer;
+            transition: .2s;
+
+            .icon{
+                color: var(--icon-color);
+            }
+        }
     }
 
     .advanced-filters{
-        width: 100%;
-        
         display: flex;
-        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column nowrap;
 
+        width: 95%;
+        height: 0;
+        padding: 0;
+        opacity: 0;
+        transition: .5s;
+        overflow: hidden;
 
-        .button-filter{
+        background: #FFF;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        padding: 5px;
+        border-bottom-left-radius: 50px;
+        border-bottom-right-radius: 50px;
+
+        margin-top: -10px;
+
+        .handles{
+            width: 100%;
+            padding: 0px 20px;
+            margin-bottom: 5px;
+
             display: flex;
-            align-items: center;
-        }
-
-        .filters{
-            flex-grow: 1;
-
-            display: flex;
+            justify-content: flex-end;
             flex-flow: row wrap;
             gap: 10px;
         }
 
-        @media screen and (max-width: 640px){
-            flex-direction: column;
+        .filters{
+            width: 100%;
 
-            .button-filter{
-                order: 1;
-                margin-bottom: 20px;
-                align-self: flex-end;
-            }
+            display: flex;
+            flex-flow: row wrap;
+            gap: 10px;
 
-            .filters{
-                order: 2;
-            }
+            padding: 0px 20px;
         }
+    }
+
+    :focus-within{
+        .advanced-filters{
+            height: auto;
+            padding: 10px;
+            padding-top: 15px;
+            opacity: 1;
+        }
+    }
+
+    .advanced-filters:hover{
+        height: auto;
+        padding: 10px;
+        padding-top: 15px;
+        opacity: 1;
+    }
+    
+    .advanced-filters[data-empty-filter=false]{
+        height: auto;
+        padding: 10px;
+        padding-top: 15px;
+        opacity: 1;
     }
 `;
 
@@ -102,6 +187,9 @@ export const Events = styled.div`
     grid-template-rows: auto;
     grid-gap: 15px;
     justify-items: center;
+
+    background: #FFF;
+    border-radius: 0.45rem;
 
     padding: 20px;
 

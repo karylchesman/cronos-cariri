@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { MainContainer } from '../../components/MainContainer';
 import { Carousel, Container, Events, EventSearch } from './styles';
 import { Button, Input, InputGroup, InputRightElement, Tag, TagCloseButton, TagLabel, useToast } from '@chakra-ui/react';
@@ -14,15 +14,16 @@ import "swiper/css/navigation";
 import slide1 from '../../assets/slide1.png';
 import slide2 from '../../assets/slide2.png';
 import slide3 from '../../assets/slide3.jpg';
-import running from '../../assets/running.png';
 
 import { BsSearch } from 'react-icons/bs';
 import { VscSettings } from 'react-icons/vsc';
 import { EventCard } from '../../components/EventCard';
+import { FaEraser } from "react-icons/fa";
 
 const Home = () => {
 
     const toast = useToast();
+    const filters = Array.from({ length: 0 });
 
     useEffect(() => {
         if (window.location.pathname === "/session-expired") {
@@ -67,49 +68,56 @@ const Home = () => {
                 </Carousel>
 
                 <EventSearch>
-                    <div className="search-by-name">
-                        <InputGroup>
-                            <Input variant='outline' placeholder='Encontre seu evento aqui...' />
-                            <InputRightElement width='4.5rem'>
-                                <Button variant="solid" colorScheme="twitter" h='1.75rem' size='sm' onClick={() => { }}>
-                                    <BsSearch />
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
+                    <div className="search-box">
+                        <div className="input-box">
+                            <input type="text" placeholder="Encontre seu evento aqui..." />
+                        </div>
+                        <div className="search-button">
+                            <BsSearch className="icon" size="1.5rem" />
+                        </div>
                     </div>
+                    <div className="advanced-filters" data-empty-filter={filters.length > 0 ? "false" : "true"}>
+                        <div className="handles">
+                            {
+                                filters.length > 0 ?
+                                    <Button colorScheme='yellow' variant='ghost' rightIcon={<FaEraser />}>
+                                        Limpar filtros
+                                    </Button>
+                                    : null
+                            }
 
-                    <div className="advanced-filters">
+                            <Button colorScheme='twitter' variant='ghost' rightIcon={<VscSettings />}>
+                                Filtros avançados
+                            </Button>
+                        </div>
                         <div className="filters">
                             {
-                                Array.from({ length: 13 }).map((item, idx) => {
+                                filters.map((item, idx) => {
                                     return (
                                         <Tag
                                             size="sm"
                                             key={idx}
                                             borderRadius='full'
-                                            variant='outline'
-                                            colorScheme='gray'
+                                            variant='solid'
+                                            colorScheme='twitter'
                                         >
-                                            <TagLabel>Filtro {idx}</TagLabel>
+                                            <TagLabel>Filtro {idx + 1}</TagLabel>
                                             <TagCloseButton />
                                         </Tag>
                                     )
                                 })
                             }
                         </div>
-                        <div className="button-filter">
-                            <Button colorScheme="messenger" variant='outline' size="sm">
-                                Filtros avançados&nbsp;<VscSettings />
-                            </Button>
-                        </div>
                     </div>
-
                 </EventSearch>
 
                 <Events>
                     {/* <EventCard eventData={{ banner_url: "https://via.placeholder.com/150" }} /> */}
                     <EventCard eventData={{ banner_url: "https://source.unsplash.com/1240x1000/?running" }} />
                     <EventCard eventData={{ banner_url: "https://source.unsplash.com/300x420/?running" }} />
+                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1000x900/?running" }} />
+                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/500x1000/?running" }} />
+                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1300x1000/?running" }} />
                     <EventCard eventData={{ banner_url: "https://source.unsplash.com/1000x1000/?running" }} />
                 </Events>
             </Container>
