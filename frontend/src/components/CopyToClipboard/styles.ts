@@ -27,6 +27,7 @@ export const Container = styled.div<IContainerProps>`
         props.active === true &&
             css`
             background: #B2DFDB;
+            color: #00695C;
             font-weight: 500;
         `
     }
