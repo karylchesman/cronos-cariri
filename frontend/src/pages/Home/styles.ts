@@ -56,7 +56,7 @@ export const EventSearch = styled.div`
     --icon-color: #B0BEC5;
 
     .search-box:hover, :focus-within{
-        --search-box-color: ${props => props.theme.colors.main};
+        --search-box-color: ${props => props.theme.colors.gradient_main};
         --icon-color: #FFF;
     }
 
