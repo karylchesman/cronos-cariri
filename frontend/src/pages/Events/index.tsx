@@ -17,6 +17,8 @@ import { MdDashboard } from 'react-icons/md';
 import { GiCancel } from 'react-icons/gi';
 import { EEventStatus, IEvent } from '../../context/stores/events';
 import PermissionsGate from '../../helpers/PermissionsGate';
+import { SearchWithFilter } from '../../components/SearchWithFilter';
+import eventFilterOptions from './event-filter-options';
 
 interface IGetEventsReturnType {
     events: IEvent[];
@@ -60,26 +62,27 @@ const Events = () => {
                 </div>
                 <div id="body">
                     <div className="search-box">
-                        <InputGroup size='md'>
-                            <Input
-                                pr='4.5rem'
-                                type="text"
-                                placeholder='Digite algo para procurar...'
-                                onChange={(event) => {
-                                    changeSearch(event.target.value)
-                                }}
-                                onKeyDown={(event) => {
-                                    if (event.key === "Enter") {
-                                        handleSearch()
-                                    }
-                                }}
-                            />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' colorScheme="messenger" onClick={() => handleSearch()}>
-                                    <BsSearch color="#FFF" />
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
+                        <SearchWithFilter
+                            onChangeFilter={(data) => {
+                                if (typeof data === "string") {
+                                    changeSearch(data)
+                                } else {
+                                    addOrRemoveFilter(data)
+                                }
+                            }}
+                            onEnterPress={() => {
+                                handleSearch()
+                            }}
+                            onSearchTypeChange={(type) => {
+                                if (type === "filter") {
+                                    changeSearch([])
+                                } else {
+                                    changeSearch("")
+                                }
+                            }}
+                            searchValue={searchPagination.search_params === undefined ? "" : searchPagination.search_params}
+                            filterOptions={eventFilterOptions}
+                        />
                     </div>
 
                     <div className="table-box">
@@ -122,7 +125,7 @@ const Events = () => {
                                                                         <MenuItem icon={<MdDashboard />}> Dashboard</MenuItem>
                                                                     </PermissionsGate>
                                                                     <PermissionsGate permissions={["EVENT_CONFIG"]}>
-                                                                        <MenuItem onClick={()=> pageNavigator(`/event/${item.url_path}/config`)} icon={<AiFillSetting />}> Configurações</MenuItem>
+                                                                        <MenuItem onClick={() => pageNavigator(`/event/${item.url_path}/config`)} icon={<AiFillSetting />}> Configurações</MenuItem>
                                                                     </PermissionsGate>
                                                                     {
                                                                         item.status !== EEventStatus["Publicado"] &&

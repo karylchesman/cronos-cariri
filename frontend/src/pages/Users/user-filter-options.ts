@@ -1,3 +1,5 @@
+import { TFilterOptions } from "../../components/ChooseFilterModal";
+
 export default [
     {
         alias: "Nome",
@@ -59,4 +61,4 @@ export default [
         alias: "Endereço - CEP",
         key: "person:address_cep"
     }
-]
+] as TFilterOptions[]
