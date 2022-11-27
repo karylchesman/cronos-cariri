@@ -7,6 +7,9 @@ import { UpdateEventDetailsUsecase } from "../../domain/usecases/events/update-e
 import { UpdateEventUsecase } from "../../domain/usecases/events/update-event-usecase";
 import fs from 'node:fs';
 import path from 'node:path';
+import { UpdateEventBannerUsecase } from "../../domain/usecases/events/update-event-banner-usecase";
+import { EventAttachmentRepository } from "../../domain/repositories/event-attachment-repository";
+import { UpdateEventCardUsecase } from "../../domain/usecases/events/update-event-card-usecase";
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -146,13 +149,69 @@ class EventController {
         }
 
         const details_in_text = fs.readFileSync(path.resolve(details.path)).toString("utf-8");
-        
+
         const eventRepository = new EventRepository();
         const updateEventDetailsUsecase = new UpdateEventDetailsUsecase(eventRepository);
 
         await updateEventDetailsUsecase.execute({ event_id, details: details_in_text });
 
         return response.json({ message: "Success" });
+    }
+
+    async updateBanner(request: Request, response: Response) {
+        const {
+            event_id,
+        } = request.body;
+
+        const banner = request.file;
+
+        if (!banner) {
+            throw new Error("Recurso não localizado.");
+        }
+
+        const banner_in_text = fs.readFileSync(path.resolve(banner.path)).toString("base64");
+
+        const eventRepository = new EventRepository();
+        const eventAttachmentsRepository = new EventAttachmentRepository();
+        const updateEventBannerUsecase = new UpdateEventBannerUsecase(eventRepository, eventAttachmentsRepository);
+
+        const event_banner = await updateEventBannerUsecase.execute({
+            event_id, 
+            event_banner: {
+                filename: banner.filename,
+                archive: banner_in_text
+            }
+        });
+
+        return response.json(event_banner);
+    }
+
+    async updateCard(request: Request, response: Response) {
+        const {
+            event_id,
+        } = request.body;
+
+        const card = request.file;
+
+        if (!card) {
+            throw new Error("Recurso não localizado.");
+        }
+
+        const card_in_text = fs.readFileSync(path.resolve(card.path)).toString("base64");
+
+        const eventRepository = new EventRepository();
+        const eventAttachmentsRepository = new EventAttachmentRepository();
+        const updateEventCardUsecase = new UpdateEventCardUsecase(eventRepository, eventAttachmentsRepository);
+
+        const event_card = await updateEventCardUsecase.execute({
+            event_id, 
+            event_card: {
+                filename: card.filename,
+                archive: card_in_text
+            }
+        });
+
+        return response.json(event_card);
     }
 }
 
