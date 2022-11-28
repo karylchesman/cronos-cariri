@@ -45,7 +45,7 @@ class UpdateEventCardUsecase {
             attachment_type: EEventAttachmentTypes["event_card"]
         })
 
-        const saved_card = await this.eventAttachmentRepository.saveEventBanner(
+        const saved_card = await this.eventAttachmentRepository.saveEventCard(
             event_id,
             new_event_card.getProps(),
             eventCoverAlreadyExists ? eventCoverAlreadyExists.id : undefined

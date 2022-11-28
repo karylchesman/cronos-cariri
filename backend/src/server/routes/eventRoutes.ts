@@ -11,6 +11,7 @@ const eventRoutes = Router();
 const eventController = new EventController();
 
 eventRoutes.get("/banner/:banner_archive_id/:file_name", eventController.getEventBanner);
+eventRoutes.get("/card/:card_archive_id/:file_name", eventController.getEventCard);
 
 eventRoutes.use(ensureAuthenticated);
 
@@ -24,6 +25,7 @@ eventRoutes.put("/banner/update", multer(uploadBannerCardEventConfig).single("ba
 eventRoutes.put("/card/update", multer(uploadBannerCardEventConfig).single("card"), havePermission(["EVENT_CARD_UPDATE"]), eventController.updateCard);
 
 eventRoutes.get("/banner/data/:event_id/:banner_archive_id", havePermission(["EVENT_BANNER_UPDATE"]), eventController.getEventBannerData);
+eventRoutes.get("/card/data/:event_id/:card_archive_id", havePermission(["EVENT_CARD_UPDATE"]), eventController.getEventCardData);
 
 
 export { eventRoutes };

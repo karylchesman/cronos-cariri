@@ -12,6 +12,8 @@ import { EventAttachmentRepository } from "../../domain/repositories/event-attac
 import { UpdateEventCardUsecase } from "../../domain/usecases/events/update-event-card-usecase";
 import { GetEventBannerDataUsecase } from "../../domain/usecases/events/get-event-banner-data-usecase";
 import { GetEventBannerArchiveUsecase } from "../../domain/usecases/events/get-event-banner-archive-usecase";
+import { GetEventCardArchiveUsecase } from "../../domain/usecases/events/get-event-card-archive-usecase";
+import { GetEventCardDataUsecase } from "../../domain/usecases/events/get-event-card-data-usecase";
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -236,6 +238,24 @@ class EventController {
         return response.json(event_banner);
     }
 
+    async getEventCardData(request: Request, response: Response) {
+        const {
+            event_id,
+            card_archive_id
+        } = request.params;
+
+        const eventRepository = new EventRepository();
+        const eventAttachmentRepository = new EventAttachmentRepository();
+        const getEventCardDataUsecase = new GetEventCardDataUsecase(eventRepository, eventAttachmentRepository);
+
+        const event_card = await getEventCardDataUsecase.execute({
+            event_id,
+            card_archive_id
+        });
+
+        return response.json(event_card);
+    }
+
     async getEventBanner(request: Request, response: Response) {
         const {
             file_name,
@@ -250,9 +270,26 @@ class EventController {
             banner_archive_id
         });
 
-        // response.attachment(arquivo.filename) #define um download automatico e nome do arquivo
         response.contentType(result.event_banner.mimetype)
         return response.send(Buffer.from(result.event_banner.archive, "base64"));
+    }
+
+    async getEventCard(request: Request, response: Response) {
+        const {
+            file_name,
+            card_archive_id
+        } = request.params;
+
+        const eventAttachmentRepository = new EventAttachmentRepository();
+        const getEventCardArchiveUsecase = new GetEventCardArchiveUsecase(eventAttachmentRepository);
+
+        const result = await getEventCardArchiveUsecase.execute({
+            file_name,
+            card_archive_id
+        });
+
+        response.contentType(result.event_card.mimetype)
+        return response.send(Buffer.from(result.event_card.archive, "base64"));
     }
 }
 

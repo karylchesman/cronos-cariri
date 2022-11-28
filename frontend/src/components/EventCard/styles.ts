@@ -1,13 +1,16 @@
+import { css } from "@emotion/react";
 import styled from "styled-components";
 
 interface IContainerProps {
     backgroundImage: string;
+    autoFocus?: boolean;
 }
 
 export const Container = styled.div<IContainerProps>`
     width: 100%;
     max-width: 300px;
     height: 400px;
+    aspect-ratio: 3/4;
 
     border: 1px solid #ECEFF1;
     border-radius: 6px;
@@ -91,8 +94,8 @@ export const Container = styled.div<IContainerProps>`
         }
     }
 
-    :hover ,
-    :focus {
+    &:hover ,
+    &:focus {
         border: none;
         box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
@@ -103,6 +106,20 @@ export const Container = styled.div<IContainerProps>`
         #event-info{
             display: flex;
         }
+    }
+
+    ${props => props.autoFocus && `
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+            #background-image{
+                transform: scale(1.2);
+            }
+
+            #event-info{
+                display: flex;
+            }
+        `
     }
 `;
 

@@ -1,18 +1,20 @@
+import { HTMLAttributes } from 'react';
 import { Container } from './styles';
 import { Button } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { BsCalendar2EventFill } from 'react-icons/bs';
 
-interface IEventCardProps {
+interface IEventCardProps extends HTMLAttributes<HTMLDivElement> {
     eventData: {
         card_url: string;
-    }
+    },
+    autoFocus?: boolean;
 }
 
-const EventCard = ({ eventData }: IEventCardProps) => {
+const EventCard = ({ eventData, autoFocus, ...props }: IEventCardProps) => {
 
     return (
-        <Container backgroundImage={eventData.card_url}>
+        <Container autoFocus={autoFocus} backgroundImage={eventData.card_url} {...props}>
             <div id="background-image" />
             <div className="event-date">
                 <div className="date">

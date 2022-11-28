@@ -91,7 +91,7 @@ export function eventsReducer(state: IEventsContext, action: TEventsActions) {
         case "events/select/set-card":
             return { ...state, selected: { ...state.selected, card: action.payload } }
         case "events/reset-selected":
-            return { ...state, selected: { event: null, banner: null } }
+            return { ...state, selected: { event: null, banner: null, card: null } }
         default:
             return state
     }

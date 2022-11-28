@@ -37,7 +37,32 @@ export const Container = styled.div`
             padding: 5px;
             margin-bottom: 10px;
         }
-    }  
+    } 
+    
+    .event-card{
+        width: 100%;
+
+        display: flex;
+        flex-flow: column nowrap;
+
+        .file-chooser{
+            margin-bottom: 10px;
+        }
+
+        .event-card-demonstration{
+            border-radius: .45rem;
+            border: 1px solid #ECEFF1;
+
+            height: 100%;
+
+            display: flex;
+            justify-content: space-around;
+            gap:10px;
+
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+    }
 `;
 
 export const Banner = styled.div<IBannerProps>`
