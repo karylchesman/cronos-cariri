@@ -10,6 +10,7 @@ import { IoSettings } from 'react-icons/io5';
 import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from '@chakra-ui/react';
 import { useAppContext } from '../../hooks/useAppContext';
 import { EventDetails } from './ConfigPages/EventDetails';
+import { EventBannerAndCard } from './ConfigPages/EventBannerAndCard';
 
 const EventConfig = () => {
 
@@ -99,7 +100,7 @@ const EventConfig = () => {
                                     case "Detalhes do Evento":
                                         return <EventDetails />;
                                     case "Banner e Capa":
-                                        return <EventData />;
+                                        return <EventBannerAndCard />;
                                     case "Parametros":
                                         return <EventData />;
                                     case "Categorias":

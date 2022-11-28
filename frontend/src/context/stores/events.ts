@@ -41,22 +41,39 @@ export interface IEvent {
     updated_at: Date;
 }
 
+export enum EEventAttachmentTypes {
+    "event_banner" = "event_banner",
+    "event_card" = "event_card"
+}
+
+export interface IEventAttachment {
+    id: string,
+    event_id: string;
+    attachment_type: EEventAttachmentTypes;
+    filename: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
 export interface IEventsContext {
     events: IEvent[];
     selected: {
         event: IEvent | null;
+        banner: IEventAttachment | null;
     };
 }
 
 export type TEventsActions = { type: "events/set", payload: IEvent[] }
     | { type: "events/select/set-event", payload: IEvent }
+    | { type: "events/select/set-banner", payload: IEventAttachment }
     | { type: "events/reset-selected" }
 
 
 export const eventsInitialState: IEventsContext = {
     events: [],
     selected: {
-        event: null
+        event: null,
+        banner: null
     },
 }
 
@@ -66,6 +83,8 @@ export function eventsReducer(state: IEventsContext, action: TEventsActions) {
             return { ...state, events: action.payload }
         case "events/select/set-event":
             return { ...state, selected: { event: action.payload } }
+        case "events/select/set-banner":
+            return { ...state, selected: { banner: action.payload } }
         case "events/reset-selected":
             return { ...state, selected: { event: null } }
         default:
