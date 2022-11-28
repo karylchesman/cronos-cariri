@@ -112,13 +112,12 @@ const Home = () => {
                 </EventSearch>
 
                 <Events>
-                    {/* <EventCard eventData={{ banner_url: "https://via.placeholder.com/150" }} /> */}
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1240x1000/?running" }} />
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/300x420/?running" }} />
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1000x900/?running" }} />
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/500x1000/?running" }} />
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1300x1000/?running" }} />
-                    <EventCard eventData={{ banner_url: "https://source.unsplash.com/1000x1000/?running" }} />
+                    <EventCard eventData={{ card_url: "https://via.placeholder.com/1240x1000" }} />
+                    <EventCard eventData={{ card_url: "https://via.placeholder.com/300x420" }} />
+                    <EventCard eventData={{ card_url: "https://via.placeholder.com/1000x900" }} />
+                    {/* <EventCard eventData={{ card_url: "https://source.unsplash.com/500x1000/?running" }} />
+                    <EventCard eventData={{ card_url: "https://source.unsplash.com/1300x1000/?running" }} />
+                    <EventCard eventData={{ card_url: "https://source.unsplash.com/1000x1000/?running" }} /> */}
                 </Events>
             </Container>
         </MainContainer>

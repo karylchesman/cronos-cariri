@@ -60,12 +60,14 @@ export interface IEventsContext {
     selected: {
         event: IEvent | null;
         banner: IEventAttachment | null;
+        card: IEventAttachment | null;
     };
 }
 
 export type TEventsActions = { type: "events/set", payload: IEvent[] }
     | { type: "events/select/set-event", payload: IEvent }
     | { type: "events/select/set-banner", payload: IEventAttachment }
+    | { type: "events/select/set-card", payload: IEventAttachment }
     | { type: "events/reset-selected" }
 
 
@@ -73,7 +75,8 @@ export const eventsInitialState: IEventsContext = {
     events: [],
     selected: {
         event: null,
-        banner: null
+        banner: null,
+        card: null
     },
 }
 
@@ -85,6 +88,8 @@ export function eventsReducer(state: IEventsContext, action: TEventsActions) {
             return { ...state, selected: { ...state.selected, event: action.payload } }
         case "events/select/set-banner":
             return { ...state, selected: { ...state.selected, banner: action.payload } }
+        case "events/select/set-card":
+            return { ...state, selected: { ...state.selected, card: action.payload } }
         case "events/reset-selected":
             return { ...state, selected: { event: null, banner: null } }
         default:

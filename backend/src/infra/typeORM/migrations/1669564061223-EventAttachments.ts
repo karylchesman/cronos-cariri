@@ -30,8 +30,12 @@ export class EventAttachments1669564061223 implements MigrationInterface {
                     type: "varchar"
                 },
                 {
+                    name: "mimetype",
+                    type: "varchar"
+                },
+                {
                     name: "archive",
-                    type: "varbinary"
+                    type: "mediumblob"
                 },
                 {
                     name: "created_at",

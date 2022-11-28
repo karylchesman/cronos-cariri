@@ -5,14 +5,14 @@ import { BsCalendar2EventFill } from 'react-icons/bs';
 
 interface IEventCardProps {
     eventData: {
-        banner_url: string;
+        card_url: string;
     }
 }
 
 const EventCard = ({ eventData }: IEventCardProps) => {
 
     return (
-        <Container backgroundImage={eventData.banner_url}>
+        <Container backgroundImage={eventData.card_url}>
             <div id="background-image" />
             <div className="event-date">
                 <div className="date">

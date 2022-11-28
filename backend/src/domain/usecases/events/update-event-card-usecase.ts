@@ -8,6 +8,7 @@ export interface IUpdateEventCardUsecaseResquest {
     event_card: {
         filename: string;
         archive: string;
+        mimetype: string;
     };
 }
 

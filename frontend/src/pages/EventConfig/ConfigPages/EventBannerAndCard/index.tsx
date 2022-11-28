@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Banner, Container } from './styles';
 import { Alert, AlertIcon, Box, Button, ListItem, Text, UnorderedList, useToast } from '@chakra-ui/react';
 import { useAppContext } from '../../../../hooks/useAppContext';
@@ -6,10 +6,13 @@ import { useApiRequest } from '../../../../hooks/useApiRequest';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { IEventAttachment } from '../../../../context/stores/events';
 import { InputFile } from '../../../../components/InputFile';
+import { EventCard } from '../../../../components/EventCard';
 
-type IRequestUpdateEventBannerReturn = {
-    event_card: IEventAttachment;
+interface IRequestUpdateEventBannerReturn {
+    event_banner: IEventAttachment;
 }
+
+interface IRequestGetEventBannerReturn extends IRequestUpdateEventBannerReturn { };
 
 interface ISelectedBanner {
     file: File | null,
@@ -29,11 +32,33 @@ const EventBannerAndCard = () => {
         handleOnFirstRender: false,
         successMessage: `Banner do evento atualizado.`,
         onSuccess: (data) => {
-            eventsDispatch({ type: "events/select/set-banner", payload: data.event_card })
+            eventsDispatch({ type: "events/select/set-banner", payload: data.event_banner })
         }
     })
 
-    async function onSubmit() {
+    const {
+        isLoading: isLoadingEventBanner,
+        handleRequest: getEventBanner
+    } = useApiRequest<IRequestGetEventBannerReturn>({
+        defaultConfig: {},
+        handleOnFirstRender: false,
+        onSuccess: (data) => {
+            eventsDispatch({ type: "events/select/set-banner", payload: data.event_banner })
+        }
+    })
+
+    function toastWarning(message: string) {
+        toast({
+            title: "Ops...",
+            description: message,
+            status: "warning",
+            duration: 3000,
+            variant: "left-accent",
+            position: "top"
+        })
+    }
+
+    async function onSubmitBanner() {
         if (events.selected.event !== null && bannerFile.file !== null) {
             const form_data = new FormData();
 
@@ -46,28 +71,12 @@ const EventBannerAndCard = () => {
             let allowedSize = 5 * 1024 * 1024;
 
             if (!allowedMimetypes.includes(bannerFile.file.type)) {
-                toast({
-                    title: "Ops...",
-                    description: "Tipo de arquivo inválido.",
-                    status: "warning",
-                    duration: 3000,
-                    variant: "left-accent",
-                    position: "top"
-                })
-
+                toastWarning("Formato do arquivo de banner inválido.");
                 return;
             }
 
             if (bannerFile.file.size > allowedSize) {
-                toast({
-                    title: "Ops...",
-                    description: "Tamanho do arquivo ultrapassa limite de 5mb(Megabytes).",
-                    status: "warning",
-                    duration: 3000,
-                    variant: "left-accent",
-                    position: "top"
-                })
-
+                toastWarning("Tamanho do arquivo ultrapassa limite de 5mb(Megabytes).");
                 return;
             }
 
@@ -80,16 +89,18 @@ const EventBannerAndCard = () => {
                 data: form_data
             })
         } else {
-            toast({
-                title: "Ops...",
-                description: "Por favor preencha o formulário corretamente.",
-                status: "warning",
-                duration: 3000,
-                variant: "left-accent",
-                position: "top"
-            })
+            toastWarning("Por favor preencha o formulário corretamente.");
         }
     }
+
+    useEffect(() => {
+        if (events.selected.event !== null && events.selected.event.banner_archive_id !== null) {
+            getEventBanner({
+                method: "get",
+                url: `/events/banner/data/${events.selected.event.id}/${events.selected.event.banner_archive_id}`
+            })
+        }
+    }, [])
 
     return (
         <Container>
@@ -134,7 +145,12 @@ const EventBannerAndCard = () => {
                 <Text fontSize="md" mb="0.5rem">Pré-visualização do banner</Text>
 
                 <div className="event-banner-demonstration">
-                    <Banner urlPath={bannerFile.url ? bannerFile.url : "https://via.placeholder.com/1300x325/E0E0E0/607D8B/?text=Recomendado+1360x325"} />
+                    {
+                        (events.selected.banner !== null && bannerFile.url === null) ?
+                            <Banner urlPath={`${String(import.meta.env.VITE_API_URL)}/events/banner/${events.selected.banner?.id}/${events.selected.banner?.filename}`} />
+                            :
+                            <Banner urlPath={bannerFile.url ? bannerFile.url : "https://via.placeholder.com/1300x325/E0E0E0/607D8B/?text=Recomendado+1360x325"} />
+                    }
                 </div>
 
                 <Box w="100%" display="flex" justifyContent="flex-end">
@@ -144,13 +160,64 @@ const EventBannerAndCard = () => {
                         bgColor="yellow.400"
                         variant='solid'
                         rightIcon={<BsCheck2Circle />}
-                        onClick={onSubmit}
+                        onClick={onSubmitBanner}
                     >
                         Salvar Banner
                     </Button>
                 </Box>
             </div>
 
+            <div className="event-card">
+                <Text fontSize="2xl" mb="0.5rem">Escolha a Capa</Text>
+                <UnorderedList pl="1rem" mb="1rem">
+                    <ListItem>Somente arquivos nos formatos .jpeg / .jpg / .png</ListItem>
+                    <ListItem>Arquivos com no máximo 5mb(Megabyte)</ListItem>
+                    <ListItem>Proporção da imagem 4/1</ListItem>
+                </UnorderedList>
+                <div className="file-chooser">
+                    <InputFile
+                        accept=".jpeg, .jpg, .png"
+                        onFileChange={(files) => {
+                            if (files.length > 0) {
+                                let fileReader = new FileReader();
+                                fileReader.readAsDataURL(files[0]);
+                                fileReader.onload = () => {
+                                    if (typeof fileReader.result === "string") {
+                                        setBannerFile({
+                                            file: files[0],
+                                            url: fileReader.result
+                                        })
+                                    }
+                                }
+                            }
+
+                            setBannerFile({
+                                file: null,
+                                url: null
+                            })
+                        }}
+                    />
+                </div>
+
+                <Text fontSize="md" mb="0.5rem">Pré-visualização da capa</Text>
+
+                <div className="event-banner-demonstration">
+                    <EventCard eventData={{ card_url: bannerFile.url ? bannerFile.url : "https://via.placeholder.com/1300x325/E0E0E0/607D8B/?text=Recomendado+1360x325" }} />
+                </div>
+
+                <Box w="100%" display="flex" justifyContent="flex-end">
+                    <Button
+                        isLoading={isLoadingUpdateBanner}
+                        colorScheme='yellow'
+                        bgColor="yellow.400"
+                        variant='solid'
+                        rightIcon={<BsCheck2Circle />}
+                        onClick={onSubmitBanner}
+                    >
+                        Salvar Capa
+                    </Button>
+                </Box>
+            </div>
         </Container>
     );
 

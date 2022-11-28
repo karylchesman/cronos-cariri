@@ -19,6 +19,14 @@ class ORMEventAttachment {
     filename!: string
 
     @Column()
+    mimetype!: string
+
+    @Column({
+        transformer: {
+            from: (value: Buffer) => value.toString("base64"),
+            to: (value: string) => Buffer.from(value, "base64")
+        }
+    })
     archive!: string;
 
     @CreateDateColumn()

@@ -60,9 +60,9 @@ const InputFile = ({ onFileChange, buttonSize, customTitle, accept, ...props }: 
                     (inputRef.current !== null && inputRef.current.files !== null && inputRef.current.files.length > 0) ?
                         files.map((item, idx) => {
                             return (
-                                <>
+                                <span key={idx}>
                                     {idx > 0 ? ", " : ""}{item.name}
-                                </>
+                                </span>
                             )
                         })
                         :

@@ -10,6 +10,8 @@ import path from 'node:path';
 import { UpdateEventBannerUsecase } from "../../domain/usecases/events/update-event-banner-usecase";
 import { EventAttachmentRepository } from "../../domain/repositories/event-attachment-repository";
 import { UpdateEventCardUsecase } from "../../domain/usecases/events/update-event-card-usecase";
+import { GetEventBannerDataUsecase } from "../../domain/usecases/events/get-event-banner-data-usecase";
+import { GetEventBannerArchiveUsecase } from "../../domain/usecases/events/get-event-banner-archive-usecase";
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -176,10 +178,11 @@ class EventController {
         const updateEventBannerUsecase = new UpdateEventBannerUsecase(eventRepository, eventAttachmentsRepository);
 
         const event_banner = await updateEventBannerUsecase.execute({
-            event_id, 
+            event_id,
             event_banner: {
                 filename: banner.filename,
-                archive: banner_in_text
+                archive: banner_in_text,
+                mimetype: banner.mimetype
             }
         });
 
@@ -204,14 +207,52 @@ class EventController {
         const updateEventCardUsecase = new UpdateEventCardUsecase(eventRepository, eventAttachmentsRepository);
 
         const event_card = await updateEventCardUsecase.execute({
-            event_id, 
+            event_id,
             event_card: {
                 filename: card.filename,
-                archive: card_in_text
+                archive: card_in_text,
+                mimetype: card.mimetype
             }
         });
 
         return response.json(event_card);
+    }
+
+    async getEventBannerData(request: Request, response: Response) {
+        const {
+            event_id,
+            banner_archive_id
+        } = request.params;
+
+        const eventRepository = new EventRepository();
+        const eventAttachmentRepository = new EventAttachmentRepository();
+        const getEventBannerDataUsecase = new GetEventBannerDataUsecase(eventRepository, eventAttachmentRepository);
+
+        const event_banner = await getEventBannerDataUsecase.execute({
+            event_id,
+            banner_archive_id
+        });
+
+        return response.json(event_banner);
+    }
+
+    async getEventBanner(request: Request, response: Response) {
+        const {
+            file_name,
+            banner_archive_id
+        } = request.params;
+
+        const eventAttachmentRepository = new EventAttachmentRepository();
+        const getEventBannerArchiveUsecase = new GetEventBannerArchiveUsecase(eventAttachmentRepository);
+
+        const result = await getEventBannerArchiveUsecase.execute({
+            file_name,
+            banner_archive_id
+        });
+
+        // response.attachment(arquivo.filename) #define um download automatico e nome do arquivo
+        response.contentType(result.event_banner.mimetype)
+        return response.send(Buffer.from(result.event_banner.archive, "base64"));
     }
 }
 

@@ -8,6 +8,7 @@ export interface IUpdateEventBannerUsecaseResquest {
     event_banner: {
         filename: string;
         archive: string;
+        mimetype: string;
     };
 }
 
