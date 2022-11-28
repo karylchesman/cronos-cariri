@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Banner, Container } from './styles';
-import { Alert, AlertIcon, Box, Button, Text, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, ListItem, Text, UnorderedList, useToast } from '@chakra-ui/react';
 import { useAppContext } from '../../../../hooks/useAppContext';
 import { useApiRequest } from '../../../../hooks/useApiRequest';
 import { BsCheck2Circle } from 'react-icons/bs';
@@ -96,11 +96,16 @@ const EventBannerAndCard = () => {
             <div className="form-info">
                 <Alert status='info'>
                     <AlertIcon />
-                    Nesta seção você poderá atualizar o banner do evento que será exibido na página dele, e o card do evento que é a imagem que será exibida no buscador de eventos em miniatura.
+                    Nesta seção você poderá atualizar o banner do evento que será exibido na página dele, e a capa do evento que é a imagem que será exibida no buscador de eventos em miniatura.
                 </Alert>
             </div>
             <div className="event-banner">
                 <Text fontSize="2xl" mb="0.5rem">Escolha o banner</Text>
+                <UnorderedList pl="1rem" mb="1rem">
+                    <ListItem>Somente arquivos nos formatos .jpeg / .jpg / .png</ListItem>
+                    <ListItem>Arquivos com no máximo 5mb(Megabyte)</ListItem>
+                    <ListItem>Proporção da imagem 4/1</ListItem>
+                </UnorderedList>
                 <div className="file-chooser">
                     <InputFile
                         accept=".jpeg, .jpg, .png"

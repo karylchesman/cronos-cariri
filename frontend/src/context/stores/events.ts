@@ -82,11 +82,11 @@ export function eventsReducer(state: IEventsContext, action: TEventsActions) {
         case "events/set":
             return { ...state, events: action.payload }
         case "events/select/set-event":
-            return { ...state, selected: { event: action.payload } }
+            return { ...state, selected: { ...state.selected, event: action.payload } }
         case "events/select/set-banner":
-            return { ...state, selected: { banner: action.payload } }
+            return { ...state, selected: { ...state.selected, banner: action.payload } }
         case "events/reset-selected":
-            return { ...state, selected: { event: null } }
+            return { ...state, selected: { event: null, banner: null } }
         default:
             return state
     }

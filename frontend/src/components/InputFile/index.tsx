@@ -69,7 +69,14 @@ const InputFile = ({ onFileChange, buttonSize, customTitle, accept, ...props }: 
                         <>Nenhum arquivo selecionado...</>
                 }
             </div>
-            <Button onClick={cleanFilePicker} size="sm" className="clean-buttom" colorScheme='gray' variant='ghost'>
+            <Button
+                onClick={cleanFilePicker}
+                size="sm"
+                className="clean-buttom"
+                colorScheme='gray'
+                variant='ghost'
+                bgColor="#FFF"
+            >
                 Limpar campo
             </Button>
         </Container>

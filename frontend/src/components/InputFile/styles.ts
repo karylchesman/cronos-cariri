@@ -29,5 +29,11 @@ export const Container = styled.div`
         right: 10px;
         top: 10px;
     }
+
+    @media screen and (max-width:530px) {
+        flex-flow: column nowrap !important;
+        justify-content: center;
+        align-items: flex-start;
+    }
 `;
 
