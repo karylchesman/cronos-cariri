@@ -58,13 +58,11 @@ export const Container = styled.div`
             }
         }
 
-        .config-bar{
-            grid-area: config-bar;
-
-            display: flex;
-            width: 100%;
-            height: 100%;
+        .config-area{
+            /* position: relative; */
+            background: #ECEFF1;
         }
+
         .form-area{
             grid-area: form-area;
 
@@ -95,12 +93,12 @@ export const Container = styled.div`
 
 export const ConfigBar = styled.div`
     width: 100%;
-    height: 100%;
 
     display: flex;
     flex-flow: column nowrap;
+    /* position: sticky;
+    top: 0; */
 
-    background: #ECEFF1;
     border-radius: 0 0 0 8px;
 `;
 

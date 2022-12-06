@@ -1,6 +1,7 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne } from 'typeorm';
 import { EEventResultTypes, EEventStatus, EEventTypes } from '../../../domain/entities/event';
 import { EPersonGender } from '../../../domain/entities/person';
+import { ORMEventParameters } from './ORMEventParameters';
 
 @Entity("events")
 class ORMEvent {
@@ -94,8 +95,11 @@ class ORMEvent {
     created_at!: Date;
 
     @UpdateDateColumn()
-    updated_at!: Date
+    updated_at!: Date;
 
+    @JoinColumn({ name: "id", referencedColumnName: "event_id" })
+    @OneToOne(() => ORMEventParameters)
+    event_parameters!: ORMEventParameters;
 }
 
 export { ORMEvent }
