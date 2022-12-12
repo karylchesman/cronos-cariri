@@ -14,6 +14,8 @@ import { GetEventBannerDataUsecase } from "../../domain/usecases/events/get-even
 import { GetEventBannerArchiveUsecase } from "../../domain/usecases/events/get-event-banner-archive-usecase";
 import { GetEventCardArchiveUsecase } from "../../domain/usecases/events/get-event-card-archive-usecase";
 import { GetEventCardDataUsecase } from "../../domain/usecases/events/get-event-card-data-usecase";
+import { EventParametersRepository } from "../../domain/repositories/event-parameters-repository";
+import { UpdateEventParametersUsecase } from "../../domain/usecases/events/update-event-parameters-usecase";
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -290,6 +292,38 @@ class EventController {
 
         response.contentType(result.event_card.mimetype)
         return response.send(Buffer.from(result.event_card.archive, "base64"));
+    }
+
+    async updateEventParameters(request: Request, response: Response) {
+        const {
+            event_id,
+            inscription_made_email,
+            inscription_confirmed_email,
+            inscription_canceled_email,
+            show_inscription_list,
+            pagseguro_token,
+            pagseguro_email,
+            pagseguro_api_link
+        } = request.body;
+
+        const eventRepository = new EventRepository();
+        const eventParametersRepository = new EventParametersRepository();
+        const updateEventParametersUsecase = new UpdateEventParametersUsecase(eventRepository, eventParametersRepository);
+
+        const result = await updateEventParametersUsecase.execute({
+            parameters: {
+                event_id,
+                inscription_made_email,
+                inscription_confirmed_email,
+                inscription_canceled_email,
+                show_inscription_list,
+                pagseguro_token,
+                pagseguro_email,
+                pagseguro_api_link
+            }
+        });
+
+        return response.json(result);
     }
 }
 

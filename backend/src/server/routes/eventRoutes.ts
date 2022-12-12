@@ -23,6 +23,7 @@ eventRoutes.put("/basic-info/update", havePermission(["EVENT_BASIC_UPDATE"]), ev
 eventRoutes.put("/details/update", multer(uploadDetailsEventConfig).single("details"), havePermission(["EVENT_DETAILS_UPDATE"]), eventController.updateDetails);
 eventRoutes.put("/banner/update", multer(uploadBannerCardEventConfig).single("banner"), havePermission(["EVENT_BANNER_UPDATE"]), eventController.updateBanner);
 eventRoutes.put("/card/update", multer(uploadBannerCardEventConfig).single("card"), havePermission(["EVENT_CARD_UPDATE"]), eventController.updateCard);
+eventRoutes.put("/parameters/update", havePermission(["EVENT_PARAMETERS_UPDATE"]), eventController.updateEventParameters);
 
 eventRoutes.get("/banner/data/:event_id/:banner_archive_id", havePermission(["EVENT_BANNER_UPDATE"]), eventController.getEventBannerData);
 eventRoutes.get("/card/data/:event_id/:card_archive_id", havePermission(["EVENT_CARD_UPDATE"]), eventController.getEventCardData);
