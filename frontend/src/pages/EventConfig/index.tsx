@@ -11,6 +11,7 @@ import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from 
 import { useAppContext } from '../../hooks/useAppContext';
 import { EventDetails } from './ConfigPages/EventDetails';
 import { EventBannerAndCard } from './ConfigPages/EventBannerAndCard';
+import { EventParameters } from './ConfigPages/EventParameters';
 
 const EventConfig = () => {
 
@@ -102,7 +103,7 @@ const EventConfig = () => {
                                     case "Banner e Capa":
                                         return <EventBannerAndCard />;
                                     case "Parametros":
-                                        return <EventData />;
+                                        return <EventParameters />;
                                     case "Categorias":
                                         return <EventData />;
                                     case "Planos":

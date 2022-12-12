@@ -16,6 +16,7 @@ import { GetEventCardArchiveUsecase } from "../../domain/usecases/events/get-eve
 import { GetEventCardDataUsecase } from "../../domain/usecases/events/get-event-card-data-usecase";
 import { EventParametersRepository } from "../../domain/repositories/event-parameters-repository";
 import { UpdateEventParametersUsecase } from "../../domain/usecases/events/update-event-parameters-usecase";
+import { GetEventParametersUsecase } from "../../domain/usecases/events/get-event-parameters-usecase";
 
 class EventController {
     async createEvent(request: Request, response: Response) {
@@ -322,6 +323,20 @@ class EventController {
                 pagseguro_api_link
             }
         });
+
+        return response.json(result);
+    }
+
+    async getEventParameters(request: Request, response: Response) {
+        const {
+            event_id
+        } = request.params;
+
+        const eventRepository = new EventRepository();
+        const eventParametersRepository = new EventParametersRepository();
+        const getEventParametersUsecase = new GetEventParametersUsecase(eventRepository, eventParametersRepository);
+
+        const result = await getEventParametersUsecase.execute({ event_id });
 
         return response.json(result);
     }

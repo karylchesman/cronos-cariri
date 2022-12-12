@@ -27,6 +27,7 @@ eventRoutes.put("/parameters/update", havePermission(["EVENT_PARAMETERS_UPDATE"]
 
 eventRoutes.get("/banner/data/:event_id/:banner_archive_id", havePermission(["EVENT_BANNER_UPDATE"]), eventController.getEventBannerData);
 eventRoutes.get("/card/data/:event_id/:card_archive_id", havePermission(["EVENT_CARD_UPDATE"]), eventController.getEventCardData);
+eventRoutes.get("/parameters/:event_id", havePermission(["EVENT_PARAMETERS_UPDATE"]), eventController.getEventParameters);
 
 
 export { eventRoutes };

@@ -55,6 +55,7 @@ export function useApiRequest<RequestReturnType = any>({
             }
 
         } catch (err: AxiosError | any) {
+            console.log(err.name)
             if (err.name === "CanceledError") return;
 
             if (errorHandlerType === "dialog") {

@@ -55,12 +55,31 @@ export interface IEventAttachment {
     updated_at: Date;
 }
 
+export enum EShowInscriptionListOption {
+    "Mostrar" = "Mostrar",
+    "Não Mostrar" = "Não Mostrar",
+    "Somente Confirmadas" = "Somente Confirmadas"
+}
+
+export interface IEventParameters {
+    id: string;
+    event_id: string;
+    inscription_made_email: boolean;
+    inscription_confirmed_email: boolean;
+    inscription_canceled_email: boolean;
+    show_inscription_list: EShowInscriptionListOption;
+    pagseguro_token: string;
+    pagseguro_email: string;
+    pagseguro_api_link: string;
+}
+
 export interface IEventsContext {
     events: IEvent[];
     selected: {
         event: IEvent | null;
         banner: IEventAttachment | null;
         card: IEventAttachment | null;
+        parameters: IEventParameters | null;
     };
 }
 
@@ -68,6 +87,7 @@ export type TEventsActions = { type: "events/set", payload: IEvent[] }
     | { type: "events/select/set-event", payload: IEvent }
     | { type: "events/select/set-banner", payload: IEventAttachment }
     | { type: "events/select/set-card", payload: IEventAttachment }
+    | { type: "events/select/set-parameters", payload: IEventParameters }
     | { type: "events/reset-selected" }
 
 
@@ -76,7 +96,8 @@ export const eventsInitialState: IEventsContext = {
     selected: {
         event: null,
         banner: null,
-        card: null
+        card: null,
+        parameters: null
     },
 }
 
@@ -90,8 +111,10 @@ export function eventsReducer(state: IEventsContext, action: TEventsActions) {
             return { ...state, selected: { ...state.selected, banner: action.payload } }
         case "events/select/set-card":
             return { ...state, selected: { ...state.selected, card: action.payload } }
+        case "events/select/set-parameters":
+            return { ...state, selected: { ...state.selected, parameters: action.payload } }
         case "events/reset-selected":
-            return { ...state, selected: { event: null, banner: null, card: null } }
+            return { ...state, selected: { event: null, banner: null, card: null, parameters: null } }
         default:
             return state
     }
