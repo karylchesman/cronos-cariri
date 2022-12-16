@@ -7,23 +7,18 @@ export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
+    position: relative;
 `;
 
 export const Carousel = styled.div`
     width: 100%;
     display: flex;
-    max-height: 400px;
-    max-width: 1024px;
-    padding: 10px;
-
-    background: #FFF;
-    border-radius: 0.45rem;
+    max-height: 590px;
 
     .swiper {
         flex-grow: 1;
         width: 100%;
-        max-width: 1024px;
     }
 
     .swiper-slide {
@@ -35,12 +30,8 @@ export const Carousel = styled.div`
         width: 100%;
         height: 100%;
         object-fit: contain;
+        aspect-ratio: 13/4;
     }
-
-    .swiper-pagination-progressbar-fill{
-        background: ${props => props.theme.colors.main};
-    }
-
 `;
 
 export const EventSearch = styled.div`
@@ -91,8 +82,8 @@ export const EventSearch = styled.div`
         }
 
         .search-button{
-            height: 5rem;
-            width: 5rem;
+            height: 4rem;
+            width: 4rem;
 
             display: flex;
             justify-content: center;
@@ -179,7 +170,7 @@ export const EventSearch = styled.div`
 
 export const Events = styled.div`
     width: 100%;
-    max-width: 1024px;
+    max-width: 1200px;
     height: auto;
 
     display: grid;
