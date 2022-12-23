@@ -1,9 +1,9 @@
-import { Equal, Like, Repository } from "typeorm";
-import { AppDataSource } from "../../infra/typeORM/connection";
-import { ORMEvent } from "../../infra/typeORM/entities/ORMEvent";
-import { EventProps } from "../entities/event";
-import { getWhereObject, ISearchObject } from "../utils/search-object";
-import { EventRepositoryProtocol } from "./interfaces/event-repository-protocol";
+import { Equal, Like, Repository } from 'typeorm';
+import { AppDataSource } from '../../infra/typeORM/connection';
+import { ORMEvent } from '../../infra/typeORM/entities/ORMEvent';
+import { EventProps } from '../entities/event';
+import { getWhereObject, ISearchObject } from '../utils/search-object';
+import { EventRepositoryProtocol } from './interfaces/event-repository-protocol';
 
 class EventRepository implements EventRepositoryProtocol {
     private eventRepository: Repository<ORMEvent>;
@@ -13,7 +13,7 @@ class EventRepository implements EventRepositoryProtocol {
     }
 
     async save(event: EventProps) {
-        const new_event = this.eventRepository.create(event)
+        const new_event = this.eventRepository.create(event);
 
         await this.eventRepository.save(new_event);
 
@@ -29,10 +29,9 @@ class EventRepository implements EventRepositoryProtocol {
     }
 
     async find(event?: Partial<EventProps>) {
-
         const found_events = await this.eventRepository.find({
-            where: event
-        })
+            where: event,
+        });
 
         return found_events;
     }
@@ -40,9 +39,9 @@ class EventRepository implements EventRepositoryProtocol {
     async findById(id: string) {
         const event = await this.eventRepository.findOne({
             where: {
-                id
-            }
-        })
+                id,
+            },
+        });
 
         if (event) {
             return event;
@@ -51,12 +50,18 @@ class EventRepository implements EventRepositoryProtocol {
         return null;
     }
 
-    async findByUrlPath(url_path: string, search_like: boolean): Promise<EventProps[] | null> {
+    async findByUrlPath(
+        url_path: string,
+        search_like: boolean
+    ): Promise<EventProps[] | null> {
         const event = await this.eventRepository.find({
             where: {
-                url_path: search_like === true ? Like(`%${url_path}`) : Equal(url_path)
-            }
-        })
+                url_path:
+                    search_like === true
+                        ? Like(`%${url_path}`)
+                        : Equal(url_path),
+            },
+        });
 
         if (event) {
             return event;
@@ -65,30 +70,50 @@ class EventRepository implements EventRepositoryProtocol {
         return null;
     }
 
-    async search(search_params?: ISearchObject<EventProps>[] | string, page?: number, limit?: number, order_by?: keyof EventProps, order?: "ASC" | "DESC") {
-
-        const query = this.eventRepository.createQueryBuilder("events").select("events");
+    async search(
+        search_params?: ISearchObject<EventProps>[] | string,
+        page?: number,
+        limit?: number,
+        order_by?: keyof EventProps,
+        order?: 'ASC' | 'DESC'
+    ) {
+        const query = this.eventRepository
+            .createQueryBuilder('events')
+            .select('events');
 
         if (search_params !== undefined) {
-            if (typeof search_params === "string") {
-                query.where(`name LIKE :event_name`, { event_name: `%${search_params}%` });
+            if (typeof search_params === 'string') {
+                query.where(`name LIKE :event_name`, {
+                    event_name: `%${search_params}%`,
+                });
             }
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereObject(item.operator, item.key, item.value, "events");
+                    const search_object = getWhereObject(
+                        item.operator,
+                        item.key,
+                        item.value,
+                        'events'
+                    );
 
                     if (idx === 0) {
-                        query.where(search_object.where_string, search_object.value_param);
+                        query.where(
+                            search_object.where_string,
+                            search_object.value_param
+                        );
                     } else {
-                        query.andWhere(search_object.where_string, search_object.value_param);
+                        query.andWhere(
+                            search_object.where_string,
+                            search_object.value_param
+                        );
                     }
-                })
+                });
             }
         }
 
         if (limit !== undefined && page !== undefined) {
-            let skip = (page - 1) * limit
+            const skip = (page - 1) * limit;
 
             query.skip(skip);
             query.take(limit);
@@ -102,7 +127,7 @@ class EventRepository implements EventRepositoryProtocol {
 
         return {
             events: events_found[0],
-            registers: events_found[1]
+            registers: events_found[1],
         };
     }
 
@@ -111,7 +136,6 @@ class EventRepository implements EventRepositoryProtocol {
 
         return;
     }
-
 }
 
-export { EventRepository }
+export { EventRepository };

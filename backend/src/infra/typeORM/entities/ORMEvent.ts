@@ -1,11 +1,21 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToOne } from 'typeorm';
-import { EEventResultTypes, EEventStatus, EEventTypes } from '../../../domain/entities/event';
-import { EPersonGender } from '../../../domain/entities/person';
+import {
+    Entity,
+    PrimaryColumn,
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    JoinColumn,
+    OneToOne,
+} from 'typeorm';
+import {
+    EEventResultTypes,
+    EEventStatus,
+    EEventTypes,
+} from '../../../domain/entities/event';
 import { ORMEventParameters } from './ORMEventParameters';
 
-@Entity("events")
+@Entity('events')
 class ORMEvent {
-
     @PrimaryColumn()
     id!: string;
 
@@ -41,13 +51,13 @@ class ORMEvent {
 
     @Column({
         nullable: true,
-        default: null
+        default: null,
     })
     phonenumber!: string;
 
     @Column({
-        type: "enum",
-        enum: EEventTypes
+        type: 'enum',
+        enum: EEventTypes,
     })
     event_type!: EEventTypes;
 
@@ -55,39 +65,39 @@ class ORMEvent {
     inscription_limit_date!: Date;
 
     @Column({
-        unique: true
+        unique: true,
     })
     url_path!: string;
 
     @Column({
-        type: "enum",
-        enum: EEventStatus
+        type: 'enum',
+        enum: EEventStatus,
     })
     status!: EEventStatus;
 
     @Column({
         nullable: true,
-        default: null
+        default: null,
     })
     banner_archive_id!: string;
 
     @Column({
         nullable: true,
-        default: null
+        default: null,
     })
     card_archive_id!: string;
-    
+
     @Column({
-        type: "enum",
+        type: 'enum',
         enum: EEventResultTypes,
         nullable: true,
-        default: null
+        default: null,
     })
     result_type!: EEventResultTypes;
-    
+
     @Column({
         nullable: true,
-        default: null
+        default: null,
     })
     details!: string;
 
@@ -97,9 +107,9 @@ class ORMEvent {
     @UpdateDateColumn()
     updated_at!: Date;
 
-    @JoinColumn({ name: "id", referencedColumnName: "event_id" })
+    @JoinColumn({ name: 'id', referencedColumnName: 'event_id' })
     @OneToOne(() => ORMEventParameters)
     event_parameters!: ORMEventParameters;
 }
 
-export { ORMEvent }
+export { ORMEvent };
