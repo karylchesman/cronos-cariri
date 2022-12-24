@@ -16,8 +16,9 @@ categoryRoutes.post(
 );
 categoryRoutes.post(
     '/search',
-    havePermission(['CATEGORY_LIST']),
+    havePermission(['CATEGORY_SEARCH']),
     categoryController.search
 );
+categoryRoutes.get('/:event_id/list', categoryController.getByEventId);
 
 export { categoryRoutes };

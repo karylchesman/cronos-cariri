@@ -41,7 +41,7 @@ class CreateCategoryUsecase {
 
         const [categoryAlreadyExists] = await this.categoryRepository.find({
             name: category.name,
-            event_id: category.event_id,
+            event_id: eventExists.id,
         });
 
         if (categoryAlreadyExists) {
