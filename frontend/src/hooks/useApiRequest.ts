@@ -1,34 +1,36 @@
-import { useEffect } from 'react';
-import { AxiosError, AxiosRequestConfig } from 'axios';
-import { useState } from 'react';
-import { useTheme } from 'styled-components';
-import Swal from 'sweetalert2';
-import { api } from '../services/ApiService';
-import { useToast } from '@chakra-ui/react';
+import { useEffect } from "react";
+import { AxiosError, AxiosRequestConfig } from "axios";
+import { useState } from "react";
+import { useTheme } from "styled-components";
+import Swal from "sweetalert2";
+import { api } from "../services/ApiService";
+import { useToast } from "@chakra-ui/react";
 
 interface IUseApiRequestProps<RequestReturnType> {
-    errorHandlerType?: "toast" | "dialog",
+    errorHandlerType?: "toast" | "dialog";
     handleOnFirstRender?: boolean;
     defaultConfig: AxiosRequestConfig;
     successMessage?: string;
-    onSuccess?: (data: RequestReturnType, requestConfig: AxiosRequestConfig) => void;
+    onSuccess?: (
+        data: RequestReturnType,
+        requestConfig: AxiosRequestConfig
+    ) => void;
 }
 
 type IUseApiRequestReturn<RequestReturnType> = {
-    data: RequestReturnType | null,
-    isLoading: boolean,
-    handleRequest: (config?: AxiosRequestConfig) => Promise<void>,
-    abortRequest: () => void
-}
+    data: RequestReturnType | null;
+    isLoading: boolean;
+    handleRequest: (config?: AxiosRequestConfig) => Promise<void>;
+    abortRequest: () => void;
+};
 
 export function useApiRequest<RequestReturnType = any>({
     errorHandlerType = "dialog",
     handleOnFirstRender = true,
     defaultConfig,
     successMessage,
-    onSuccess
+    onSuccess,
 }: IUseApiRequestProps<RequestReturnType>) {
-
     const theme = useTheme();
     const controller = new AbortController();
     const toast = useToast();
@@ -36,7 +38,7 @@ export function useApiRequest<RequestReturnType = any>({
     const [isLoading, setIsloading] = useState(false);
 
     async function handleRequest(config?: AxiosRequestConfig) {
-        setIsloading(true)
+        setIsloading(true);
         try {
             const result = await api.request(config || defaultConfig);
 
@@ -50,12 +52,10 @@ export function useApiRequest<RequestReturnType = any>({
                     status: "success",
                     duration: 3000,
                     variant: "left-accent",
-                    position: "top"
+                    position: "top",
                 });
             }
-
         } catch (err: AxiosError | any) {
-            console.log(err.name)
             if (err.name === "CanceledError") return;
 
             if (errorHandlerType === "dialog") {
@@ -64,39 +64,45 @@ export function useApiRequest<RequestReturnType = any>({
                 handlerByToast(err);
             }
         }
-        setIsloading(false)
+        setIsloading(false);
     }
 
-    async function handlerByDialog(err: AxiosError | any, config: AxiosRequestConfig) {
+    async function handlerByDialog(
+        err: AxiosError | any,
+        config: AxiosRequestConfig
+    ) {
         Swal.fire({
-            icon: 'warning',
-            title: 'Oops...',
-            text: err.response ? err.response.data.error : "Falha ao tentar comunicar-se com o servidor.",
+            icon: "warning",
+            title: "Oops...",
+            text: err.response
+                ? err.response.data.error
+                : "Falha ao tentar comunicar-se com o servidor.",
             toast: true,
             confirmButtonColor: theme.button_colors.primary,
             confirmButtonText: "Tentar novamente",
             showDenyButton: true,
             denyButtonText: "Cancelar",
             denyButtonColor: theme.button_colors.danger,
-            preConfirm: () => handleRequest(config)
-        })
+            preConfirm: () => handleRequest(config),
+        });
     }
 
     function handlerByToast(err: AxiosError | any) {
         toast({
             title: "Ops...",
-            description: err.response ? err.response.data.error : "Falha ao tentar comunicar-se com o servidor.",
+            description: err.response
+                ? err.response.data.error
+                : "Falha ao tentar comunicar-se com o servidor.",
             status: "warning",
             duration: 3000,
             variant: "left-accent",
-            position: "top"
-        })
+            position: "top",
+        });
     }
 
     function abortRequest() {
         controller.abort();
     }
-
 
     useEffect(() => {
         if (handleOnFirstRender === true) {
@@ -104,14 +110,14 @@ export function useApiRequest<RequestReturnType = any>({
 
             return () => {
                 abortRequest();
-            }
+            };
         }
-    }, [])
+    }, []);
 
     return {
         data,
         isLoading,
         handleRequest,
-        abortRequest
-    } as IUseApiRequestReturn<RequestReturnType>
+        abortRequest,
+    } as IUseApiRequestReturn<RequestReturnType>;
 }

@@ -12,9 +12,12 @@ import { useAppContext } from '../../hooks/useAppContext';
 import { EventDetails } from './ConfigPages/EventDetails';
 import { EventBannerAndCard } from './ConfigPages/EventBannerAndCard';
 import { EventParameters } from './ConfigPages/EventParameters';
+import { EventCategories } from './ConfigPages/EventCategories';
+import { BiLeftArrowAlt } from 'react-icons/bi';
 
 const EventConfig = () => {
 
+    const pageNavigator = useNavigate();
     const location = useLocation();
     const { eventsDispatch } = useAppContext();
     const [configPage, setConfigPage] = useState<IConfigMenuItem>(configMenus[0]);
@@ -47,6 +50,7 @@ const EventConfig = () => {
                     <IoSettings size="1.5rem" />
                 </ConfigToggle>
                 <div id="header">
+                    <BiLeftArrowAlt onClick={() => pageNavigator("/admin/events")} className="button-return" size="2.3rem" />
                     <h1>{eventCreation ? "Novo Evento" : "Configurações do Evento"}</h1>
                 </div>
                 <div id="body">
@@ -105,7 +109,7 @@ const EventConfig = () => {
                                     case "Parametros":
                                         return <EventParameters />;
                                     case "Categorias":
-                                        return <EventData />;
+                                        return <EventCategories />;
                                     case "Planos":
                                         return <EventData />;
                                     case "Lotes":

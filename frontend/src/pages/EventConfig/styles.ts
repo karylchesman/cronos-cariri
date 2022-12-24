@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface IConfigMenuProps {
     active?: boolean;
@@ -19,51 +19,59 @@ export const Container = styled.div`
     align-items: center;
     gap: 10px;
 
-    #header{
+    #header {
         width: 100%;
 
         border-radius: 8px 8px 0 0;
-        background: #FFF;
+        background: #fff;
         padding: 20px;
 
         display: flex;
         align-items: center;
         justify-content: flex-start;
 
-        h1{
+        h1 {
             font-size: calc(1rem + 1.2vw);
+        }
+
+        .button-return {
+            margin-right: 10px;
+
+            &:hover {
+                cursor: pointer;
+            }
         }
     }
 
-    #body{
+    #body {
         width: 100%;
         height: 100%;
         flex-grow: 1;
 
         border-radius: 0 0 8px 8px;
-        background: #FFF;
+        background: #fff;
 
         display: grid;
         grid-template-columns: 224px 1fr;
         grid-template-rows: auto;
         grid-template-areas: "config-area form-area";
 
-        @media screen and (max-width: 925px){
+        @media screen and (max-width: 925px) {
             grid-template-columns: 1fr;
             grid-template-rows: auto;
             grid-template-areas: "form-area";
 
-            .config-area{
+            .config-area {
                 display: none;
             }
         }
 
-        .config-area{
+        .config-area {
             /* position: relative; */
-            background: #ECEFF1;
+            background: #eceff1;
         }
 
-        .form-area{
+        .form-area {
             grid-area: form-area;
 
             display: flex;
@@ -74,7 +82,7 @@ export const Container = styled.div`
 
             padding: 20px;
 
-            .form-title{
+            .form-title {
                 width: 100%;
                 padding: 10px;
 
@@ -84,8 +92,8 @@ export const Container = styled.div`
                 align-items: center;
 
                 font-size: 1.5rem;
-                background: ${props => props.theme.colors.main}20;
-                border-left: 4px solid ${props => props.theme.colors.main}50;
+                background: ${(props) => props.theme.colors.main}20;
+                border-left: 4px solid ${(props) => props.theme.colors.main}50;
             }
         }
     }
@@ -120,16 +128,16 @@ export const ConfigToggle = styled.div<IConfigBarProps>`
     border-top-right-radius: 1.2rem;
     border-bottom-right-radius: 1.2rem;
 
-    background: ${props => props.theme.colors.gradient_main};
-    color: #FFF;
+    background: ${(props) => props.theme.colors.gradient_main};
+    color: #fff;
 
     transition: 0.3s;
 
-    @media screen and (max-width: 925px){
+    @media screen and (max-width: 925px) {
         display: flex;
-        display: ${props => props.showConfigBar ? "none" : "flex"};
-        
-        &:hover{
+        display: ${(props) => (props.showConfigBar ? "none" : "flex")};
+
+        &:hover {
             min-width: 4rem;
             cursor: pointer;
         }
@@ -146,14 +154,18 @@ export const ConfigMenu = styled.div<IConfigMenuProps>`
     align-items: center;
 
     padding: 5px 10px;
-    background: ${props => props.active ? props.theme.colors.gradient_main : "#ECEFF1"};
-    color: ${props => props.active ? "#FFF" : props.theme.colors.text_primary};
-    font-weight: ${props => props.active ? "500" : "initial"};
-    
-    transition: 0.3s;
-    cursor: ${props => props.disabled === false ? "pointer" : "not-allowed"};
+    background: ${(props) =>
+        props.active ? props.theme.colors.gradient_main : "#ECEFF1"};
+    color: ${(props) =>
+        props.active ? "#FFF" : props.theme.colors.text_primary};
+    font-weight: ${(props) => (props.active ? "500" : "initial")};
 
-    &:hover{
-        background: ${props => props.active ? props.theme.colors.gradient_main : "#FFF"};
+    transition: 0.3s;
+    cursor: ${(props) =>
+        props.disabled === false ? "pointer" : "not-allowed"};
+
+    &:hover {
+        background: ${(props) =>
+            props.active ? props.theme.colors.gradient_main : "#FFF"};
     }
 `;
