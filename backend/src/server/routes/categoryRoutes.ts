@@ -20,5 +20,10 @@ categoryRoutes.post(
     categoryController.search
 );
 categoryRoutes.get('/:event_id/list', categoryController.getByEventId);
+categoryRoutes.put(
+    '/update-order',
+    havePermission(['CATEGORY_ORDER_UPDATE']),
+    categoryController.updateOrder
+);
 
 export { categoryRoutes };

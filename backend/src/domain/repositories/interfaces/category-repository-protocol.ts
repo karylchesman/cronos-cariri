@@ -17,6 +17,11 @@ interface CategoryRepositoryProtocol {
         order?: 'ASC' | 'DESC'
     ) => Promise<{ categories: CategoryProps[]; registers: number }>;
     findById: (id: string) => Promise<CategoryProps | null>;
+    findByIdList: (ids: string[]) => Promise<CategoryProps[]>;
+    updateCategoriesOrderByEventId: (
+        event_id: string,
+        categories: { id: string; order: number }[]
+    ) => Promise<void>;
     deleteById: (id: string) => Promise<void>;
 }
 

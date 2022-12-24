@@ -20,6 +20,8 @@ export const Container = styled.div`
 
         display: flex;
         flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
 
         gap: 10px;
 
@@ -30,6 +32,21 @@ export const Container = styled.div`
             width: 100%;
 
             gap: 10px;
+        }
+
+        .no-categories {
+            width: 100%;
+            padding: 1rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            color: #64b5f6;
+
+            border-radius: 0.45rem;
+            border: 3px dotted #64b5f6;
         }
     }
 `;

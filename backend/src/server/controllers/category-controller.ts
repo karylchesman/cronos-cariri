@@ -4,6 +4,7 @@ import { EventRepository } from '../../domain/repositories/event-repository';
 import { CreateCategoryUsecase } from '../../domain/usecases/categories/create-cetegory-usecase';
 import { GetCategoriesByEventIdUsecase } from '../../domain/usecases/categories/get-categories-by-event-id-usecase';
 import { SearchCategoryUsecase } from '../../domain/usecases/categories/search-category-usecase';
+import { UpdateCategoryOrderOfEventUsecase } from '../../domain/usecases/categories/update-category-order-of-event-usecase';
 
 class CategoryController {
     async create(request: Request, response: Response) {
@@ -79,6 +80,26 @@ class CategoryController {
         });
 
         return response.json(categories);
+    }
+
+    async updateOrder(request: Request, response: Response) {
+        const { event_id, categories } = request.body;
+
+        const categoryRepository = new CategoryRepository();
+        const eventRepository = new EventRepository();
+
+        const updateCategoryOrderOfEventUsecase =
+            new UpdateCategoryOrderOfEventUsecase(
+                categoryRepository,
+                eventRepository
+            );
+
+        await updateCategoryOrderOfEventUsecase.execute({
+            event_id,
+            categories,
+        });
+
+        return response.json({ message: 'Success' });
     }
 }
 

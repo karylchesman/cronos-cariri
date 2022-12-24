@@ -6,7 +6,7 @@ import { useApiRequest } from '../../../../hooks/useApiRequest';
 import { ICategory } from '../../../../context/stores/events';
 import { BsCheck2Circle, BsPlusCircleDotted } from 'react-icons/bs';
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
-import { AiFillSetting } from 'react-icons/ai';
+import { AiFillSetting, AiOutlineInfoCircle } from 'react-icons/ai';
 import PermissionsGate from '../../../../helpers/PermissionsGate';
 import { FiEdit } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
@@ -15,6 +15,10 @@ import { CreateCategoryModal } from '../../../../components/CreateCategoryModal'
 
 type IRequestGetEventCategoriesReturn = {
     categories: ICategory[];
+};
+
+type IRequestUpdateCategoriesOrderReturn = {
+    message: string;
 };
 
 const EventCategories = () => {
@@ -32,6 +36,15 @@ const EventCategories = () => {
         onSuccess(data) {
             orderCategories(data.categories);
         },
+    })
+
+    const {
+        isLoading: isLoadingUpdateCategoriesOrder,
+        handleRequest: updateCategoriesOrder
+    } = useApiRequest<IRequestUpdateCategoriesOrderReturn>({
+        defaultConfig: {},
+        handleOnFirstRender: false,
+        successMessage: "Ordem salva com sucesso!"
     })
 
     useEffect(() => {
@@ -81,6 +94,24 @@ const EventCategories = () => {
             return 0
         }
         eventsDispatch({ type: "events/set-categories", payload: categories.sort(orderFunction) });
+    }
+
+    async function saveCategoriesOrder() {
+        const data = {
+            event_id: events.selected.event?.id,
+            categories: events.categories.map(item => {
+                return {
+                    id: item.id,
+                    order: item.order
+                }
+            })
+        }
+
+        updateCategoriesOrder({
+            method: 'put',
+            url: `/categories/update-order`,
+            data
+        })
     }
 
     return (
@@ -164,7 +195,10 @@ const EventCategories = () => {
                                         )
                                     })
                                     :
-                                    <>Nenhuma categoria cadastrada até o momento.</>
+                                    <div className="no-categories">
+                                        <AiOutlineInfoCircle size="1.2rem" />
+                                        Nenhuma categoria cadastrada até o momento.
+                                    </div>
                             }
                         </CategoriesFlex>
                         <div className="actions">
@@ -173,6 +207,8 @@ const EventCategories = () => {
                                 rightIcon={<BsCheck2Circle size="1.2rem" />}
                                 colorScheme="messenger"
                                 variant='outline'
+                                isLoading={isLoadingUpdateCategoriesOrder}
+                                onClick={saveCategoriesOrder}
                             >
                                 Salvar Ordem
                             </Button>

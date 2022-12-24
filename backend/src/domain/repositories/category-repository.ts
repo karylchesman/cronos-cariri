@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AppDataSource } from '../../infra/typeORM/connection';
 import { ORMCategory } from '../../infra/typeORM/entities/ORMCategory';
 import { CategoryProps } from '../entities/category';
@@ -116,6 +116,42 @@ class CategoryRepository implements CategoryRepositoryProtocol {
 
     async deleteById(id: string) {
         await this.categoryRepository.delete(id);
+
+        return;
+    }
+
+    async findByIdList(ids: string[]): Promise<CategoryProps[]> {
+        const categories = await this.categoryRepository.find({
+            where: {
+                id: In(ids),
+            },
+        });
+
+        return categories;
+    }
+
+    async updateCategoriesOrderByEventId(
+        event_id: string,
+        categories: { id: string; order: number }[]
+    ): Promise<void> {
+        await this.categoryRepository.manager.transaction(
+            async (entityManagerTransaction) => {
+                for await (const category of categories) {
+                    const update_result = await entityManagerTransaction.update(
+                        ORMCategory,
+                        { id: category.id, event_id },
+                        { order: category.order }
+                    );
+
+                    if (
+                        update_result.affected === undefined ||
+                        update_result.affected < 1
+                    ) {
+                        throw new Error('Falha ao tentar atualizar ordernação');
+                    }
+                }
+            }
+        );
 
         return;
     }
