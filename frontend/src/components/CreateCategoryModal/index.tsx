@@ -69,19 +69,25 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
     } = useApiRequest<IRequestCreateCategoryReturn>({
         defaultConfig: {},
         handleOnFirstRender: false,
-        successMessage: "Categoria criada com sucesso!",
+        successMessage: `Categoria ${category !== null ? "atualizada" : "criada"} com sucesso!`,
         onSuccess() {
             handleClose(true)
         },
     })
 
     async function onSubmit(data: ICreateOrUpdateCategoryInputs) {
-        console.log(data)
-        // handleCreateCategory({
-        //     method: 'post',
-        //     url: '/categories/create',
-        //     data,
-        // })
+        const config = {
+            method: 'post',
+            url: '/categories/create',
+            data,
+        }
+
+        if (category !== null) {
+            config.method = 'put'
+            config.url = '/categories/update'
+        }
+
+        handleCreateCategory(config);
     }
 
     useEffect(() => {

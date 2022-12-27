@@ -25,5 +25,15 @@ categoryRoutes.put(
     havePermission(['CATEGORY_ORDER_UPDATE']),
     categoryController.updateOrder
 );
+categoryRoutes.put(
+    '/update',
+    havePermission(['CATEGORY_UPDATE']),
+    categoryController.update
+);
+categoryRoutes.delete(
+    '/:category_id',
+    havePermission(['CATEGORY_DELETE']),
+    categoryController.delete
+);
 
 export { categoryRoutes };

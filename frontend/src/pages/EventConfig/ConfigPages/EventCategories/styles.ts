@@ -43,10 +43,10 @@ export const Container = styled.div`
             align-items: center;
             gap: 10px;
 
-            color: #64b5f6;
+            color: #3182ce;
 
             border-radius: 0.45rem;
-            border: 3px dotted #64b5f6;
+            border: 2.5px dotted #3182ce;
         }
     }
 `;

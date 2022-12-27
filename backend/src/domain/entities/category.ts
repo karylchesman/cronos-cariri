@@ -74,7 +74,7 @@ class Category {
         isNumber(this.props.order, 'O ordenador deve ser um número.');
 
         if (!ECategoryTypes[this.props.category_type])
-            throw new Error('Categoria inválida.');
+            throw new Error('Tipo de categoria inválida.');
         if (!ECategoryGenderType[this.props.gender_type])
             throw new Error('Sexo da categoria inválido.');
     }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { CategoriesFlex, CategoryItem, Container } from './styles';
-import { Alert, AlertIcon, Button, Menu, MenuButton, MenuItem, MenuList, Spinner } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Menu, MenuButton, MenuItem, MenuList, Spinner, useToast } from '@chakra-ui/react';
 import { useAppContext } from '../../../../hooks/useAppContext';
 import { useApiRequest } from '../../../../hooks/useApiRequest';
 import { ICategory } from '../../../../context/stores/events';
@@ -12,6 +12,7 @@ import { FiEdit } from 'react-icons/fi';
 import { FaTrash } from 'react-icons/fa';
 import { useModalControl } from '../../../../hooks/useModalControl';
 import { CreateCategoryModal } from '../../../../components/CreateCategoryModal';
+import Swal from 'sweetalert2';
 
 type IRequestGetEventCategoriesReturn = {
     categories: ICategory[];
@@ -21,8 +22,13 @@ type IRequestUpdateCategoriesOrderReturn = {
     message: string;
 };
 
+type IRequestDeleteCategoriesOrderReturn = {
+    message: string;
+};
+
 const EventCategories = () => {
     const { events, eventsDispatch } = useAppContext();
+    const toast = useToast();
     const [showCreateCategoryModal, categoryToEdit, turnCreateCategoryModal] = useModalControl<ICategory>();
 
     const {
@@ -45,6 +51,17 @@ const EventCategories = () => {
         defaultConfig: {},
         handleOnFirstRender: false,
         successMessage: "Ordem salva com sucesso!"
+    })
+
+    const {
+        handleRequest: deleteCategory
+    } = useApiRequest<IRequestDeleteCategoriesOrderReturn>({
+        defaultConfig: {},
+        handleOnFirstRender: false,
+        successMessage: "Categoria excluída com sucesso!",
+        onSuccess: () => {
+            getEventCategories();
+        }
     })
 
     useEffect(() => {
@@ -134,6 +151,29 @@ const EventCategories = () => {
         })
     }
 
+    function handleDeleteCategory(category_id: string) {
+        async function execute() {
+            await deleteCategory({
+                method: 'delete',
+                url: `/categories/${category_id}`
+            })
+        }
+
+        Swal.fire({
+            title: "Atenção!",
+            text: "Tem certeza que deseja excluir essa categoria? Depois de feito essa ação não pode ser revertida.",
+            icon: 'question',
+            toast: true,
+            preConfirm: () => execute(),
+            showDenyButton: true,
+            confirmButtonColor: '#319795',
+            denyButtonColor: '#E53E3E',
+            confirmButtonText: "SIM",
+            denyButtonText: "NÃO",
+            showLoaderOnConfirm: true
+        })
+    }
+
     return (
         <Container>
             <div className="form-info">
@@ -205,7 +245,7 @@ const EventCategories = () => {
                                                                     <MenuItem icon={<FiEdit />} onClick={() => turnCreateCategoryModal(item)}> Editar</MenuItem>
                                                                 </PermissionsGate>
                                                                 <PermissionsGate permissions={[]}>
-                                                                    <MenuItem color="red.500" icon={<FaTrash />} > Excluir</MenuItem>
+                                                                    <MenuItem color="red.500" icon={<FaTrash />} onClick={() => handleDeleteCategory(item.id)}> Excluir</MenuItem>
                                                                 </PermissionsGate>
                                                             </MenuList>
                                                         </Menu>

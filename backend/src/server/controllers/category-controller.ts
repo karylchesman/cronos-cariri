@@ -2,9 +2,11 @@ import { Request, Response } from 'express';
 import { CategoryRepository } from '../../domain/repositories/category-repository';
 import { EventRepository } from '../../domain/repositories/event-repository';
 import { CreateCategoryUsecase } from '../../domain/usecases/categories/create-cetegory-usecase';
+import { DeleteCategoryUsecase } from '../../domain/usecases/categories/delete-cetegory-usecase';
 import { GetCategoriesByEventIdUsecase } from '../../domain/usecases/categories/get-categories-by-event-id-usecase';
 import { SearchCategoryUsecase } from '../../domain/usecases/categories/search-category-usecase';
 import { UpdateCategoryOrderOfEventUsecase } from '../../domain/usecases/categories/update-category-order-of-event-usecase';
+import { UpdateCategoryUsecase } from '../../domain/usecases/categories/update-cetegory-usecase';
 
 class CategoryController {
     async create(request: Request, response: Response) {
@@ -100,6 +102,58 @@ class CategoryController {
         });
 
         return response.json({ message: 'Success' });
+    }
+
+    async update(request: Request, response: Response) {
+        const {
+            id,
+            name,
+            event_id,
+            distance,
+            start_age,
+            end_age,
+            category_type,
+            gender_type,
+            order,
+        } = request.body;
+
+        const eventRepository = new EventRepository();
+        const categoryRepository = new CategoryRepository();
+        const updateCategoryUsecase = new UpdateCategoryUsecase(
+            eventRepository,
+            categoryRepository
+        );
+
+        const updated_category = await updateCategoryUsecase.execute({
+            category: {
+                id,
+                name,
+                event_id,
+                distance,
+                start_age,
+                end_age,
+                category_type,
+                gender_type,
+                order,
+            },
+        });
+
+        return response.json(updated_category);
+    }
+
+    async delete(request: Request, response: Response) {
+        const { category_id } = request.params;
+
+        const categoryRepository = new CategoryRepository();
+        const deleteCategoryUsecase = new DeleteCategoryUsecase(
+            categoryRepository
+        );
+
+        await deleteCategoryUsecase.execute({
+            category_id,
+        });
+
+        return response.json({ message: 'Success.' });
     }
 }
 
