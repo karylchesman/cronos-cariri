@@ -63,22 +63,25 @@ export const CategoriesFlex = styled.div`
 
 export const CategoryItem = styled.div`
     display: flex;
-
     width: 100%;
-    padding: 0.5rem;
 
-    border-radius: 0.45rem;
-
+    border-radius: 0.375rem;
     border: 1px solid #cfd8dc;
     background: #fff;
 
     transition: 0.3s;
+    overflow-x: hidden;
 
     &:hover {
-        box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+        .content {
+            border-left: 3px solid ${(props) => props.theme.colors.main};
+        }
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+            0 1px 2px 0 rgba(0, 0, 0, 0.06);
     }
 
     .content {
+        padding: 0.5rem;
         display: flex;
         width: 100%;
         flex-flow: row nowrap;

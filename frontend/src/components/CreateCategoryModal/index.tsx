@@ -54,7 +54,8 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
         formState: { errors },
         setValue,
         handleSubmit,
-        reset: resetForm
+        reset: resetForm,
+        getValues
     } = useForm<ICreateOrUpdateCategoryInputs>();
 
     function handleClose(reload: boolean = false) {
@@ -75,11 +76,12 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
     })
 
     async function onSubmit(data: ICreateOrUpdateCategoryInputs) {
-        handleCreateCategory({
-            method: 'post',
-            url: '/categories/create',
-            data,
-        })
+        console.log(data)
+        // handleCreateCategory({
+        //     method: 'post',
+        //     url: '/categories/create',
+        //     data,
+        // })
     }
 
     useEffect(() => {
@@ -137,14 +139,19 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
                             <div className="input-box">
                                 <FormControl isInvalid={!!errors.distance}>
                                     <FormLabel>Distância (km)</FormLabel>
-                                    <NumberInput>
+                                    <NumberInput
+                                        onChange={(value) => {
+                                            setValue("distance", Number(value))
+                                        }}
+                                    >
                                         <NumberInputField
                                             {...register("distance", {
                                                 required: "Distância é obrigatório.",
+                                                pattern: new RegExp(/[0-9]*(.[0-9]+)?/),
                                                 valueAsNumber: true,
                                                 min: {
                                                     value: 1,
-                                                    message: "A distância deve ser maior que 1."
+                                                    message: "A distância deve ser maior ou igual a 1."
                                                 }
                                             })}
                                         />
@@ -159,10 +166,15 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
                             <div className="input-box-group">
                                 <FormControl isInvalid={!!errors.start_age}>
                                     <FormLabel>Idade Mínima</FormLabel>
-                                    <NumberInput>
+                                    <NumberInput
+                                        onChange={(value) => {
+                                            setValue("start_age", Number(value))
+                                        }}
+                                    >
                                         <NumberInputField
                                             {...register("start_age", {
                                                 required: "Idade mínima é obrigatório.",
+                                                pattern: new RegExp(/[0-9]*(.[0-9]+)?/),
                                                 valueAsNumber: true,
                                                 min: {
                                                     value: 1,
@@ -170,7 +182,7 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
                                                 },
                                                 max: {
                                                     value: 100,
-                                                    message: "A idade mínima deve ser menor ou igual que 100."
+                                                    message: "A idade mínima deve ser menor que 100."
                                                 }
                                             })}
                                         />
@@ -183,10 +195,15 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
                                 </FormControl>
                                 <FormControl isInvalid={!!errors.end_age}>
                                     <FormLabel>Idade Máxima</FormLabel>
-                                    <NumberInput>
+                                    <NumberInput
+                                        onChange={(value) => {
+                                            setValue("end_age", Number(value))
+                                        }}
+                                    >
                                         <NumberInputField
                                             {...register("end_age", {
                                                 required: "Idade máxima é obrigatório.",
+                                                pattern: new RegExp(/[0-9]*(.[0-9]+)?/),
                                                 valueAsNumber: true,
                                                 min: {
                                                     value: 1,
@@ -194,9 +211,11 @@ const CreateCategoryModal = ({ isOpen, turnModal, category, eventId }: ICreateCa
                                                 },
                                                 max: {
                                                     value: 100,
-                                                    message: "A idade máxima deve ser menor ou igual que 100."
-                                                }
+                                                    message: "A idade máxima deve ser menor que 100."
+                                                },
+                                                validate: (value) => Number(getValues("start_age")) < Number(value) || "Idade máxima deve ser maior que idade inicial."
                                             })}
+
                                         />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
