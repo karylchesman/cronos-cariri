@@ -61,11 +61,15 @@ const EventCategories = () => {
 
     function alterOrder(itemIdx: number, increse: boolean) {
         let items = events.categories;
+        let incresedId = '';
+        let decresedId = '';
 
         if (increse === true) {
             const nextItem = items[itemIdx - 1];
             if (nextItem) {
                 const inMovingItem = items[itemIdx];
+                decresedId = inMovingItem.id;
+                incresedId = nextItem.id;
                 items[itemIdx] = nextItem;
                 items[itemIdx - 1] = inMovingItem;
             }
@@ -73,9 +77,25 @@ const EventCategories = () => {
             const previousItem = items[itemIdx + 1];
             if (previousItem) {
                 const inMovingItem = items[itemIdx];
+                decresedId = inMovingItem.id;
+                incresedId = previousItem.id;
                 items[itemIdx] = previousItem;
                 items[itemIdx + 1] = inMovingItem;
             }
+        }
+
+        const itemIncresedElement = document.getElementById(`category-${incresedId}`);
+        const itemdecresedElement = document.getElementById(`category-${decresedId}`);
+
+        if (itemIncresedElement && itemdecresedElement) {
+            itemIncresedElement.animate([
+                { background: '#B2DFDB' },
+                { background: 'initial' }
+            ], { duration: 2000 })
+            itemdecresedElement.animate([
+                { background: '#FFF9C4' },
+                { background: 'initial' }
+            ], { duration: 2000 })
         }
 
         orderCategories(items.map((item, idx) => {
@@ -137,7 +157,7 @@ const EventCategories = () => {
                                 events.categories.length > 0 ?
                                     events.categories.map((item, idx) => {
                                         return (
-                                            <CategoryItem key={idx}>
+                                            <CategoryItem id={`category-${item.id}`} key={idx}>
                                                 <div className="content">
                                                     <div className="order">
                                                         <TiArrowSortedUp size="1.5rem" onClick={(event) => {
