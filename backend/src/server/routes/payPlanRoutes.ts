@@ -15,4 +15,10 @@ payPlanRoutes.post(
     payPlanController.create
 );
 
+payPlanRoutes.get(
+    '/:event_id/list',
+    havePermission(['PAYPLAN_LIST_BY_EVENT']),
+    payPlanController.getByEventId
+);
+
 export { payPlanRoutes };

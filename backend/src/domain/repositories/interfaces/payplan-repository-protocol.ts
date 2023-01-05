@@ -6,7 +6,7 @@ interface PayPlanRepositoryProtocol {
         event_id: string,
         name: string
     ) => Promise<PayPlanProps | null>;
-    getByEventId: (event_id: string) => Promise<PayPlanProps[]>;
+    findByEventId: (event_id: string) => Promise<PayPlanProps[]>;
 }
 
 export { PayPlanRepositoryProtocol };

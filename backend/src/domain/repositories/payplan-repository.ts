@@ -19,7 +19,7 @@ class PayPlanRepository implements PayPlanRepositoryProtocol {
         return new_payplan;
     }
 
-    async getByEventId(event_id: string): Promise<PayPlanProps[]> {
+    async findByEventId(event_id: string): Promise<PayPlanProps[]> {
         const payplans = await this.payPlanRepository.find({
             where: {
                 event_id,
