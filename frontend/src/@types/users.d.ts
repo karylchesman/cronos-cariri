@@ -36,8 +36,8 @@ export type IUserSessionResponse = {
         person: IPerson | undefined;
         created_at: Date;
         updated_at: Date;
-        roles: Role[];
-        permissions: Permission[];
+        roles: Pick<Role, "name">[];
+        permissions: Pick<Permission, "name" | "identifier">[];
     };
     token: {
         access_token: string;
