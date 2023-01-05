@@ -1,9 +1,12 @@
-import { In, Repository } from "typeorm";
-import { AppDataSource } from "../../infra/typeORM/connection";
-import { ORMPermission } from "../../infra/typeORM/entities/ORMPermission";
-import { PermissionProps } from "../entities/permission";
-import { getWhereObject, ISearchObject } from "../utils/search-object";
-import { PermissionRepositoryProtocol, TPermissionOrderByFields } from "./interfaces/permission-repository-protocol";
+import { In, Repository } from 'typeorm';
+import { AppDataSource } from '../../infra/typeORM/connection';
+import { ORMPermission } from '../../infra/typeORM/entities/ORMPermission';
+import { PermissionProps } from '../entities/permission';
+import { getWhereObject, ISearchObject } from '../utils/search-object';
+import {
+    PermissionRepositoryProtocol,
+    TPermissionOrderByFields,
+} from './interfaces/permission-repository-protocol';
 
 class PermissionRepository implements PermissionRepositoryProtocol {
     private permissionRepository: Repository<ORMPermission>;
@@ -13,7 +16,7 @@ class PermissionRepository implements PermissionRepositoryProtocol {
     }
 
     async save(permission: PermissionProps) {
-        const new_permission = this.permissionRepository.create(permission)
+        const new_permission = this.permissionRepository.create(permission);
 
         await this.permissionRepository.save(new_permission);
 
@@ -23,44 +26,66 @@ class PermissionRepository implements PermissionRepositoryProtocol {
     async update(permission: PermissionProps) {
         permission.updated_at = new Date();
 
-        await this.permissionRepository.update(String(permission.id), permission);
+        await this.permissionRepository.update(
+            String(permission.id),
+            permission
+        );
 
         return permission;
     }
 
     async find(permission?: Partial<PermissionProps>) {
-
         const found_permissions = await this.permissionRepository.find({
-            where: permission
-        })
+            where: permission,
+        });
 
         return found_permissions;
     }
 
-    async search(search_params?: ISearchObject<PermissionProps>[] | string, page?: number, limit?: number, order_by?: TPermissionOrderByFields, order?: "ASC" | "DESC") {
-
-        const query = this.permissionRepository.createQueryBuilder("permissions").select("permissions");
+    async search(
+        search_params?: ISearchObject<PermissionProps>[] | string,
+        page?: number,
+        limit?: number,
+        order_by?: TPermissionOrderByFields,
+        order?: 'ASC' | 'DESC'
+    ) {
+        const query = this.permissionRepository
+            .createQueryBuilder('permissions')
+            .select('permissions');
 
         if (search_params !== undefined) {
-            if (typeof search_params === "string") {
-                query.where(`name LIKE :permission_name`, { permission_name: `%${search_params}%` });
+            if (typeof search_params === 'string') {
+                query.where(`name LIKE :permission_name`, {
+                    permission_name: `%${search_params}%`,
+                });
             }
 
             if (Array.isArray(search_params)) {
                 search_params.forEach((item, idx) => {
-                    let search_object = getWhereObject(item.operator, item.key, item.value, "permissions");
+                    const search_object = getWhereObject(
+                        item.operator,
+                        item.key,
+                        item.value,
+                        'permissions'
+                    );
 
                     if (idx === 0) {
-                        query.where(search_object.where_string, search_object.value_param);
+                        query.where(
+                            search_object.where_string,
+                            search_object.value_param
+                        );
                     } else {
-                        query.andWhere(search_object.where_string, search_object.value_param);
+                        query.andWhere(
+                            search_object.where_string,
+                            search_object.value_param
+                        );
                     }
-                })
+                });
             }
         }
 
         if (limit !== undefined && page !== undefined) {
-            let skip = (page - 1) * limit
+            const skip = (page - 1) * limit;
 
             query.skip(skip);
             query.take(limit);
@@ -74,16 +99,16 @@ class PermissionRepository implements PermissionRepositoryProtocol {
 
         return {
             permissions: permissions_found[0],
-            registers: permissions_found[1]
+            registers: permissions_found[1],
         };
     }
 
     async findById(id: string) {
         const permission = await this.permissionRepository.findOne({
             where: {
-                id
-            }
-        })
+                id,
+            },
+        });
 
         if (permission) {
             return permission;
@@ -95,9 +120,9 @@ class PermissionRepository implements PermissionRepositoryProtocol {
     async findByIdList(ids: string[]) {
         const permissions = await this.permissionRepository.find({
             where: {
-                id: In(ids)
-            }
-        })
+                id: In(ids),
+            },
+        });
 
         return permissions;
     }
@@ -107,7 +132,6 @@ class PermissionRepository implements PermissionRepositoryProtocol {
 
         return;
     }
-
 }
 
-export { PermissionRepository }
+export { PermissionRepository };

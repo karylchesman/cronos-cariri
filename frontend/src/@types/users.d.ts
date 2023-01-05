@@ -23,24 +23,24 @@ export interface IUser {
     person?: IPerson | undefined;
     created_at: Date;
     updated_at: Date;
-    roles: Role[];
-    permissions: Permission[];
+    roles: Pick<Role, "name">[];
+    permissions: Pick<Permission, "name" | "identifier">[];
 }
 
 export type IUserSessionResponse = {
-    "user": {
-        "id": string;
-        "name": string;
-        "email": string;
-        "person_id": string | null;
-        "person": IPerson | undefined;
-        "created_at": Date;
-        "updated_at": Date;
-        "roles": Role[];
-        "permissions": Permission[];
-    },
-    "token": {
-        "access_token": string;
-        "expires_in": Date;
-    }
-}
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        person_id: string | null;
+        person: IPerson | undefined;
+        created_at: Date;
+        updated_at: Date;
+        roles: Role[];
+        permissions: Permission[];
+    };
+    token: {
+        access_token: string;
+        expires_in: Date;
+    };
+};
