@@ -14,6 +14,7 @@ import { EventBannerAndCard } from './ConfigPages/EventBannerAndCard';
 import { EventParameters } from './ConfigPages/EventParameters';
 import { EventCategories } from './ConfigPages/EventCategories';
 import { BiLeftArrowAlt } from 'react-icons/bi';
+import { EventPayplans } from './ConfigPages/EventPayplans';
 
 const EventConfig = () => {
 
@@ -111,7 +112,7 @@ const EventConfig = () => {
                                     case "Categorias":
                                         return <EventCategories />;
                                     case "Planos":
-                                        return <EventData />;
+                                        return <EventPayplans />;
                                     case "Lotes":
                                         return <EventData />;
                                     case "Tags do Evento":
