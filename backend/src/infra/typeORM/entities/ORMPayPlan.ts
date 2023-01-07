@@ -39,10 +39,8 @@ class ORMPayPlan {
     details!: string;
 
     @Column({
-        type: 'decimal',
-        precision: 10,
-        scale: 2,
-        default: 0,
+        type: 'double',
+        default: null,
         nullable: true,
     })
     value!: number | null;

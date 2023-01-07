@@ -44,9 +44,7 @@ export class CreatePayplans1672926996761 implements MigrationInterface {
                     },
                     {
                         name: 'value',
-                        type: 'decimal',
-                        precision: 10,
-                        scale: 2,
+                        type: 'double',
                         default: null,
                         isNullable: true,
                     },
