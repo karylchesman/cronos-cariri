@@ -32,6 +32,7 @@ export const Container = styled.div`
             width: 100%;
 
             gap: 10px;
+            margin-bottom: 1rem;
         }
 
         .no-payplans {
@@ -52,11 +53,13 @@ export const Container = styled.div`
 `;
 
 export const PayplansFlex = styled.div`
-    display: flex;
-    flex-flow: column nowrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    grid-template-rows: auto;
+    justify-content: center;
 
     width: 100%;
     height: 100%;
 
-    gap: 0.5rem;
+    grid-gap: 0.5rem;
 `;
